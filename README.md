@@ -7,4 +7,7 @@ This is a "rebirth" of the Retroarch Phoenix project that was deprecated. This i
 
 Project was written with Qt 5.2
 
+[Screenshot 1](http://i.imgur.com/WSrhpGK.png)
+[Screenshot 2](http://imgur.com/WSrhpGK,ETSF45T#0)
+
 
