@@ -1,0 +1,36 @@
+
+These icons are not my work, they belong entirely to those mentioned below also, this is his liscence:
+
+#######################################################################################################################################################################################################################################
+
+IKONS Website: http://ikons.piotrkwiatkowski.co.uk/
+
+	You are free to use these icons for personal and commercial work without obligation of payment or attribution. 
+While attribution is optional, it is always appreciated. The icons may be altered, cropped or otherwise modified or manipulated for your needs. 
+You may not redistribute or sell these icons (in their original or a modified state) on any other website or source. Distributing and/or 
+displaying the icons as a part of a software product, website, manual, or other package is permitted. The IKONS are property of Piotr Kwiatkowski 
+and are protected by copyright laws and international treaty provisions. Intellectual property rights are not transferred with the download of 
+the icons. All brand icons are trademark of their respective owners.
+
+Piotr Kwiatkowski shall not be liable to any kind of damage arising from the use of IKONS.
+
+If you use IKONS in your Dribbble shot, please add an "ikons" tag. So I can add it here.
+
+Thank you.
+
+#############################################################################
+
+RetroArch Phoenix Liscence:
+	
+This is sort of a rebirth of the deprecated RetroArch Pheoenix, Gui located at 
+https://github.com/Themaister/RetroArch-Phoenix, created by me and not
+affiliated with the developers of RetroArch; I do like the name though.
+
+This frontend is completely based off of the OpenEmu design. Please support them also.
+Their site is located here http://openemu.org/
+
+Do whatever you want to with this frontend. You do not have to, but it would be nice if 
+you would let me know of any advancements or of any derivative works that you create.
+I will be setting up a github account shortly.
+
+Contact me at Druage@gmx.com
