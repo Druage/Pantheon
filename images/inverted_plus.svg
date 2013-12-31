@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   width="64px"
+   height="64px"
+   viewBox="0 0 64 64"
+   enable-background="new 0 0 64 64"
+   xml:space="preserve"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="plus.svg"><metadata
+   id="metadata2996"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs2994"><filter
+     id="filter3040"
+     inkscape:label="Invert"
+     x="0"
+     y="0"
+     width="1"
+     height="1"
+     inkscape:menu="Color"
+     inkscape:menu-tooltip="Invert colors"
+     color-interpolation-filters="sRGB"><feColorMatrix
+       id="feColorMatrix3042"
+       type="saturate"
+       values="1"
+       result="fbSourceGraphic" /><feColorMatrix
+       id="feColorMatrix3044"
+       in="fbSourceGraphic"
+       values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 " /></filter></defs><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="640"
+   inkscape:window-height="480"
+   id="namedview2992"
+   showgrid="false"
+   inkscape:zoom="3.6875"
+   inkscape:cx="32"
+   inkscape:cy="32"
+   inkscape:window-x="356"
+   inkscape:window-y="28"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="Layer_1" />
+<g
+   id="PLUS_1_"
+   enable-background="new    "
+   style="filter:url(#filter3040)"
+   transform="matrix(0.32608696,0,0,0.32608696,6.0652173,37.065207)">
+	<g
+   id="PLUS">
+		<g
+   id="g2988">
+			<path
+   d="M 52,29 H 35 V 12 c 0,-1.657 -1.343,-3 -3,-3 -1.657,0 -3,1.343 -3,3 V 29 H 12 c -1.657,0 -3,1.343 -3,3 0,1.657 1.343,3 3,3 h 17 v 17 c 0,1.657 1.343,3 3,3 1.657,0 3,-1.343 3,-3 V 35 h 17 c 1.657,0 3,-1.343 3,-3 0,-1.657 -1.343,-3 -3,-3 z"
+   id="path2990"
+   inkscape:connector-curvature="0" />
+		</g>
+	</g>
+</g>
+</svg>
