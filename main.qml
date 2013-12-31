@@ -1,9 +1,9 @@
 //Done using Qt Creator 5.2
-import QtQuick 2.1
+import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtQuick.Window 2.0
-import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Layouts 1.0
+import QtQuick.Controls.Styles 1.0
 import QtGraphicalEffects 1.0
 
 
@@ -12,8 +12,7 @@ ApplicationWindow {
     title: qsTr("RetroArch Phoenix")
     width: 640
     height: 480
-
-    /*menuBar: MenuBar {
+    menuBar: MenuBar {
         Menu {
             title: qsTr("File")
             MenuItem {
@@ -23,31 +22,34 @@ ApplicationWindow {
         }
         Menu {
             title: qsTr("Video")
-            MenuItem {
-                text: qsTr("Shader")
-            }
+            MenuItem {text: qsTr("Shader")}
+            MenuItem {text: qsTr("Enable Rewind")}
         }
-    }*/
+        Menu {
+            title: qsTr("Audio")
+            MenuItem {text: qsTr("Mute Audio")}
+        }
+        Menu {
+            title: qsTr("NetPlay")
+        }
+    }
     ColumnLayout {
         id: col
-        //Rectangle {anchors.fill: parent; color: "blue"}
         anchors.fill: parent
-        SplitView {
+        Row {
             id: body
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.bottom: footer.top
             anchors.left:  parent.left
-            orientation: Qt.Horizontal
             LeftPane {
                 id: system_list
-                width: col.width / 4
                 anchors.top: parent.top
-                anchors.left: parent.left
                 anchors.bottom: parent.bottom
-                //right anchor is defined in TableView
+                anchors.right: rom_list.left
+                anchors.left: parent.left
+                width: 225
             }
-
             //RomList
             ListModel {
                id: libraryModel
@@ -96,25 +98,24 @@ ApplicationWindow {
 
                }
             }
-            RomGrid {
-                property alias romGrid: rom_grid
-                id: rom_grid
-                visible: false
-                anchors.right: parent.right
+           Loader {
+                property alias romGrid: rom_grid_loader
+                id: rom_grid_loader
                 anchors.left: system_list.right
-                anchors.top: parent.top
+                anchors.right: parent.right
                 anchors.bottom: parent.bottom
+                anchors.top: parent.top
             }
         }
-
         //BottomBar
-        FooterBar {
+        Loader {
             id: footer
-            height: 75
-            width: 150 //not being actually used
-            anchors.right: parent.right
-            anchors.left: parent.left
+            source: "FooterBar.qml"
+            height: 175
             anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: system_list.bottom
         }
     }
 }

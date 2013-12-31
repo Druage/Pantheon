@@ -1,9 +1,10 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.0
 import QtGraphicalEffects 1.0
 
 //make these images appear automatic with Repeater {}
 //add noise to the background
+
 Rectangle {
     width: 500
     height: 500
@@ -16,6 +17,7 @@ Rectangle {
         anchors.fill: parent
         contentHeight: game_grid.height
         contentWidth: game_grid.width
+        boundsBehavior: Flickable.StopAtBounds
     Grid {
         id: game_grid
         anchors.fill: parent
@@ -45,7 +47,7 @@ Rectangle {
             width: 150; height: 100; color: "red"
 
             Image {
-                anchors.centerIn: parent; source: "boxart/army_meny.jpg"
+                anchors.centerIn: parent; source: "images/boxart/army_meny.jpg"
                 //fillMode: Image.PreserveAspectCrop
                 smooth: true
                 width: parent.width ; height: parent.height
@@ -55,7 +57,7 @@ Rectangle {
         Rectangle {
             width: 150; height: 100; color: "red"
             Image {
-                anchors.centerIn: parent; source: "boxart/banjo_kazooie.jpg"
+                anchors.centerIn: parent; source: "images/boxart/banjo_kazooie.jpg"
                 //fillMode: Image.PreserveAspectCrop
                 smooth: true
                 width: parent.width ; height: parent.height
@@ -65,7 +67,7 @@ Rectangle {
         Rectangle {
             width: 150; height: 100; color: "red"
             Image {
-                anchors.centerIn: parent; source: "boxart/final_fantasy_ii.jpg"
+                anchors.centerIn: parent; source: "images/boxart/final_fantasy_ii.jpg"
                 //fillMode: Image.PreserveAspectCrop
                 smooth: true
                 width: parent.width ; height: parent.height
@@ -75,7 +77,7 @@ Rectangle {
         Rectangle {
             width: 100; height: 100; color: "red"
             Image {
-                anchors.centerIn: parent; source: "boxart/Zelda 1.jpg"
+                anchors.centerIn: parent; source: "images/boxart/Zelda 1.jpg"
                 //fillMode: Image.PreserveAspectCrop
                 smooth: true
                 width: parent.width ; height: parent.height
@@ -85,13 +87,14 @@ Rectangle {
         Rectangle {
             width: 100; height: 100; color: "red"
             Image {
-                anchors.centerIn: parent; source: "boxart/Zelda 2 Re-Release.jpg"
+                anchors.centerIn: parent; source: "images/boxart/Zelda 2 Re-Release.jpg"
                 //fillMode: Image.PreserveAspectCrop
                 smooth: true
                 width: parent.width ; height: parent.height
                 sourceSize.width: 200 ; sourceSize.height: 200
+                }
             }
         }
-    }}
+    }
 }
 

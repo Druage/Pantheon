@@ -6,10 +6,15 @@ Rectangle {
     id: btn
     height: 30; width: 30
     radius: 8
+    state: "ON"
+    function toggle() { //makes the gridview switch
+        if (state === "ON"){state = "OFF"; rom_grid_loader.source = ""}
+        else {state = "ON"; rom_grid_loader.source = "RomGrid.qml"}
+    }
     MouseArea {
         id: mousearea
         anchors.fill: parent
-        onPressed: {rom_list.destroy(); rom_grid.visible = true}
+        onClicked: btn.toggle()
     }
     gradient: Gradient {
         GradientStop {position: 0.0; color: "#353535"}
@@ -20,8 +25,8 @@ Rectangle {
         id: btn_img
         anchors.centerIn: parent
         anchors.left: parent.left
-        //source: "images/plus.png"
-        sourceSize.width: 500 ; sourceSize.height: 500
+        source: "images/grid_1.png"
+        sourceSize.width: 20 ; sourceSize.height: 20
     }
     InnerShadow {
         anchors.fill: btn

@@ -1,13 +1,13 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
-import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Layouts 1.0
+import QtQuick.Controls.Styles 1.0
 import QtGraphicalEffects 1.0
 
 Rectangle {
     id: footerbar
-    //implicitHeight: 75
-    //width: 500
+    implicitHeight: 75
+    width: 150
     border.width: 2
     border.color: "#505050"
     InnerShadow {
@@ -27,23 +27,25 @@ Rectangle {
     }
     RowLayout {
         anchors.fill: parent
-        PlusButton {
+        Loader {
             id: plus_btn
+            source: "PlusButton.qml"
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
-        PlayButton {
+        Loader {
             id: play_btn
+            source: "PlayButton.qml"
             anchors.left: plus_btn.right
             anchors.leftMargin: 2
         }
-        GridButton {
-            id: grid_btn //You can edit the values so I can use just two btns
+        Loader {
+            id: grid_btn //I'll turn these all into one button eventually
+            source: "GridButton.qml"
             anchors.right:search_bar.left
             //anchors.left: play_btn.right
             anchors.rightMargin: 2
         }
-
         TextField {
             id: search_bar
             placeholderText: "Search..."
@@ -109,18 +111,6 @@ Rectangle {
                    height: 17
                    width: 17
                    radius: 10
-                   //Shadow is glitching out, will use later.
-                   /*DropShadow {
-                       anchors.fill: handle
-                       //visible: false
-                       cached: true
-                       verticalOffset: 1
-                       horizontalOffset: -1
-                       radius: 1
-                       samples: 8
-                       color: "black"
-                       source: handle
-                   }*/
                }
             }
         }

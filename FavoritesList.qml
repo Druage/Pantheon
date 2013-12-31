@@ -3,10 +3,14 @@ import QtGraphicalEffects 1.0
 
 Rectangle {
     width: 360; height: 480
-    anchors.margins: 5
+    //anchors.margins: 5
     //color: "green"
-    radius: 8
-    InnerShadow {
+    //radius: 8
+    gradient: Gradient {
+        GradientStop {position: 0.0; color: "#353535"}
+        GradientStop {position: 1.0; color: "#232323"}
+    }
+    /*InnerShadow {
         anchors.fill: parent
         cached: true
         verticalOffset: 3
@@ -15,7 +19,7 @@ Rectangle {
         samples: 16
         color: "black"
         source: parent
-    }
+    }*/
     ListModel {
         id: treemodel
         ListElement {
@@ -29,8 +33,7 @@ Rectangle {
             ]
         }
     }
-
-    TreeView {
+    TreeView { //probably have to turn this into a Component to be Loaded
         anchors.fill: parent
         model: treemodel
     }

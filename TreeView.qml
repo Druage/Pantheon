@@ -3,16 +3,13 @@ import QtQuick 2.1
 Flickable {
     property var model
     anchors.fill: parent
-
     contentHeight: content.height
     contentWidth: content.width
-
     Loader {
         id: content
         sourceComponent: treeBranch
         property var elements: model
         property bool isRoot: true
-
         Component {
             id: treeBranch
             Item {
@@ -31,11 +28,11 @@ Flickable {
                             Rectangle {
                                 width: 18
                                 height: 18
-                                color: "#000000FF" // makes it transparent
+                                color: "#000000FF" //makes it transparent
                                 opacity: !!model.elements ? 1 : 0
                                 Image {
                                     id: expander
-                                    source: "images/expander.png"
+                                    source: "images/bookmark.png"
                                     opacity: mouse.containsMouse ? 1 : 0.7
                                     anchors.centerIn: parent
                                     rotation: loader.expanded ? 90 : 0
