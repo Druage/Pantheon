@@ -10,16 +10,15 @@ Rectangle {
         GradientStop {position: 0.0; color: "#353535"}
         GradientStop {position: 1.0; color: "#232323"}
     }
-    /*InnerShadow {
+    InnerShadow {
         anchors.fill: parent
         cached: true
-        verticalOffset: 3
-        horizontalOffset: -3
+        verticalOffset: -3
         radius: 8.0
         samples: 16
         color: "black"
         source: parent
-    }*/
+    }
     ListModel {
         id: treemodel
         ListElement {

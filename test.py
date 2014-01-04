@@ -14,11 +14,7 @@ if __name__ == '__main__':
     view.setHeight(500)
     view.setTitle('Hello PyQt')
     view.setResizeMode(QQuickView.SizeRootObjectToView)
-    view.setSource(QUrl.fromLocalFile('main.qml'))
-
-
-    def on_qml_mouse_clicked(mouse_event):
-        print ('mouse clicked')
+    view.setSource(QUrl.fromLocalFile('WindowMain.qml'))
 
     view.show()
     qml_rectangle = view.rootObject()

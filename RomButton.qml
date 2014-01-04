@@ -8,8 +8,8 @@ Rectangle {
     radius: 8
     state: "ON"
     function toggle() { //makes the gridview switch
-        if (state === "ON"){state = "OFF"; rom_grid_loader.source = ""}
-        else {state = "ON"; rom_grid_loader.source = "RomGrid.qml"}
+        if (state === "ON"){state = "OFF"; rom_grid.visible = true}
+        else {state = "ON"; rom_grid.visible = false}
     }
     MouseArea {
         id: mousearea

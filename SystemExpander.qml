@@ -13,8 +13,8 @@ Rectangle {
     /*InnerShadow {
         anchors.fill: parent
         cached: true
-        verticalOffset: 3
-        horizontalOffset: -3
+        verticalOffset: -3
+        horizontalOffset: 3
         radius: 8.0
         samples: 16
         color: "black"

@@ -1,4 +1,4 @@
-import QtQuick 2.1
+import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtGraphicalEffects 1.0
 
@@ -15,14 +15,14 @@ Rectangle {
         color: "black"
         source: parent
     }
-    SystemList {
+    SystemExpander {
         id: system_list
         anchors.top: parent.top
         width: parent.width; height:root.height / 3
         anchors.right: parent.right
         anchors.left: parent.left
     }
-    FavoritesList {
+    FavoritesExpander {
         id: favorites_list
         anchors.top: system_list.bottom
         anchors.right: parent.right
