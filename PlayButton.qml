@@ -8,8 +8,9 @@ Rectangle {
     MouseArea {
         id: mousearea
         anchors.fill: parent
-        //onPressed: innershadow.visible = true
-        //onReleased: innershadow.visible = false
+        onClicked: {if (innershadow.visible == true) {innershadow.visible = false}
+        else {innershadow.visible = true}
+        }
     }
     gradient: Gradient {
         GradientStop {position: 0.0; color: "#353535"}
@@ -25,6 +26,7 @@ Rectangle {
     }
     InnerShadow {
         id: innershadow
+        visible: false
         anchors.fill: btn
         cached: true
         verticalOffset: 3

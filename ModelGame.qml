@@ -4,22 +4,26 @@ import QtQuick 2.0
 ListModel {
     ListElement {
         name: "<b>Army Men Sarge's Hero's</b>"
-        portrait: "images/boxart/army_men.jpg"
+        portrait: "images/boxart/magenta-green.png"
     }
     ListElement {
-        name: "<b>Banjo - Kazooie</b>"
-        portrait: "images/boxart/banjo_kazooie.jpg"
+        name: ""
+        portrait: "images/boxart/cmy.png"
+    }
+    ListElement {
+        name: ""
+        portrait: "images/boxart/cmy.png"
     }
     ListElement {
         name: "<b>Fintal Fantasy II</b>"
-        portrait: "images/boxart/final_fantasy_ii.jpg"
+        portrait: "images/boxart/4k-mask.png"
     }
     ListElement {
-        name: "<b>The Legend of Zelda</b>"
-        portrait: "images/boxart/Zelda 1.jpg"
+        name: "<b>Army Men Sarge's Hero's</b>"
+        portrait: "images/boxart/magenta-green.png"
     }
     ListElement {
-        name: "<b>The Legend of Zelda II</b>"
-        portrait: "images/boxart/Zelda 2 Re-Release.jpg"
+        name: "<b>Fintal Fantasy II</b>"
+        portrait: "images/boxart/4k-mask.png"
     }
 }

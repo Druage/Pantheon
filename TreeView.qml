@@ -26,13 +26,14 @@ Item {
                         Row {
                             spacing: 2
                             Rectangle {
-                                width: 18
+                                width: 35
                                 height: 18
                                 color: "#000000FF" //makes it transparent
-                                //opacity: !!model.elements ? 1 : 0
                                 Image {
                                     id: expander
-                                    source: "images/bookmark.png"
+                                    source: "images/phoenix.png"
+                                    sourceSize.height: 50
+                                    sourceSize.width: 50
                                     opacity: mouse.containsMouse ? 1 : 0.7
                                     anchors.centerIn: parent
                                     //rotation: loader.expanded ? 90 : 0

@@ -8,8 +8,10 @@ Rectangle {
     radius: 8
     state: "ON"
     function toggle() { //makes the gridview switch
-        if (state === "ON"){state = "OFF"; rom_grid.visible = true}
-        else {state = "ON"; rom_grid.visible = false}
+        if (state === "ON"){state = "OFF"; rom_grid.visible = true;
+            innershadow.visible = true}
+        else {state = "ON"; rom_grid.visible = false;
+            innershadow.visible = false}
     }
     MouseArea {
         id: mousearea
@@ -29,6 +31,8 @@ Rectangle {
         sourceSize.width: 20 ; sourceSize.height: 20
     }
     InnerShadow {
+        id: innershadow
+        visible: false
         anchors.fill: btn
         cached: true
         verticalOffset: 3

@@ -6,16 +6,19 @@ Rectangle {
     id: btn
     height: 30; width: 30
     radius: 8
+    color: "#000000FF"
     MouseArea {
         id: mousearea
         anchors.fill: parent
-        onPressed: file_dialog.open()
-        //onReleased: innershadow.visible = false
+        onClicked: {file_dialog.open();
+            if (innershadow.visible == true){innershadow.visible = false}
+            else {innershadow.visible = true}
+        }
     }
-    gradient: Gradient {
+    /*gradient: Gradient {
         GradientStop {position: 0.0; color: "#353535"}
         GradientStop {position: 1.0; color: "#232323"}
-    }
+    }*/
 
     Image {
         id: btn_img
@@ -26,6 +29,7 @@ Rectangle {
     }
     InnerShadow {
         id: innershadow
+        visible: false
         anchors.fill: btn
         cached: true
         verticalOffset: 3
@@ -41,10 +45,12 @@ Rectangle {
         visible: false
         onAccepted: {
             console.log("You choose: " + file_dialog.fileUrls)
-            Qt.quit()
+            innershadow.visible = false
+            close()
         }
         onRejected: {
             console.log("Cancelled")
+            innershadow.visible = false
             close()
         }
     }
