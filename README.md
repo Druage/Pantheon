@@ -12,3 +12,16 @@ Furthermore, this project is not affiliated with the official
 [RetroArch](https://github.com/libretro/RetroArch) developers. 
 However I did like the Phoenix part.
 
+###Things that still need to be completed.
+
+1. Qml Signals need to be directed to C++ or Python
+2. Make search bar filter data models.
+3. Have game artwork scrubber work, goes because to 1st point.
+4. Make shader button work, 1st point.
+5. Make Rating system work, 1st point
+6. Work on sold theme. I'm currently working on that.
+
+###Future Goals:
+1. Add advanced settings
+2. Have RetroArch pass OpenGL video and sound to QML Window.
+2. Get some sleep.
