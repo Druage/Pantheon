@@ -12,10 +12,15 @@ Furthermore, this project is not affiliated with the official
 [RetroArch](https://github.com/libretro/RetroArch) developers. 
 However I did like the Phoenix part.
 
+To run this program you need <b>Python 3.3</b> installed and <b>PyQt 5.2</b>, <b>5.1</b> may work though.
+Then just run the main.py. I am still ironing out the bugs and I have only tested this latest build on Windows 8.1, I will test it for Linux in a few days
+
 ###Things that still need to be completed.
 
-1. Qml Signals need to be directed to C++ or Python
-2. Make search bar filter data models.
+~~1. Qml Signals need to be directed to C++ or Python~~ Solved.
+
+~~2. Make search bar filter data models.~~ Solved.
+
 3. Have game artwork scrubber work, goes because to 1st point.
 4. Make shader button work, 1st point.
 5. Make Rating system work, 1st point
