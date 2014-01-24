@@ -24,7 +24,7 @@ class Launcher(QObject):
             joy_path = ROOT_DIR + "\\retroarch_v1.0\\" + self._joy
         else:
             joy_path = "/usr/bin/retroarch-joyconfig"
-        return os.system(joy_path)
+        return os.system(joypath)
 
     @joy.setter
     def joy(self, joy):

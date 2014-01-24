@@ -111,7 +111,7 @@ def xmlwriter(data): #xmlwriter() is loaded automatically after scan is run
                 core_ext = ".so"
                 linux_tags(system, core, game_extension)
                 print(core.text)
-            if ".gb" in game_extension:
+            if ".gb" in extension:
                 clean_key = key.strip(key[-3::])
             else:
                 clean_key = key.strip(key[-4::])
