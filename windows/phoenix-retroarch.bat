@@ -1,0 +1,1 @@
+start C:\Python33\pythonw.exe ..\main.py

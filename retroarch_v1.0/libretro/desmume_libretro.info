@@ -1,0 +1,8 @@
+display_name = "Nintendo DS (DeSmuME)"
+authors = "Zeromus"
+supported_extensions = "nds"
+corename = "DeSmuME"
+manufacturer = "Nintendo"
+systemname = "Nintendo DS"
+license = "GPLv2"
+permissions = ""

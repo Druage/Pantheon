@@ -1,0 +1,10 @@
+#include "ntsc-pass1-vertex.cg"
+#define TWO_PHASE
+#include "ntsc-param.inc"
+#include "ntsc-rgbyuv.inc"
+
+float4 main_fragment (uniform input IN, in data vertex, uniform sampler2D s0 : TEXUNIT0) : COLOR
+{
+#include "ntsc-pass1-encode.cg"
+}
+
