@@ -19,13 +19,7 @@ Rectangle {
 
     Launcher {id: gameLauncher;}
     ScanDirectory {id: scanDirectory;}
-
-    SystemPalette {id: systemColor; colorGroup: SystemPalette.Active}
-
-    ///////////////////////////////////////////////////////////////////
-    ////////                   Top Menu Bar                  //////////
-    ///////////////////////////////////////////////////////////////////
-
+    SystemPalette {id: systemColor; colorGroup: SystemPalette.Active} //Used for making a native looking theme
 
     Rectangle {
         id: gameLayout
@@ -33,7 +27,6 @@ Rectangle {
         anchors.bottom: settings.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        //implicitWidth: 500
         /////////////////////////////////////////////////////
         /////////          System List             //////////
         /////////////////////////////////////////////////////
@@ -56,13 +49,10 @@ Rectangle {
                     anchors.top: parent.top
                     anchors.left: parent.left
                     anchors.topMargin: 10
-                    //anchors.leftMargin: 10
                     anchors.right: parent.right
                     color: "#000000FF"
                     radius: 2
                     state: "ON"
-                   //border.color: "#88F0B9"
-                    //Image {anchors.fill: parent; source: "images/greenlabel.png"; sourceSize.width: header.}
                     Label {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
@@ -71,18 +61,18 @@ Rectangle {
                         font.pixelSize: 12
                         color: "white"
                     }
-                InnerShadow {
-                    id: headerShadow
-                    anchors.fill: header
-                    visible: false
-                    horizontalOffset: -1
-                    verticalOffset: -1
-                    radius: 8
-                    samples: 16
-                    color: "#80000000"
-                    source: header
+                    InnerShadow {
+                        id: headerShadow
+                        anchors.fill: header
+                        visible: false
+                        horizontalOffset: -1
+                        verticalOffset: -1
+                        radius: 8
+                        samples: 16
+                        color: "#80000000"
+                        source: header
+                    }
                 }
-        }
                 Rectangle {
                     id: background
                     width: parent.width; height: 300
@@ -90,6 +80,7 @@ Rectangle {
                     anchors.topMargin: 10
                     anchors.horizontalCenter: parent.horizontalCenter
                     color: "#000000FF"
+                    //////////////////////////////////////////////////
                     Component {
                         id: highlightBar
                         Rectangle {
@@ -101,10 +92,10 @@ Rectangle {
                             anchors.margins: 10
                         }
                     }
+                    //////////////////////////////////////////////////
                 ListView {
                     id: filterMenu
                     anchors.fill: parent
-                    //anchors.leftMargin: 40
                     focus: true
                     highlightFollowsCurrentItem: false
                     highlight: highlightBar
@@ -114,7 +105,6 @@ Rectangle {
                         id: wrapper
                         width: filterMenu.width; height: 25
                         color: "#000000FF"
-                        //x: 90
                         states: State {
                             name: "Current"
                             when: wrapper.ListView.isCurrentItem
@@ -136,7 +126,6 @@ Rectangle {
                                 }
                             }
                             onClicked: { filterMenu.currentIndex = index; filter()
-
                             }
                         }
                         Label {id: label;
@@ -144,178 +133,152 @@ Rectangle {
                             text: name;
                             color: "white";
                             x: 50
-                            //height: paintedHeight
-                            //width: paintedWidth
                         }
-                        /*DropShadow {
-                            id: textShadow1
-                            anchors.fill: source
-                            source: label
-                            radius: 4
-                            samples: 8
-                            verticalOffset: 1
-                            horizontalOffset: 2
-                            color: "#800000FF"
-                        }*/
-                    }
-                }
-
-            }
-        }
+                    }   // Delegate
+                }       // ListView; id: filterMenu
+            }           // Rectangle; id: background
+        }               // Rectangle; id: leftSide
             //////////////////////////////////////////////////////////
             ////////            Favorite's List               ////////
             //////////////////////////////////////////////////////////
+        Rectangle {
+            id: leftSide2
+            width: leftColumn.width; height: 200
+            anchors.top: leftSide.bottom
+            color: leftSide.color //Controls Background Color
             Rectangle {
-                id: leftSide2
-                width: leftColumn.width; height: 200
-                anchors.top: leftSide.bottom
-                //anchors.bottom: parent.bottom
-                color: leftSide.color //Controls Background Color
-
-                Rectangle {
-                    id: favorites
-                    width: 100;
-                    height: 25
-                    anchors.top: parent.top
+                id: favorites
+                width: 100;
+                height: 25
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.topMargin: 10
+                anchors.right: parent.right
+                color: "#000000FF" //Favorite's text background
+                radius: 2
+                Label {
+                    id: favoritesLabel
+                    anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
-                    anchors.topMargin: 10
-                    //anchors.leftMargin: 10
-                    anchors.right: parent.right
-                    color: "#000000FF" //Favorite's text background
-                    radius: 2
-                    Label {
-                        id: favoritesLabel
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        anchors.leftMargin: 10
-                        text: "<b>Favorites</b>"
-                        font.pixelSize: 12
-                        renderType: Text.NativeRendering
-                        color: "#FFFFF9"
-                        height: paintedHeight
-                        width: paintedWidth
-                    }
-                }
-                Rectangle {
-                    id: background2
-                    width: parent.width; height: 300
-                    anchors.top: favorites.bottom
-                    anchors.topMargin: 10
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    color: "#000000FF"
-                    Component {
-                        id: highlightBar2
-                        Rectangle {
-                            x: 40;
-                            y: favoritesMenu.currentItem.y
-                            width: leftColumn.width - 40; height: 25
-                            //clip: true
-                            //y: favoritesMenu.currentItem.y;
-                            color: "#29A7D7" //Highlighter Color
-                            radius: 5
-                        }
-                    }
-            ListView {
-                id: favoritesMenu
-                anchors.fill: parent
-                //anchors.leftMargin: 40
-                focus: true
-                highlightFollowsCurrentItem: false
-                highlight: highlightBar2
-                interactive: false
-                model: FavoritesModel {}
-                delegate: Rectangle {
-                    id: wrapper2
-                    width: favoritesMenu.width; height: 25
-                    color: "#000000FF"
-                    states: State {
-                        name: "Current"
-                        when: wrapper2.ListView.isCurrentItem
-                        PropertyChanges { target: wrapper2; //x: -40
-                        }
-                        PropertyChanges { target: label2; font.bold: true
-                        }
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: favoritesMenu.currentIndex = index
-                    }
-                    Text {
-                        id: label2;
-                        anchors.verticalCenter: parent.verticalCenter;
-                        x: 50
-                        text: name;
-                        color: "white"
-                        height: paintedHeight
-                        width: paintedWidth
-                    }
+                    anchors.leftMargin: 10
+                    text: "<b>Favorites</b>"
+                    font.pixelSize: 12
+                    renderType: Text.NativeRendering
+                    color: "#FFFFF9"
+                    height: paintedHeight
+                    width: paintedWidth
                 }
             }
-        }//Background Rectangle
-    }//Favorite's Rectangle
             Rectangle {
-                color: leftSide.color
-                width: parent.width
-                anchors.top: leftSide2.bottom
-                anchors.bottom: parent.bottom
-                Label {
-                    id: quickLabel;
-                    width: parent.width;
-                    text: "Quick Settings"
-                    font.bold: true
-                    color: "white"
-                    x: 15
-                    font.pixelSize: 12
-                }
-
-                ColumnLayout {
-                    anchors.topMargin: 15
-                    anchors.top: quickLabel.bottom
-                    anchors.right: parent.right
-                    anchors.left: parent.left
-                    anchors.bottom: parent.bottom
-                    spacing: 2
-
+                id: background2
+                width: parent.width; height: 300
+                anchors.top: favorites.bottom
+                anchors.topMargin: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: "#000000FF"
+                ////////////////////////////////////////////////////
+                Component {
+                    id: highlightBar2
                     Rectangle {
-                        id: inputButton
-                        color: "#26A5D7"
-                        anchors.top: parent.top
-                        anchors.left: parent.left
-                        height: 20
-                        width: 120
-                        radius: 2
-                        Label {anchors.centerIn: parent; text: "Input"; font.bold: true; color: "white"}
-						MouseArea {
-							anchors.fill: parent
-                            onClicked: { gameLauncher.joy}
-						}
+                        x: 40;
+                        y: favoritesMenu.currentItem.y
+                        width: leftColumn.width - 40; height: 25
+                        color: "#29A7D7" //Highlighter Color
+                        radius: 5
                     }
-				}//Column Layout
-			}//Rectangle: leftSide
-        }
+                }
+                ////////////////////////////////////////////////////
+                ListView {
+                    id: favoritesMenu
+                    anchors.fill: parent
+                    focus: true
+                    highlightFollowsCurrentItem: false
+                    highlight: highlightBar2
+                    interactive: false
+                    model: FavoritesModel {}
+                    delegate: Rectangle {
+                        id: wrapper2
+                        width: favoritesMenu.width; height: 25
+                        color: "#000000FF"
+                        states: State {
+                            name: "Current"
+                            when: wrapper2.ListView.isCurrentItem
+                            PropertyChanges { target: wrapper2 }
+                            PropertyChanges { target: label2; font.bold: true }
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked: favoritesMenu.currentIndex = index
+                        }
+                        Text {
+                            id: label2;
+                            anchors.verticalCenter: parent.verticalCenter;
+                            x: 50
+                            text: name;
+                            color: "white"
+                            height: paintedHeight
+                            width: paintedWidth
+                        }
+                    }
+                }
+            }// Rectange; id: background2
+        }// Rectangle; id: leftSide
+        Rectangle {
+            color: leftSide.color
+            width: parent.width
+            anchors.top: leftSide2.bottom
+            anchors.bottom: parent.bottom
+            Label {
+                id: quickLabel;
+                width: parent.width;
+                text: "Quick Settings"
+                font.bold: true
+                color: "white"
+                x: 15
+                font.pixelSize: 12
+            }
+            ColumnLayout {
+                anchors.topMargin: 15
+                anchors.top: quickLabel.bottom
+                anchors.right: parent.right
+                anchors.left: parent.left
+                anchors.bottom: parent.bottom
+                spacing: 2
+                Rectangle {
+                    id: inputButton
+                    color: "#26A5D7"
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    height: 20
+                    width: 120
+                    radius: 2
+                    Label { anchors.centerIn: parent; text: "Input"; font.bold: true; color: "white" }
+                    MouseArea { anchors.fill: parent; onClicked: { gameLauncher.joy} }
+                }
+            }//Column Layout
+        }//Rectangle: leftSide
+    }
         //////////////////////////////////////////////////////////////////
         /////////               Game Table View                  /////////
         //////////////////////////////////////////////////////////////////
-        StackView {
-            id: stackView
-            anchors.top: parent.top
-            anchors.bottom: parent.bttom
-            anchors.left: leftColumn.right
-            anchors.right: parent.right
-            TableView {
-                id: gameTable
-                model: LibraryModel {id: libraryModel}
-                anchors.fill: parent
-                highlightOnFocus: true
-                backgroundVisible: true
-                onClicked: {
-                    console.log(gameTable.model.get(gameTable.currentRow).path);
-                    gameLauncher.core = gameTable.model.get(gameTable.currentRow).core;
-                    gameLauncher.path = gameTable.model.get(gameTable.currentRow).path
-                    //gameTable.enabled = false
-                }
-				onDoubleClicked: gameLauncher.launch
+    StackView {
+        id: stackView
+        anchors.top: parent.top
+        anchors.bottom: parent.bttom
+        anchors.left: leftColumn.right
+        anchors.right: parent.right
+        TableView {
+            id: gameTable
+            anchors.fill: parent
+            highlightOnFocus: true
+            backgroundVisible: true
+            model: LibraryModel {id: libraryModel}
+            onClicked: {
+                gameLauncher.core = gameTable.model.get(gameTable.currentRow).core;
+                gameLauncher.path = gameTable.model.get(gameTable.currentRow).path
+            }
+            onDoubleClicked: gameLauncher.launch
             headerDelegate: Rectangle {
                 height: 25;
                 color: leftSide.color
@@ -357,9 +320,8 @@ Rectangle {
                     color: "black"
                 }
             }
-
-            TableViewColumn{role: "title"; title: "Name"; width: 300}
-            /*TableViewColumn{
+            TableViewColumn{ role: "title"; title: "Name"; width: 300 }
+            /*TableViewColumn{ //Rating system is not yet implemented
                 role: "rating"
                 title: "Rating"
                 width: 100
@@ -372,14 +334,15 @@ Rectangle {
                     }
                 }
             }*/
-            TableViewColumn{role: "system"; title: "System"; width: 200}
-            TableViewColumn{role: "core"; title: "Core"; width: 200}
-        }}
-        //////////////////////////////////////////////////////////////////
-        /////////               Game Cover Art Grid              /////////
-        //////////////////////////////////////////////////////////////////
-        Component {
-            id: componentGrid
+            TableViewColumn{ role: "system"; title: "System"; width: 200 }
+            TableViewColumn{ role: "core"; title: "Core"; width: 200 }
+        }
+    }
+    //////////////////////////////////////////////////////////////////
+    /////////               Game Cover Art Grid              /////////
+    //////////////////////////////////////////////////////////////////
+    Component {
+        id: componentGrid
         Rectangle {
             id: gameGrid
             width: 800; height: 600
@@ -394,14 +357,14 @@ Rectangle {
                 id: gameView
                 anchors.fill: parent
                 anchors.margins: 20
-                //columns: 5
+                //: 5
                 cellHeight: 250 + slider.value * 2
                 cellWidth: 190 + slider.value * 2
                 focus: true
                 highlight: gameHighlighter
                 model: libraryModel
                 delegate: gameDelegate
-
+            ////////////////////////////////////////////////////
             Component {
                 id: gameHighlighter
                 Rectangle {
@@ -411,77 +374,75 @@ Rectangle {
                     y: gameView.currentItem.y;
                 }
             }
-                Component {
-                    id: gameDelegate
+            ////////////////////////////////////////////////////
+            Component {
+                id: gameDelegate
+                Rectangle {
+                    width: 125 + slider.value * 2;
+                    height: 175 + gameLabel.contentHeight + slider.value * 2
+                    color: "#000000FF"
+                    id: gameFrame
+                    states: State {
+                        name: "Current"
+                        when: gameList.ListView.isCurrentItem
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            gameView.currentIndex = index;
+                            gameLauncher.core = gameView.model.get(gameView.currentIndex).core;
+                            gameLauncher.path = gameView.model.get(gameView.currentIndex).path
+                        }
+                        onDoubleClicked: gameLauncher.launch
+                    }
                     Rectangle {
-                        width: 125 + slider.value * 2; height: 175 + gameLabel.contentHeight + slider.value * 2
+                        id: gameRectangle
                         color: "#000000FF"
-                        id: gameFrame
-                        states: State {
-                            name: "Current"
-                            when: gameList.ListView.isCurrentItem
-                            }
-                        MouseArea {
-                            anchors.fill: parent
-                            //hoverEnabled: true
-                            onClicked: { gameView.currentIndex = index; console.log(gameView.model.get(gameView.currentIndex).path)
-                                gameLauncher.core = gameView.model.get(gameView.currentIndex).core;
-                                gameLauncher.path = gameView.model.get(gameView.currentIndex).path
-                            }
-                            onDoubleClicked: gameLauncher.launch
-                            //console.log(gameList.model.get(gameList.currentItem).path) //Path is stored in DataModel
-                            //onPressAndHold: gameView.destroy(gameView.currentIndex)
+                        width: parent.width * 0.7; height: parent.height * 0.7
+                        anchors.centerIn: parent
+                        Image {
+                            id: gameImage
+                            source: "../images/tv_color_bars.jpg"
+                            anchors.centerIn: parent; //source: portrait
+                            fillMode: Image.PreserveAspectFit
+                            smooth: true
+                            width: parent.width  ; height: parent.height
+                            sourceSize.width: 500 ; sourceSize.height: 500
                         }
-                        Rectangle {
-                            id: gameRectangle
-                            color: "#000000FF"
-                            width: parent.width * 0.7; height: parent.height * 0.7
-                            anchors.centerIn: parent
-                            Image {
-                                id: gameImage
-                                source: "../images/tv_color_bars.jpg"
-                                anchors.centerIn: parent; //source: portrait
-                                fillMode: Image.PreserveAspectFit
-                                smooth: true
-                                width: parent.width  ; height: parent.height
-                                sourceSize.width: 500 ; sourceSize.height: 500
-                            }
-                        }
-                        DropShadow{
-                            cached: true
-                            fast: true //May have to enable on slower systems
-                            transparentBorder: true
-                            anchors.fill: source
-                            source: gameRectangle
-                            radius: 8
-                            samples: 16
-                            color: "black"
-                            verticalOffset: 3
-                            horizontalOffset: 3
-                        }
-                        Label {
-                            id: gameLabel
-                            width: 170
-                            anchors.topMargin: 10
-                            anchors.top: gameRectangle.bottom;
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            text: title
-                            font.pixelSize: 12
-                            font.bold: true
-                            wrapMode: Text.Wrap
-                            elide: Text.ElideRight
-                        }
+                    }
+                    DropShadow{
+                        cached: true
+                        fast: true
+                        transparentBorder: true
+                        anchors.fill: source
+                        source: gameRectangle
+                        radius: 8
+                        samples: 16
+                        color: "black"
+                        verticalOffset: 3; horizontalOffset: 3
+                    }
+                    Label {
+                        id: gameLabel
+                        width: 170
+                        anchors.topMargin: 10
+                        anchors.top: gameRectangle.bottom;
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: title
+                        font.pixelSize: 12
+                        font.bold: true
+                        wrapMode: Text.Wrap
+                        elide: Text.ElideRight
                     }
                 }
             }
-            }//ListView
-        }//GridView
+            }
+        }//ListView
+    }//Component; id: componentGrid
     }
     //////////////////////////////////////////////////////////////////
-    /////////               Bottom Toolbar                  //////////
+    /////////              Advanced Settings                //////////
     //////////////////////////////////////////////////////////////////
     Rectangle {
-        //anchors.top: gameLayout.bottom
         anchors.bottom: bottomToolbar.top
         id: settings
         width: parent.width
@@ -490,9 +451,9 @@ Rectangle {
         states: [
             State {
                 name: "clicked"
-                PropertyChanges {target: settings; height: 100}
-                PropertyChanges {target: topMenu; enabled: true}
-                PropertyChanges {target: settingsButton; visible: true}
+                PropertyChanges { target: settings; height: 100 }
+                PropertyChanges { target: topMenu; enabled: true }
+                PropertyChanges { target: settingsButton; visible: true }
             }
         ]
         transitions: Transition {
@@ -503,11 +464,17 @@ Rectangle {
             anchors.fill: parent
             enabled: false
             rotation: 180
-            //Button {id: settingsButton; visible: false; text: "Advanced Settings"; onClicked: stackView.push(advancedSettings)}
-            //Button {visible: settingsButton.visible; text: "Cores"; onClicked: stackView.push(cores)}
-            //Button {visible: settingsButton.visible; text: "Library Paths"; onClicked: stackView.push(libraryPaths)}
+            //Button {id: settingsButton; visible: false; text:
+            //"Advanced Settings"; onClicked: stackView.push(advancedSettings)}
+            //Button {visible: settingsButton.visible; text: "
+            //Cores"; onClicked: stackView.push(cores)}
+            //Button {visible: settingsButton.visible; tex
+            //t: "Library Paths"; onClicked: stackView.push(libraryPaths)}
         }
     }
+    //////////////////////////////////////////////////////////////////
+    /////////               Bottom Toolbar                  //////////
+    //////////////////////////////////////////////////////////////////
     Rectangle {
      id: bottomToolbar
      //anchors.top: settings.bottom
@@ -517,8 +484,6 @@ Rectangle {
      height: 35
      width: parent.width
      color: leftSide.color //Toolbar Background Color
-
-
      RowLayout {
          anchors.fill: parent
          Rectangle {
@@ -529,10 +494,16 @@ Rectangle {
              height: 20
              width: 120
              radius: 2
-             Label {anchors.centerIn: parent; text: "Settings"; font.bold: true; color: "white"}
+             Label {
+                 anchors.centerIn: parent
+                 text: "Settings"
+                 font.bold: true
+                 color: "white"
+             }
              MouseArea {
                  anchors.fill: parent
-                 onClicked: {settings.state === "clicked" ? settings.state = "" : settings.state = "clicked";}
+                 onClicked: {
+                     settings.state === "clicked" ? settings.state = "" : settings.state = "clicked";}
              }
          }
          Rectangle {
@@ -550,7 +521,6 @@ Rectangle {
                  NumberAnimation { target: dropDown; properties: "width"; easing.type: Easing.OutExpo; duration: 1000 }
              }
              Label {
-                 //rotation: 180 /* second rotation */
                  anchors.centerIn: parent
                  id:chosenItemText
                  color: "white"
@@ -567,7 +537,6 @@ Rectangle {
                  onClicked: { if (searchBar.state === "CLOSED") {searchBar.state = "OPEN"}
                      else {searchBar.state = "CLOSED"}
                  }
-                 //onQt.Key_Return
              }
              Rectangle {
                  id: dropDown
@@ -576,7 +545,6 @@ Rectangle {
                  clip: true;
                  anchors.left: searchBar.right;
                  anchors.verticalCenter: searchBar.verticalCenter
-                 //anchors.margins:  5;
                  color: parent.color
                  TextField {
                      id: textField
@@ -603,21 +571,16 @@ Rectangle {
                          else { console.log("started"); filterTimer.start() }
                      }
                  }//TextField
-             }//Rectangle: dropDown
+             }//Rectangle; id: dropDown
          }
-
          ToolButton {
              id: plusButton
              anchors.left: searchBar.right
              anchors.leftMargin: 15
              iconSource: "../images/plus.png"
              implicitHeight: bottomToolbar.height * 0.7; implicitWidth:  plusButton.height
-             MouseArea {
-                 anchors.fill: parent
-                 onClicked: {fileDialog.open(); //systemDirectory.directory = fileDialog.fileUrl
-                 }
-             }
-             Timer { //Python creates xml it too quickly
+             MouseArea {anchors.fill: parent; onClicked: { fileDialog.open() }}
+             Timer { //Python creates xml it too quickly, will fix soon.
                  id: dialogTimer
                  interval: 1000
                  repeat: false
@@ -633,22 +596,18 @@ Rectangle {
                      scanDirectory.directory = fileDialog.fileUrl
                      scanDirectory.scan
                      dialogTimer.start()
-
                  }
                  onRejected: {
                     console.log("Cancelled")
                     fileDialog.close()
-
-                }
-            }
-        }
+                 }
+             }
+         }
          ToolButton {
              id: playButton
              height: plusButton.width; width: plusButton.width
              iconSource: "../images/play.png"
              implicitHeight: bottomToolbar.height * 0.7; implicitWidth:  plusButton.height
-             //anchors.left: plusButton.right
-             //anchors.leftMargin: 2
 			 MouseArea {
 				anchors.fill: parent
 				onClicked: gameLauncher.launch
@@ -669,11 +628,9 @@ Rectangle {
                  anchors.centerIn: parent; text: "Grid"
                  font.bold: true; color: "white"
              }
-
-
              MouseArea {
                  anchors.fill: parent
-                 function switchViews() {
+                 function switchViews() { // Put in separate .js file
                      if (gridButton.state === "clicked") {
                          stackView.push(componentGrid)
                      }
@@ -685,30 +642,29 @@ Rectangle {
                  }
             }
          }
-         Slider { //Controls gameGrid icon size
-             id: slider
-             value: 75
-             minimumValue: 1; maximumValue: 150
-             //Layout.fillWidth: true
-             width: bottomToolbar.width / 6
-             anchors.right: parent.right
-             anchors.rightMargin: 20
-             //anchors.leftMargin: 20
-             style: SliderStyle {
-                 groove: Rectangle {
-                     radius: 8
-                     implicitHeight: 5
-                     color: "#B05C5A"
-                 }
-                 handle: Rectangle {
-                     radius: 8
-                     implicitWidth: 15 ;implicitHeight: 15
-                     color: "#29A7D7"
-                 }
-             }
+        Slider { //Controls gameGrid icon size
+            id: slider
+            value: 75
+            minimumValue: 1; maximumValue: 150
+            width: bottomToolbar.width / 6
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            style: SliderStyle {
+                groove: Rectangle {
+                    radius: 8
+                    implicitHeight: 5
+                    color: "#B05C5A"
+                }
+                handle: Rectangle {
+                    radius: 8
+                    implicitWidth: 15 ;implicitHeight: 15
+                    color: "#29A7D7"
+                }
+            }
         }
     }
+    }
 }
-}
+
 
 
