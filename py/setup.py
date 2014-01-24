@@ -1,3 +1,5 @@
+#Currently doesn't build correctly, I believe the main.py cannot find the qml files.
+
 import os, sys
 from cx_Freeze import setup, Executable
 
