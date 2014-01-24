@@ -12,7 +12,7 @@ Furthermore, this project is not affiliated with the official
 [RetroArch](https://github.com/libretro/RetroArch) developers. 
 However I did like the Phoenix part. You can contact me at Druage@gmx.com.
 
-To run this program you need <b>Python 3.3</b> installed and <b>PyQt 5.2</b>, ~~<b>5.1</b> may work though.~~ <i>You need 5.2 for QtQuick.Layouts.</i>
+To run this program you need [Python 3.3](http://www.python.org/download/releases/3.3.3/) installed and [PyQt 5.2](http://www.riverbankcomputing.com/software/pyqt/download5), ~~<b>5.1</b> may work though.~~ <i>You need 5.2 for QtQuick.Layouts.</i>
 Then just run the main.py. I am still ironing out the bugs and I have only tested this latest build on Windows 8.1, I will test it for Linux in a few days
 
 ###Things that still need to be completed.
