@@ -289,7 +289,6 @@ Rectangle {
 						MouseArea {
 							anchors.fill: parent
                             onClicked: { gameLauncher.joy}
-
 						}
                     }
 				}//Column Layout
@@ -316,6 +315,7 @@ Rectangle {
                     gameLauncher.path = gameTable.model.get(gameTable.currentRow).path
                     //gameTable.enabled = false
                 }
+				onDoubleClicked: gameLauncher.launch
             headerDelegate: Rectangle {
                 height: 25;
                 color: leftSide.color
@@ -405,7 +405,7 @@ Rectangle {
             Component {
                 id: gameHighlighter
                 Rectangle {
-                    opacity: 0.5
+                    //opacity: 0.5
                     //color: "darkgray" //Highlighter Color
                     height: 20; width: 20
                     y: gameView.currentItem.y;
@@ -428,6 +428,7 @@ Rectangle {
                                 gameLauncher.core = gameView.model.get(gameView.currentIndex).core;
                                 gameLauncher.path = gameView.model.get(gameView.currentIndex).path
                             }
+                            onDoubleClicked: gameLauncher.launch
                             //console.log(gameList.model.get(gameList.currentItem).path) //Path is stored in DataModel
                             //onPressAndHold: gameView.destroy(gameView.currentIndex)
                         }
