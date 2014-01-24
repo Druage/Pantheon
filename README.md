@@ -15,6 +15,8 @@ However I did like the Phoenix part. You can contact me at Druage@gmx.com.
 To run this program you need [Python 3.3](http://www.python.org/download/releases/3.3.3/) installed and [PyQt 5.2](http://www.riverbankcomputing.com/software/pyqt/download5), ~~<b>5.1</b> may work though.~~ <i>You need 5.2 for QtQuick.Layouts.</i>
 Then just run the main.py. I am still ironing out the bugs and I have only tested this latest build on Windows 8.1, I will test it for Linux in a few days
 
+Also for win32 users, place a retroarch-megapack in the root directory and rename it to retroarch_v1.0
+
 ###Things that still need to be completed.
 
 ~~1. Qml Signals need to be directed to C++ or Python~~ Solved.
