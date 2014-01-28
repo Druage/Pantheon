@@ -8,7 +8,7 @@ import QtQuick.Dialogs 1.0
 
 import game.launcher 1.0
 import game.scan 1.0
-import "../js/appendModel.js" as AppendModel
+import xml.utils 1.0
 
 //ON RIGHT CLICK IN GRIDVIEW BRING UP GAME DATA
 
@@ -19,7 +19,7 @@ Rectangle {
 
     Launcher {id: gameLauncher;}
     ScanDirectory {id: scanDirectory;}
-
+    XmlLibrary {id: xmlReader}
 
 
     Rectangle {
@@ -194,10 +194,16 @@ Rectangle {
                 height: 50; width: parent.width
                 color: "#383838"
                 Label {
+                    id: settingsLabel
                     anchors.left: parent.left
                     anchors.leftMargin: 10
                     text: "Settings"
                     color: "white"
+                }
+                ColumnLayout {
+                    anchors.top: settingsLabel.bottom
+                    anchors.bottom: parent.bottom
+                    width: parent.width
                 }
             }
         }//Rectangle: leftSide
@@ -222,6 +228,39 @@ Rectangle {
         anchors.left: leftColumn.right
         anchors.right: parent.right
         initialItem: gameTable
+        delegate: StackViewDelegate {
+                    function transitionFinished(properties)
+                    {
+                        properties.exitItem.x = 0
+                        properties.exitItem.rotation = 0
+                    }
+
+                    property Component pushTransition: StackViewTransition {
+                        SequentialAnimation {
+                            ScriptAction {
+                                script: enterItem.rotation = 90
+                            }
+                            PropertyAnimation {
+                                target: enterItem
+                                property: "x"
+                                from: enterItem.width
+                                to: 0
+                            }
+                            PropertyAnimation {
+                                target: enterItem
+                                property: "rotation"
+                                from: 90
+                                to: 0
+                            }
+                        }
+                        PropertyAnimation {
+                            target: exitItem
+                            property: "x"
+                            from: 0
+                            to: -exitItem.width
+                        }
+                    }
+                }
         TableView {
             id: gameTable
             highlightOnFocus: true
@@ -244,7 +283,8 @@ Rectangle {
                 }
             }
             rowDelegate: Rectangle {
-                height: 25; color: styleData.selected ?  "#cc4d4d" : "#E4E7E9"
+                height: 25; color: styleData.selected ?  "#b7b7b7" : "#E4E7E9"
+                border.color: "lightgray"
             }
 
             itemDelegate: Item {
@@ -291,8 +331,6 @@ Rectangle {
             id: gameGrid
             width: 800; height: 600
             color: "#2b2b2b" //Grid Background Color
-            visible: true
-            z: -1
             Image {
                 anchors.fill: parent;
                 source: "../images/noise.png"
@@ -342,6 +380,7 @@ Rectangle {
                             anchors.centerIn: parent
                             Image {
                                 id: gameImage
+                                cache: true
                                 source: "../images/tv_color_bars.jpg"
                                 anchors.centerIn: parent; //source: portrait
                                 fillMode: Image.PreserveAspectFit
@@ -498,8 +537,10 @@ Rectangle {
                  onAccepted: {
                      scanDirectory.directory = fileDialog.fileUrl
                      scanDirectory.scan
+
                      if (libraryModel.staus !== 1) {
                          libraryModel.reload(); console.log(".xml loaded correctly.") //Reloads .xml file in model
+                         console.log("source: ",libraryModel.source)
                      }
                      else {console.log("All is well")}
                  }
