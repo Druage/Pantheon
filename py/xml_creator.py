@@ -19,7 +19,7 @@ class XmlLibrary(QObject):
     def xmldata(self, data):
         self._xmldata = data
         
-def win32_tags(sys_element, core_element, game_extension):
+def win32_tags(sys_element, core_element, extension):
     if ".sfc" in  extension or ".smc" in extension:
         sys_element.text = "Super Nintendo"
         core_element.text = "bsnes_balanced_libretro.dll"

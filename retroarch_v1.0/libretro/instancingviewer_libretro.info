@@ -1,0 +1,8 @@
+authors = "Team Libretro"
+display_name = "PNG Images (InstancingViewer)"
+supported_extensions = "png"
+corename = "InstancingViewer"
+manufacturer = "Various"
+systemname = "Instantiation of objects"
+license = "GPLv3"
+permissions = ""

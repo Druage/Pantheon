@@ -1,0 +1,36 @@
+C:\Users\leealis\Desktop\Emulation\N64\Donkey Kong 64 (USA).n64
+C:\Users\leealis\Desktop\RetroarchPhoenix\retroarch_v1.0\libretro\mupen64plus_libretro.dll
+Mupen64plus
+C:\Users\leealis\Desktop\Emulation\N64\Army Men - Sarge's Heroes (USA).n64
+C:\Users\leealis\Desktop\RetroarchPhoenix\retroarch_v1.0\libretro\mupen64plus_libretro.dll
+Mupen64plus
+C:\Users\leealis\Desktop\Emulation\GBA\Golden Sun.gba
+C:\Users\leealis\Desktop\RetroarchPhoenix\retroarch_v1.0\libretro\vbam_libretro.dll
+VBA-M
+C:\Users\leealis\Desktop\Emulation\SNES\Contra III - The Alien Wars (USA).sfc
+C:\Users\leealis\Desktop\RetroarchPhoenix\retroarch_v1.0\libretro\bsnes_balanced_libretro.dll
+bSNES
+C:\Users\leealis\Desktop\Emulation\N64\Banjo-Kazooie (USA).n64
+C:\Users\leealis\Desktop\RetroarchPhoenix\retroarch_v1.0\libretro\mupen64plus_libretro.dll
+Mupen64plus
+C:\Users\leealis\Desktop\Emulation\N64\Star Fox 64 (USA).n64
+C:\Users\leealis\Desktop\RetroarchPhoenix\retroarch_v1.0\libretro\mupen64plus_libretro.dll
+Mupen64plus
+C:\Users\leealis\Desktop\Emulation\GBA\Metroid - Zero Mission.GBA
+C:\Users\leealis\Desktop\RetroarchPhoenix\retroarch_v1.0\libretro\vbam_libretro.dll
+VBA-M
+C:\Users\leealis\Desktop\Emulation\N64\Conker's Bad Fur Day (USA).n64
+C:\Users\leealis\Desktop\RetroarchPhoenix\retroarch_v1.0\libretro\mupen64plus_libretro.dll
+Mupen64plus
+C:\Users\leealis\Desktop\Emulation\NES\Kung Fu (Japan, USA).nes
+C:\Users\leealis\Desktop\RetroarchPhoenix\retroarch_v1.0\libretro\nestopia_libretro.dll
+Nestopia
+C:\Users\leealis\Desktop\Emulation\NES\Castlevania (USA).nes
+C:\Users\leealis\Desktop\RetroarchPhoenix\retroarch_v1.0\libretro\nestopia_libretro.dll
+Nestopia
+C:\Users\leealis\Desktop\Emulation\SNES\Super Mario All-Stars + Super Mario World (USA).sfc
+C:\Users\leealis\Desktop\RetroArch-20140103-Win64-megapack\libretro\bsnes_balanced_libretro.dll
+bSNES
+C:\Users\leealis\Desktop\Emulation\N64\Legend of Zelda, The - Majora's Mask (USA).n64
+C:\Users\leealis\Desktop\RetroArch-20140103-Win64-megapack\libretro/mupen64plus_libretro.dll
+Mupen64plus

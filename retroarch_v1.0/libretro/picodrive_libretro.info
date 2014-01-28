@@ -1,0 +1,8 @@
+display_name = "Sega MS/GG/MD/CD/32X (Picodrive)"
+authors = "notaz"
+supported_extensions = "md|smd|gen|sms|gg|sg|bin|cue|ios|32x"
+corename = "Picodrive"
+manufacturer = "Sega"
+systemname = "Sega 16bit + 32X (Various)"
+license = "MAME"
+permissions = "dynarec_optional"

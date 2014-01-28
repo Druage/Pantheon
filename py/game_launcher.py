@@ -3,6 +3,9 @@ import os, subprocess, sys
 
 PLATFORM = sys.platform
 ROOT_DIR = os.path.realpath(os.path.dirname(sys.argv[0]))
+if PLATFORM == "win32":
+    STARTUP_INFO = subprocess.STARTUPINFO()
+    STARTUP_INFO.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
 class Launcher(QObject):
     def __init__(self, parent=None):
@@ -16,6 +19,7 @@ class Launcher(QObject):
         self._path = ""
         self._core = ""
         self._launch = self._exe + " " + self._core + " " + self._path
+        self._fullscreen = " -f --menu "
         
 
     @pyqtProperty('QString')
@@ -66,8 +70,14 @@ class Launcher(QObject):
         self._launch = self._exe + " " + self._core + " " + self._path 
         print(self._launch)
         if PLATFORM == "win32":
-            STARTUP_INFO = subprocess.STARTUPINFO()
-            STARTUP_INFO.dwFlags |= subprocess.STARTF_USESHOWWINDOW #hides terminal from showing
+             #hides terminal from showing
             return subprocess.call(self._launch, startupinfo=STARTUP_INFO)
         else:
             os.system(self._launch)
+
+    @pyqtProperty('QString')
+    def fullscreen(self):
+        if PLATFORM == "win32":
+            return subprocess.call(self._exe + self._fullscreen, startupinfo=STARTUP_INFO)
+        else:
+            return os.system(self._exe + self._fullscreen)
