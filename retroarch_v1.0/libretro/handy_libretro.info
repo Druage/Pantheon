@@ -1,7 +1,0 @@
-display_name = "Lynx (Handy)"
-supported_extensions = "lnx"
-corename = "Handy"
-manufacturer = "Atari"
-systemname = "Atari Lynx"
-license = "Zlib"
-permissions = ""

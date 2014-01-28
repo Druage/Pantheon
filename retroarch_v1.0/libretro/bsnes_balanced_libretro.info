@@ -1,8 +1,0 @@
-display_name = "SNES / Super Famicom (bSNES Balanced)"
-authors = "byuu"
-supported_extensions = "smc|sfc"
-corename = "bsnes/higan Balanced"
-manufacturer = "Nintendo"
-systemname = "Super Nintendo Entertainment System"
-license = "GPLv3"
-permissions = ""
