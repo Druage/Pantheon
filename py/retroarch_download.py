@@ -25,7 +25,7 @@ def make_directory(directory):
     return status        
             
 retroarch_64bit = """http://www.libretro.com/wp-content/plugins/cip4-folder-download-widget/cip4-download.php?target=wp-content/releases/Windows/RetroArch-20140105-Win64-MegaPack.zip"""
-retroach_32bit = """http://www.libretro.com/wp-content/plugins/cip4-folder-download-widget/cip4-download.php?target=wp-content/releases/Windows/RetroArch-20140105-Win32-MegaPack.zip"""
+retroarch_32bit = """http://www.libretro.com/wp-content/plugins/cip4-folder-download-widget/cip4-download.php?target=wp-content/releases/Windows/RetroArch-20140105-Win32-MegaPack.zip"""
 
 def start_process():
     choice = input("This program will now download Retroarch for Windows. Continue? (y,n) ")
