@@ -126,11 +126,13 @@ Rectangle {
                     anchors.right: parent.right
                     anchors.top: header.bottom
                     color: "#000000FF"
+
                     //////////////////////////////////////////////////
                     Component {
                         id: highlightBar
                         Rectangle {
                             width: background.width; height: 25
+                            anchors.margins: 10
                             y: filterMenu.currentItem.y;
                             color: "#933b3b" //Highlighter Color
                             gradient: Gradient {
@@ -138,8 +140,6 @@ Rectangle {
                                 GradientStop{position: 0.5; color: "#ad4141"}
                                 GradientStop {position: 1.0; color: "#933b3b"}
                             }
-
-                            anchors.margins: 10
                         }
                     }
                     //////////////////////////////////////////////////
@@ -204,6 +204,12 @@ Rectangle {
                     anchors.top: settingsLabel.bottom
                     anchors.bottom: parent.bottom
                     width: parent.width
+                    ShadersMenu {
+                        id: shaderMenu
+                        width: 125; height: 25
+                        anchors.top: parent.top
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
                 }
             }
         }//Rectangle: leftSide
@@ -215,12 +221,7 @@ Rectangle {
             radius: 8
             samples: 16
             color: "#80000000"
-
         }
-
-        //////////////////////////////////////////////////////////////////
-        /////////               Game Table View                  /////////
-        //////////////////////////////////////////////////////////////////
     StackView {
         id: stackView
         anchors.top: parent.top
@@ -261,6 +262,9 @@ Rectangle {
                         }
                     }
                 }
+        //////////////////////////////////////////////////////////////////
+        /////////               Game Table View                  /////////
+        //////////////////////////////////////////////////////////////////
         TableView {
             id: gameTable
             highlightOnFocus: true
@@ -286,25 +290,24 @@ Rectangle {
                 height: 25; color: styleData.selected ?  "#b7b7b7" : "#E4E7E9"
                 border.color: "lightgray"
             }
-
             itemDelegate: Item {
                     Label  {
-						x: 12
-						width: Text.contentWidth
-						anchors.verticalCenter: parent.verticalCenter
-						text: styleData.value
-						color: "#29070F"
-						elide: Text.ElideRight
-						font.bold: true
+                        x: 12
+                        width: Text.contentWidth
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: styleData.value
+                        color: "#29070F"
+                        elide: Text.ElideRight
+                        font.bold: true
                         font.pixelSize: 11
-					}
-			}
+                }
+            }
             style: TableViewStyle {
                frame: Rectangle {
                     color: leftSide.color
                 }
             }
-            TableViewColumn{ role: "title"; title: "Name"; width: 400 }
+            TableViewColumn{role: "title"; title: "Name"; width: 400}
             /*TableViewColumn{ //Rating system is not yet implemented
                 role: "rating"
                 title: "Rating"
@@ -318,8 +321,30 @@ Rectangle {
                     }
                 }
             }*/
-            TableViewColumn{ role: "system"; title: "System"; width: 200 }
-            TableViewColumn{ role: "core"; title: "Core"; width: 200 }
+            TableViewColumn{role: "system"; title: "System"; width: 200}
+            TableViewColumn{
+                role: "core"
+                title: "Core"
+                width: 200
+                delegate: Item {
+                        ComboBox {
+                            id: coreCombo
+                            anchors.centerIn: parent
+                            width: 200
+                            model: [styleData.value]
+                            style: ComboBoxStyle {
+                                background: Rectangle {
+                                    anchors.fill: parent
+                                    color: "#000000FF"
+                                    radius: 3
+                                    height: 25
+                                    width: 200
+                                }
+                            }
+
+                    }
+                }
+            }
         }
     }
     //////////////////////////////////////////////////////////////////

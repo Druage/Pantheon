@@ -1,19 +1,18 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
+import QtQuick.Controls.Styles 1.1
 
     Rectangle {
         id:comboBox
         signal comboClicked;
-        color: "#D7274E"
+        color: "#000000FF"
         smooth:true;
         height: 25
         width: 60
         state: "CLOSED"
         Label {
-            //rotation: 180 /* second rotation */
             anchors.centerIn: parent
-            id:chosenItemText
             color: "white"
             text:"Shaders";
             smooth:true
@@ -30,16 +29,15 @@ import QtQuick.Layouts 1.1
                 }
                 //onQt.Key_Return
             }
-
         Rectangle {
             id: dropDown
-            width: 0
-            height: 200;
+            width: 230
+            height: 0;
             clip: true;
-            anchors.left: comboBox.right;
-            anchors.verticalCenter: comboBox.verticalCenter
+            anchors.top: comboBox.bottom;
+            anchors.horizontalCenter: comboBox.horizontalCenter
             //anchors.margins:  5;
-            color: parent.color
+            color: "#2d2d2d"
             ListView {
                 id: textField
                 anchors.top: parent.top;
@@ -53,7 +51,29 @@ import QtQuick.Layouts 1.1
                     GroupBox {
                         flat: true
                         width: textField.width
-                        CheckBox {width: parent.width; text: name; //anchors.horizontalCenter: parent.horizontalCenter
+                        CheckBox {
+                            width: parent.width
+                            //text: name
+                            style: CheckBoxStyle {
+                                label: Label {
+                                    text: name
+                                    color: "white"
+                                    font.bold: true
+                                }
+                                indicator: Rectangle {
+                                    implicitWidth: 14
+                                    implicitHeight: 14
+                                    border.color: control.activeFocus ? "darkblue" : "gray"
+                                    border.width: 1
+                                    Rectangle {
+                                        visible: control.checked
+                                        color: "#cc4d4d"
+                                        radius: 1
+                                        anchors.margins: 3
+                                        anchors.fill: parent
+                                    }
+                                }
+                            }
                         }
                 }
 
@@ -62,9 +82,9 @@ import QtQuick.Layouts 1.1
         }
         states: State {
             name: "OPEN";
-            PropertyChanges { target: dropDown; width: 150 }
+            PropertyChanges { target: dropDown; height: 150 }
         }
         transitions: Transition {
-            NumberAnimation { target: dropDown; properties: "width"; easing.type: Easing.OutExpo; duration: 1000 }
+            NumberAnimation { target: dropDown; properties: "height"; easing.type: Easing.OutExpo; duration: 1000 }
         }
     }
