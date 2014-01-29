@@ -1,7 +1,8 @@
 # RetroarchPhoenix
 
 
-##Rebirth of a desktop U.I. ![Icon](https://raw.github.com/Druage/RetroarchPhoenix/master/resources/images/phoenix.png) 
+##Rebirth of a desktop U.I.
+![Image](resources/images/phoenix.png) 
 
 
 
