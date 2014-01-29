@@ -1,7 +1,7 @@
 # RetroarchPhoenix
 
 
-##Rebirth of a desktop U.I.
+##The Rebirth of a Desktop U.I.
 ![Image](resources/images/phoenix.png) 
 
 
