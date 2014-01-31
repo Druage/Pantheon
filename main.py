@@ -8,6 +8,7 @@ import os, sys
 
 lib_path = os.path.realpath(os.path.dirname(sys.argv[0]))
 sys.path.append(lib_path + "/py")
+sys.path.append(lib_path + "/retroarch_v1.0")
 
 from game_launcher import Launcher
 from game_scan import ScanDirectory

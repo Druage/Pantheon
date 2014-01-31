@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtProperty, QCoreApplication, QObject, QUrl
 import os
 import subprocess
 import sys
-#import retroarch_cfg
+import retroarch_cfg
 
 PLATFORM = sys.platform
 ROOT_DIR = os.path.realpath(os.path.dirname(sys.argv[0]))
@@ -88,12 +88,8 @@ class Launcher(QObject):
     
     @pyqtProperty('QString')
     def shader(self):
-        if PLATFORM == "win32":
-            cfg_path = ROOT_DIR + "\\retroarch_v1.0\\retroarch.cfg"
-        else:
-            cfg_path = "~/libretro/.retroarch.cfg"
-        retroarch_cfg.write_cfg(cfg_path, "video_shader", self._shader)
-        self._cfg = "custom.cfg"
+        shader_file = retroarch_cfg.add_data("video_shader", self._shader)
+        retroarch_cfg.write_cfg(shader_file)
     
     @shader.setter    
     def shader(self, shader):
