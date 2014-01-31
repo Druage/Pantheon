@@ -26,8 +26,10 @@ Then just run the main.py. I am still ironing out the bugs and I have only teste
 
 ~~2. Make search bar filter data models.~~ Solved.
 
+~~4. Make shader button work.~~ Almost finished.
+
 3. Have game artwork scrubber work.
-4. Make shader button work.
+
 5. Make Rating system work.
 6. Work on sold theme. I'm currently working on that.
 
