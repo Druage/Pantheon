@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtProperty, QCoreApplication, QObject, QUrl
 import os
 import subprocess
 import sys
-import retroarch_cfg
+#import retroarch_cfg
 
 PLATFORM = sys.platform
 ROOT_DIR = os.path.realpath(os.path.dirname(sys.argv[0]))
