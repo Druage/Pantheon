@@ -2,16 +2,20 @@ import QtQuick 2.0
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
+import game.launcher 1.0
 
-    Rectangle {
-        id:comboBox
-        signal comboClicked;
-        color: "#000000FF"
-        smooth:true;
-        height: 25
-        width: 60
-        state: "CLOSED"
-        Label {
+Rectangle {
+    id:comboBox
+    signal comboClicked;
+    color: "#000000FF"
+    smooth:true;
+    height: 25
+    width: 60
+    state: "CLOSED"
+
+    Launcher {id: gameLauncher;}
+
+    Label {
             anchors.centerIn: parent
             color: "white"
             text:"Shaders";
@@ -44,41 +48,53 @@ import QtQuick.Controls.Styles 1.1
                 anchors.left: parent.left;
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
-                anchors.margins: 5;
                 Keys.onReturnPressed: comboBox.state = "CLOSED"
                 model: ShaderModel {}
+                highlight: highlightBar
                 delegate:
-                    GroupBox {
-                        flat: true
-                        width: textField.width
-                        CheckBox {
-                            width: parent.width
-                            //text: name
-                            style: CheckBoxStyle {
-                                label: Label {
-                                    text: name
-                                    color: "white"
-                                    font.bold: true
-                                }
-                                indicator: Rectangle {
-                                    implicitWidth: 14
-                                    implicitHeight: 14
-                                    border.color: control.activeFocus ? "darkblue" : "gray"
-                                    border.width: 1
-                                    Rectangle {
-                                        visible: control.checked
-                                        color: "#cc4d4d"
-                                        radius: 1
-                                        anchors.margins: 3
-                                        anchors.fill: parent
-                                    }
-                                }
-                            }
+                    Rectangle {
+                    color: "#000000FF"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: 200; height: 25
+                    Label {
+                        id: label
+                        anchors.centerIn: parent
+                        text: title
+                        font.bold: true
+                        color: "white"
+                    }
+                    states: State {
+                        name: "Current"
+                        when: wrapper.ListView.isCurrentItem
+                        PropertyChanges {target: textField}
+                        PropertyChanges {target: label; font.bold: true
+                                         opacity: 1.0}
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            textField.currentIndex = index
+                            gameLauncher.shader = textField.model.get(textField.currentIndex).path
+                            gameLauncher.shader
+                            console.log(textField.model.get(textField.currentIndex).path)
                         }
+                    }
                 }
-
-
             }
+            Component {
+                id: highlightBar
+                Rectangle {
+                    width: background.width; height: 25
+                    anchors.margins: 10
+                    y: textField.currentItem.y;
+                    color: "#933b3b" //Highlighter Color
+                    gradient: Gradient {
+                        GradientStop {position: 0.0; color: "#e3c149"}
+                        GradientStop {position: 1.0; color: "#e3b100"}
+                    }
+                }
+            }
+            ///////////////////////////////////////////////////////////////////////
         }
         states: State {
             name: "OPEN";

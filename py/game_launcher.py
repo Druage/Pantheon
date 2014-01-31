@@ -1,5 +1,8 @@
 from PyQt5.QtCore import pyqtProperty, QCoreApplication, QObject, QUrl
-import os, subprocess, sys
+import os
+import subprocess
+import sys
+import retroarch_cfg
 
 PLATFORM = sys.platform
 ROOT_DIR = os.path.realpath(os.path.dirname(sys.argv[0]))
@@ -20,6 +23,8 @@ class Launcher(QObject):
         self._core = ""
         self._launch = self._exe + " " + self._core + " " + self._path
         self._fullscreen = " -f --menu "
+        self._shader = ""
+        self._cfg = "retroarch.cfg"
         
 
     @pyqtProperty('QString')
@@ -53,6 +58,14 @@ class Launcher(QObject):
         else:
             clean = path
         self._path = clean
+   
+    @pyqtProperty('QString')
+    def cfg(self):
+        return self._cfg
+        
+    @cfg.setter    
+    def cfg(self, cfg):
+        self._cfg = cfg
         
     @pyqtProperty('QString')    
     def core(self):
@@ -65,19 +78,37 @@ class Launcher(QObject):
         else:
             self._core = "-L " + core
 
-    @pyqtProperty('QString')    
-    def launch(self):
-        self._launch = self._exe + " " + self._core + " " + self._path 
-        print(self._launch)
-        if PLATFORM == "win32":
-             #hides terminal from showing
-            return subprocess.call(self._launch, startupinfo=STARTUP_INFO)
-        else:
-            os.system(self._launch)
-
     @pyqtProperty('QString')
     def fullscreen(self):
         if PLATFORM == "win32":
             return subprocess.call(self._exe + self._fullscreen, startupinfo=STARTUP_INFO)
         else:
             return os.system(self._exe + self._fullscreen)
+    
+    
+    @pyqtProperty('QString')
+    def shader(self):
+        if PLATFORM == "win32":
+            cfg_path = ROOT_DIR + "\\retroarch_v1.0\\retroarch.cfg"
+        else:
+            cfg_path = "~/libretro/.retroarch.cfg"
+        retroarch_cfg.write_cfg(cfg_path, "video_shader", self._shader)
+        self._cfg = "custom.cfg"
+    
+    @shader.setter    
+    def shader(self, shader):
+        self._shader = shader
+    
+    @pyqtProperty('QString')    
+    def launch(self):
+        self._launch = self._exe + " " + "-c " + ROOT_DIR + "\\retroarch_v1.0\\" + self._cfg + " " + self._core + " " + self._path 
+        print(self._launch)
+        if PLATFORM == "win32":
+             #hides terminal from showing
+            return subprocess.call(self._launch, startupinfo=STARTUP_INFO)
+        else:
+            os.system(self._launch)
+    
+    
+        
+        
