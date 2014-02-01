@@ -406,26 +406,29 @@ Rectangle {
                             Image {
                                 id: gameImage
                                 cache: true
-                                source: "../images/tv_color_bars.jpg"
+                                source: image
                                 anchors.centerIn: parent; //source: portrait
                                 fillMode: Image.PreserveAspectFit
                                 smooth: true
                                 width: parent.width  ; height: parent.height
                                 sourceSize.width: 500 ; sourceSize.height: 500
 
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                hoverEnabled: true
-                                acceptedButtons: Qt.LeftButton | Qt.RightButton
-                                onDoubleClicked: gameLauncher.launch
-                                onClicked:
-                                    if (mouse.button === Qt.RightButton){
-                                        rightClickMenu.popup()}
-                                    else {
-                                         gameView.currentIndex = index;
-                                         gameLauncher.core = gameView.model.get(gameView.currentIndex).core;
-                                         gameLauncher.path = gameView.model.get(gameView.currentIndex).path
+                           }
+                           MouseArea {
+                               anchors.fill: parent
+                               hoverEnabled: true
+                               acceptedButtons: Qt.LeftButton | Qt.RightButton
+                               onDoubleClicked: gameLauncher.launch
+                               onClicked:
+                                   if (mouse.button === Qt.RightButton){
+                                       gameView.currentIndex = index;
+                                       rightClickMenu.popup()
+                                   }
+                                   else {
+                                       gameView.currentIndex = index;
+                                       gameLauncher.core = gameView.model.get(gameView.currentIndex).core;
+                                       gameLauncher.path = gameView.model.get(gameView.currentIndex).path
+
                                     }
 
                             }
@@ -436,6 +439,9 @@ Rectangle {
                                 onAccepted: {
                                     console.log(artworkDialog.fileUrl)
                                     gameImage.source = artworkDialog.fileUrl
+                                    gameLauncher.artwork = gameView.model.get(gameView.currentIndex).title
+                                    gameLauncher.artwork_path = artworkDialog.fileUrl
+                                    libraryModel.reload()
                                     artworkDialog.close()
                                 }
                                 onRejected: {
@@ -541,11 +547,14 @@ Rectangle {
 
      RowLayout {
          anchors.fill: parent
-         ToolButton {
+         Rectangle {
              id: plusButton
              //anchors.left: searchBar.right
              anchors.leftMargin: 15
-             iconSource: "../images/plus.png"
+             anchors.left: parent.left
+             color: "#595959"
+             Image {anchors.fill: parent; source: "../images/plus.png"}
+
              implicitHeight: bottomToolbar.height * 0.7; implicitWidth:  plusButton.height
              MouseArea {
                  anchors.fill: parent
@@ -575,21 +584,23 @@ Rectangle {
                  }
              }
          }
-         ToolButton {
+         Rectangle {
              id: playButton
              height: plusButton.width; width: plusButton.width
-             iconSource: "../images/play.png"
+             Image {anchors.fill: parent; source: "../images/play.png"}
              implicitHeight: bottomToolbar.height * 0.7; implicitWidth:  plusButton.height
+             color: "#595959"
 			 MouseArea {
 				anchors.fill: parent
                 hoverEnabled: true
 				onClicked: gameLauncher.launch
 			 }
          }
-         ToolButton {
+         Rectangle {
              id: gridButton
-             width: 125; height: 20
-             iconSource: "../images/grid.png"
+             width: 25; height: 25
+             Image {anchors.fill: parent; source: "../images/grid.png"}
+             color: "#595959"
              MouseArea {
                  anchors.fill: parent
                  hoverEnabled: true
@@ -605,10 +616,11 @@ Rectangle {
                  }
             }
          }
-         ToolButton {
+         Rectangle {
              id: fullscreenButton
-             width: 125; height: 20
-             iconSource: "../images/screen_expand_3.png"
+             width: 25; height: 25
+             Image {anchors.fill: parent; source:"../images/screen_expand_3.png"}
+             color: "#595959"
              MouseArea {
                  anchors.fill: parent
                  hoverEnabled: true

@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 import retroarch_cfg
+import xml_creator
 
 PLATFORM = sys.platform
 ROOT_DIR = os.path.realpath(os.path.dirname(sys.argv[0]))
@@ -25,6 +26,8 @@ class Launcher(QObject):
         self._fullscreen = " -f --menu "
         self._shader = ""
         self._cfg = "retroarch.cfg"
+        self._artwork_path = ""
+        self._artwork = ""
         
 
     @pyqtProperty('QString')
@@ -85,15 +88,31 @@ class Launcher(QObject):
         else:
             return os.system(self._exe + self._fullscreen)
     
+    @pyqtProperty('QString')
+    def artwork_path(self):
+        return self._artwork_path
+    
+    @artwork_path.setter
+    def artwork_path(self, artwork_path):
+        self._artwork_path = artwork_path
+        xml_creator.store_artwork(self._artwork, self._artwork_path, "image")
+    
+    @pyqtProperty('QString')
+    def artwork(self):
+        return self._artwork
+    
+    @artwork.setter
+    def artwork(self, artwork):
+        self._artwork = artwork
     
     @pyqtProperty('QString')
     def shader(self):
-        shader_file = retroarch_cfg.add_data("video_shader", self._shader)
-        retroarch_cfg.write_cfg(shader_file)
+        retroarch_cfg.read_shader(self._shader)
     
     @shader.setter    
     def shader(self, shader):
         self._shader = shader
+        print(self._shader)
     
     @pyqtProperty('QString')    
     def launch(self):

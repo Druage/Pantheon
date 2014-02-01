@@ -56,13 +56,21 @@ Rectangle {
                     color: "#000000FF"
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: 200; height: 25
+                    RowLayout {
+                        anchors.fill: parent
                     Label {
                         id: label
-                        anchors.centerIn: parent
+                        anchors.left: parent.left
                         text: title
                         font.bold: true
                         color: "white"
                     }
+                    Rectangle {
+                        width: 5; height: 5
+                        color: "darkgray"
+                        anchors.right: parent.right
+                    }
+
                     states: State {
                         name: "Current"
                         when: wrapper.ListView.isCurrentItem
@@ -78,6 +86,7 @@ Rectangle {
                             gameLauncher.shader
                             console.log(textField.model.get(textField.currentIndex).path)
                         }
+                    }
                     }
                 }
             }

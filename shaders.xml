@@ -1,27 +1,23 @@
 <?xml version="1.0"?>
 <Library>
   <shader>
-    <title>Hq4x</title>
-    <path>":\shaders\hq4x\hq4x.cg"</path>
-  </shader>
-  <shader>
     <title>Super Eagle</title>
-    <path>":\shaders\eagle\super-eagle.cg"</path>
+    <path>"\retroarch_v1.0\shaders\crt\crt-interlaced-halation\crt-interlaced-halation.cgp"</path>
   </shader>
   <shader>
     <title>Crt Flat</title>
-    <path>":\shaders\crt\crt-geom-flat-sharpness.cg"</path>
+    <path>"\shaders\crt\crt-geom-flat-sharpness.cg"</path>
   </shader>
   <shader>
-    <title>Crt Cgwg</title>
-    <path>":\shaders\crt\crt-cgwg.cg"</path>
+    <title>Crt Halation</title>
+    <path>"shaders\crt\crt-interlaced-halation\crt-interlaced-halation.cgp"</path>
   </shader>
   <shader>
     <title>Old TV</title>
-    <path>":\shaders\mudlord\oldtv.cg"</path>
+    <path>"shaders\mudlord\oldtv.cg"</path>
   </shader>
   <shader>
     <title>Pixellate</title>
-    <path>":\shaders\pixellate.cg"</path>
+    <path>"\shaders\pixellate.cg"</path>
   </shader>
 </Library>

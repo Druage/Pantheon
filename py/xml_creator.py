@@ -85,13 +85,28 @@ def indent(elem, level=0): #Makes xml look super pretty
             if level and (not elem.tail or not elem.tail.strip()):
                 elem.tail = i
 
+def store_artwork(title_name, art_path, tag):
+    """title, path, tag"""
+    ofile = ET.parse("games.xml")
+    library = ofile.getroot()  
+    for game in library:
+        for subelement in game:
+            if subelement.tag == "title":
+                if subelement.text == title_name:
+                    image = ET.SubElement(game, tag)
+                    image.text = art_path
+                    indent(library)
+                    ammended_xml = ET.tostring(library).decode("utf-8")
+                    with open("games.xml", "w") as new:
+                        new.write(ammended_xml)
+                    return "Image Added"
+        
 def xmlreader(file): #Not used yet
         tree = ET.parse(file)
         root = tree.getroot()
-        data = []
-        for child in root:
-            data.append(child.text)
-        self._xmlreader = data
+        for game in root:
+            for title in game:
+                print(title.tag)
 
 def xmlwriter(data): #xmlwriter() is loaded automatically after scan is run
         tree = open("games.xml" ,"w")

@@ -10,4 +10,5 @@ XmlListModel {
     XmlRole {name: "system"; query: "system/string()"}
 	XmlRole {name: "core"; query: "core/string()"}
 	XmlRole {name: "core_path"; query: "core_path/string()"}
+    XmlRole {name: "image"; query: "image/string()"}
 }
