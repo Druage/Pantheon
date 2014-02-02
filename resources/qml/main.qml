@@ -377,7 +377,6 @@ Rectangle {
                 Rectangle {
                     opacity: 0.5
                     color: "white" //Highlighter Color
-
                     height: 20; width: 20
                     y: gameView.currentItem.y;
                 }
@@ -386,10 +385,11 @@ Rectangle {
             Component {
                 id: gameDelegate
                 Rectangle {
+                    id: gameFrame
                     width: 200 + slider.value * 2;
                     height: 250 +  slider.value * 2
                     color: "#2b2b2b"//gameGrid.color
-                    id: gameFrame
+
                     states: State {
                         name: "Current"
                         when: gameList.ListView.isCurrentItem
@@ -398,11 +398,13 @@ Rectangle {
                         anchors.centerIn: parent
                         width: parent.width * 0.8; height: parent.height * 0.8
                         color: "#000000FF"
+
                         Rectangle {
                             id: gameRectangle
-                            color: "#000000FF"
+                            color: "blue"
                             width: parent.width * 0.7; height: parent.height * 0.7
                             anchors.centerIn: parent
+
                             Image {
                                 id: gameImage
                                 cache: true
@@ -410,10 +412,22 @@ Rectangle {
                                 anchors.centerIn: parent; //source: portrait
                                 fillMode: Image.PreserveAspectFit
                                 smooth: true
-                                width: parent.width  ; height: parent.height
+                                width: parent.width-50  ; height: parent.height-50
                                 sourceSize.width: 500 ; sourceSize.height: 500
 
                            }
+                            RectangularGlow {
+                                    id: effect
+                                    anchors.fill: gameImage
+                                    //source: gameImage
+                                    //radius: 6
+                                    //samples: 12
+                                    glowRadius: 10
+                                    spread: 0.2
+                                    color: "white"
+                                    cornerRadius: gameImage.radius + glowRadius
+                                }
+
                            MouseArea {
                                anchors.fill: parent
                                hoverEnabled: true
@@ -552,10 +566,9 @@ Rectangle {
              //anchors.left: searchBar.right
              anchors.leftMargin: 15
              anchors.left: parent.left
-             color: "#595959"
-             Image {anchors.fill: parent; source: "../images/plus.png"}
-
+             color: "#000000FF"
              implicitHeight: bottomToolbar.height * 0.7; implicitWidth:  plusButton.height
+             Image {id: plusImage; anchors.fill: parent; source: "../images/folder_plus.png"}
              MouseArea {
                  anchors.fill: parent
                  hoverEnabled: true
@@ -563,6 +576,15 @@ Rectangle {
                      fileDialog.open()
                      console.log(libraryModel.status)
                  }
+             }
+             DropShadow {
+                source: plusImage
+                anchors.fill: source
+                samples: 4
+                radius: 2
+                color: "#80000000"
+                horizontalOffset: 1
+                verticalOffset: 1
              }
              FileDialog {
                  id: fileDialog
@@ -584,23 +606,41 @@ Rectangle {
                  }
              }
          }
-         Rectangle {
-             id: playButton
-             height: plusButton.width; width: plusButton.width
-             Image {anchors.fill: parent; source: "../images/play.png"}
-             implicitHeight: bottomToolbar.height * 0.7; implicitWidth:  plusButton.height
-             color: "#595959"
-			 MouseArea {
-				anchors.fill: parent
-                hoverEnabled: true
-				onClicked: gameLauncher.launch
-			 }
-         }
-         Rectangle {
+            Rectangle {
+                id: playButton
+                height: plusButton.width; width: plusButton.width
+                implicitHeight: bottomToolbar.height * 0.7; implicitWidth:  plusButton.height
+                color: "#000000FF"
+                Image {id: playImage; anchors.fill: parent; source: "../images/play.png"}
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: gameLauncher.launch
+                }
+                DropShadow {
+                   source: playImage
+                   anchors.fill: source
+                   samples: 4
+                   radius: 2
+                   color: "#80000000"
+                   horizontalOffset: 1
+                   verticalOffset: 1
+                }
+            }
+            Rectangle {
              id: gridButton
              width: 25; height: 25
-             Image {anchors.fill: parent; source: "../images/grid.png"}
-             color: "#595959"
+             color: "#000000FF"
+             Image {id: gridImage; anchors.fill: parent; source: "../images/grid.png"}
+             DropShadow {
+                source: gridImage
+                anchors.fill: source
+                samples: 4
+                radius: 2
+                color: "#80000000"
+                horizontalOffset: 1
+                verticalOffset: 1
+             }
              MouseArea {
                  anchors.fill: parent
                  hoverEnabled: true
@@ -619,15 +659,23 @@ Rectangle {
          Rectangle {
              id: fullscreenButton
              width: 25; height: 25
-             Image {anchors.fill: parent; source:"../images/screen_expand_3.png"}
-             color: "#595959"
+             color: "#000000FF"
+             Image {id: fullscreenImage; anchors.fill: parent; source:"../images/fullscreen.png"}
+             DropShadow {
+                source: fullscreenImage
+                anchors.fill: source
+                samples: 4
+                radius: 2
+                color: "#80000000"
+                horizontalOffset: 2
+                verticalOffset: 2
+             }
              MouseArea {
                  anchors.fill: parent
                  hoverEnabled: true
                  onClicked: gameLauncher.fullscreen
              }
          }
-
         Slider { //Controls gameGrid icon size
             id: slider
             value: 75
