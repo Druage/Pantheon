@@ -85,11 +85,11 @@ def indent(elem, level=0): #Makes xml look super pretty
             if level and (not elem.tail or not elem.tail.strip()):
                 elem.tail = i
 
+                
 def store_artwork(title_name, art_path, tag):
-    """title, path, tag"""
+    """title_name='Game Title', path='C:\\Users\\name\\location', tag='image'"""
     ofile = ET.parse("games.xml")
     library = ofile.getroot()
-    
     for game in library:
         for subelement in game:
             if "image" in subelement:

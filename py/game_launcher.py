@@ -28,7 +28,6 @@ class Launcher(QObject):
         self._cfg = "retroarch.cfg"
         self._artwork_path = ""
         self._artwork = ""
-        
 
     @pyqtProperty('QString')
     def joy(self):
@@ -91,7 +90,7 @@ class Launcher(QObject):
     @pyqtProperty('QString')
     def artwork_path(self):
         return self._artwork_path
-    
+
     @artwork_path.setter
     def artwork_path(self, artwork_path):
         self._artwork_path = artwork_path

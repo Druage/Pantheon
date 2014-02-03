@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
-import game.launcher 1.0
+//import game.launcher 1.0
 
 Rectangle {
     id:comboBox
@@ -13,7 +13,7 @@ Rectangle {
     width: 60
     state: "CLOSED"
 
-    Launcher {id: gameLauncher;}
+    //Launcher {id: gameLauncher;}
 
     Label {
             anchors.centerIn: parent
