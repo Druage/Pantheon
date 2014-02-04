@@ -16,11 +16,9 @@ Rectangle {
     id: root
     width: 1024
     height: 768
-
     Launcher {id: gameLauncher;}
     ScanDirectory {id: scanDirectory;}
     XmlLibrary {id: xmlReader}
-
 
     Rectangle {
         id: gameLayout
@@ -38,7 +36,6 @@ Rectangle {
             width: 250;
             anchors.bottom: parent.bottom
             state:  "ON"
-
             Rectangle {
                 id: leftSide
                 anchors.top: parent.top
@@ -46,7 +43,7 @@ Rectangle {
                 color: "#383838"//Controls background color
                 TextField {
                     id: searchBar
-                    width: 200; height: 28
+                    width: 200; height: 25
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.top: parent.top
                     anchors.topMargin: 25
@@ -106,6 +103,7 @@ Rectangle {
                         anchors.leftMargin: 10
                         text: "<b>System</b>"
                         color: "white"
+                        font.pointSize: 10
                     }
                     InnerShadow {
                         id: headerShadow
@@ -193,13 +191,15 @@ Rectangle {
                 anchors.bottom: parent.bottom
                 height: 50; width: parent.width
                 color: "#383838"
-                Label {
-                    id: settingsLabel
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
-                    text: "Settings"
-                    color: "white"
-                }
+                    Label {
+                        id: settingsLabel
+                        anchors.left: parent.left
+                        anchors.leftMargin: 10
+                        text: "Settings"
+                        color: "white"
+                        font.bold: true
+                        font.pointSize: 10
+                    }
                 ColumnLayout {
                     anchors.top: settingsLabel.bottom
                     anchors.bottom: parent.bottom
@@ -208,7 +208,9 @@ Rectangle {
                         id: shaderMenu
                         width: 125; height: 25
                         anchors.top: parent.top
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 15
+                        //anchors.horizontalCenter: parent.horizontalCenter
                     }
                 }
             }
@@ -694,12 +696,12 @@ Rectangle {
                         groove: Rectangle {
                             radius: 8
                             implicitHeight: 5
-                            color: "lightgray"
+                            color: "#a2a1a1"
                         }
                         handle: Rectangle {
                             radius: 8
                             implicitWidth: 15 ;implicitHeight: 15
-                            color: "aqua"
+                            color: "#fdfdfd"
                         }
                     }
             }
