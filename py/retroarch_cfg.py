@@ -54,9 +54,9 @@ def get_config_data(cfg_file):
     
 def ammend_config(data):
     with open(OUTPUT_CFG, "r") as infile:
-        for line in infile:
+        for index, line in enumerate(infile):
             if "video_shader" == line.split()[0]:
-                data[data.index(line)] = 'video_shader = ":\shaders/retroarch.cgp"\n'
+                data[index] = 'video_shader = ":\shaders/retroarch.cgp"\n'
                 return data
         print("never found")
 
