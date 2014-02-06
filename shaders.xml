@@ -2,7 +2,7 @@
 <Library>
   <shader>
     <title>Super Eagle</title>
-    <path>"\retroarch_v1.0\shaders\crt\crt-interlaced-halation\crt-interlaced-halation.cgp"</path>
+    <path>"\shaders\eagle\super-eagle.cg"</path>
   </shader>
   <shader>
     <title>Crt Flat</title>
@@ -10,11 +10,11 @@
   </shader>
   <shader>
     <title>Crt Halation</title>
-    <path>"shaders\crt\crt-interlaced-halation\crt-interlaced-halation.cgp"</path>
+    <path>"\shaders\crt\crt-interlaced-halation\crt-interlaced-halation.cgp"</path>
   </shader>
   <shader>
     <title>Old TV</title>
-    <path>"shaders\mudlord\oldtv.cg"</path>
+    <path>"\shaders\mudlord\oldtv.cg"</path>
   </shader>
   <shader>
     <title>Pixellate</title>

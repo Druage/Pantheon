@@ -204,14 +204,33 @@ Rectangle {
                     anchors.top: settingsLabel.bottom
                     anchors.bottom: parent.bottom
                     width: parent.width
+                    Rectangle {
+                        id: inputButton
+                        width: parent.width; height: 25
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.leftMargin: 15
+                        color: "#000000FF"
+                        Label {
+                            anchors.left: parent.left
+                            anchors.leftMargin: 15
+                            text: "Input"
+                            color: "white"
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: gameLauncher.joy
+                        }
+                    }
                     ShadersMenu {
                         id: shaderMenu
                         width: 125; height: 25
-                        anchors.top: parent.top
+                        anchors.top: inputButton.bottom
                         anchors.left: parent.left
                         anchors.leftMargin: 15
                         //anchors.horizontalCenter: parent.horizontalCenter
                     }
+
                 }
             }
         }//Rectangle: leftSide

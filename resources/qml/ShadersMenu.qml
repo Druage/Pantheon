@@ -70,7 +70,6 @@ Rectangle {
                     Keys.onReturnPressed: comboBox.state = "CLOSED"
                     highlight: highlightBar
                     model: ShaderModel {}
-
                     delegate: Rectangle {
                         color: "#000000FF"
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -102,16 +101,15 @@ Rectangle {
                             MouseArea {
                                 anchors.fill: parent
                                 hoverEnabled: true
-                                onMouseYChanged: {
-                                    textField.currentIndex = index
-                                    //gameLauncher.shader = textField.model.get(textField.currentIndex).path
-                                    //gameLauncher.shader
-                                    //console.log(textField.model.get(textField.currentIndex).path)
+                                onMouseYChanged: {textField.currentIndex = index}
+                                onClicked: {
+                                    gameLauncher.shader = textField.model.get(textField.currentIndex).path
+                                    gameLauncher.shader
+                                    console.log(textField.model.get(textField.currentIndex).path)
                                 }
                             }
                         }
                     }
-
                 }
                 DropShadow {
                     source: addShader

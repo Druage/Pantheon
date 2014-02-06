@@ -1,16 +1,23 @@
 import os
-print(os.getcwd())
+import sys
+
+if sys.platform == "win32":
+    RETRO_PATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'retroarch_v1.0'))
+    PY_PATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'py'))
+else:
+    RETRO_PATH = ""
+    
+OUTPUT_CFG = RETRO_PATH + "\\retroarch.cfg"
+
 def write_shader(data):
-    with open("retroarch.cgp", "w") as retro_cgp:
+    file = RETRO_PATH + "\\shaders\\" + "retroarch.cgp"
+    print("Wrote to: ", file)
+    with open(file, "w") as retro_cgp:
         retro_cgp.seek(0)
         retro_cgp.write(data)
 
 def read_shader(selected_shader):
-    print()
-    print(selected_shader)
-    print()
     with open(selected_shader, "r") as shader_file:
-
         if ".cgp" in selected_shader:
             shader_data = shader_file.readlines()
             first_line = shader_data[0].split()
@@ -22,32 +29,39 @@ def read_shader(selected_shader):
                         shader_data[index_for_wrap] = 'wrap_mode{:} = "clamp_to_border"\n'.format(i)
                         break
             return write_shader("".join(shader_data))                
-
         else:
             cg_file = ['shaders = "1"\n', 'shader0 = ""', \
                        'wrap_mode0 = "clamp_to_border"\n', 'float_framebuffer0 = "false"\n']
             
             cg_file[1] = 'shader0 = "{:}"\n'.format(selected_shader)
-            write_cfg("".join(cfg_file))
+            write_cg("".join(cg_file))
+            
+    config_data = get_config_data(PY_PATH + "\\retroarch.cfg")
+    ammended_data = ammend_config(config_data)
+    write_config(OUTPUT_CFG, ammended_data)
 
-
-
-
-
-
-
-def write_cfg(ammended_data):
-    with open("retroarch_v1.0\\shaders\\retroarch.cgp", "w") as ofile:
+def write_cg(ammended_data):
+    with open(RETRO_PATH + "\\shaders\\retroarch.cgp", "w") as ofile:
         ofile.seek(0)
-        ofile.write('shaders = "1"\n')
         ofile.write(ammended_data)
         ofile.write('wrap_mode0 = "clamp_to_border"\n')
         ofile.write('float_framebuffer0 = "false"\n')
-        
-def add_data(specific_line, new_data):
-    with open("retroarch_v1.0\\retroarch.cfg", "r") as ofile:
-        for line in ofile:
-            if specific_line == line.split()[0]:
-                data = 'shader0 = {:}\n'.format(new_data)
+
+def get_config_data(cfg_file):
+    with open(cfg_file, "r") as  infile:
+        cfg_data = infile.readlines()
+        return cfg_data
+    
+def ammend_config(data):
+    with open(OUTPUT_CFG, "r") as infile:
+        for line in infile:
+            if "video_shader" == line.split()[0]:
+                data[data.index(line)] = 'video_shader = ":\shaders/retroarch.cgp"\n'
                 return data
-    print("never found")
+        print("never found")
+
+def write_config(file, new_data):
+    with open(file, "w") as outfile:
+        outfile.seek(0)
+        outfile.write("".join(new_data))
+    

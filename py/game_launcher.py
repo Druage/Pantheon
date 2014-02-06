@@ -110,15 +110,14 @@ class Launcher(QObject):
     
     @shader.setter    
     def shader(self, shader):
-        self._shader = shader
-        print(self._shader)
+        self._shader = ROOT_DIR + "\\retroarch_v1.0" + shader.split('"')[1]
     
     @pyqtProperty('QString')    
     def launch(self):
         self._launch = self._exe + " " + "-c " + ROOT_DIR + "\\retroarch_v1.0\\" + self._cfg + " " + self._core + " " + self._path 
-        print(self._launch)
         if PLATFORM == "win32":
              #hides terminal from showing
+            print(self._launch)
             return subprocess.call(self._launch, startupinfo=STARTUP_INFO)
         else:
             os.system(self._launch)
