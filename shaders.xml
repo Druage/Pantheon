@@ -2,22 +2,22 @@
 <Library>
   <shader>
     <title>Super Eagle</title>
-    <path>"\shaders\eagle\super-eagle.cg"</path>
+    <path>"\resources\shaders\eagle\super-eagle.cg"</path>
   </shader>
   <shader>
     <title>Crt Flat</title>
-    <path>"\shaders\crt\crt-geom-flat-sharpness.cg"</path>
+    <path>"\resources\shaders\crt\crt-geom-flat-sharpness.cg"</path>
   </shader>
   <shader>
     <title>Crt Halation</title>
-    <path>"\shaders\crt\crt-interlaced-halation\crt-interlaced-halation.cgp"</path>
+    <path>"\resources\shaders\crt\crt-interlaced-halation\crt-interlaced-halation.cgp"</path>
   </shader>
   <shader>
     <title>Old TV</title>
-    <path>"\shaders\mudlord\oldtv.cg"</path>
+    <path>"\resources\shaders\mudlord\oldtv.cg"</path>
   </shader>
   <shader>
     <title>Pixellate</title>
-    <path>"\shaders\pixellate.cg"</path>
+    <path>"\resources\shaders\pixellate.cg"</path>
   </shader>
 </Library>

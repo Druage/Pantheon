@@ -1,0 +1,24 @@
+import pyotherside
+import os
+import win32_check
+
+ROOT_DIR = os.path.realpath(os.path.dirname(sys.argv[0]))
+
+def exe(exe_path='\\retroarch_v1.0\\retroarch.exe'):
+    return exe_path
+
+def cfg(cfg_path = '\\retroarch_v1.0\\retroarch.cfg'):
+    return cfg_path 
+
+
+def launch(game_path, core):
+    root_dir = os.path.realpath(os.path.dirname(sys.argv[0]))
+
+    if win32_check.check():
+        run = exe() + ' ' + '-c ' + root_dir + cfg() + ' ' + self._core + ' ' + game_path 
+        return os.system(run)
+    else:
+        run = exe(path='/usr/bin/retroarch') + ' ' + '-c ' + root_dir + 
+              cfg(cfg_path='~/.config/retroarch/retroarch.cfg') + ' ' + 
+              core + ' ' + game_path
+        return os.system(run)
