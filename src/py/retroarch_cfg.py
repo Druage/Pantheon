@@ -1,13 +1,14 @@
 import os
 import sys
 import win32_check
+import root_path
 
 if win32_check.check():
     RETRO_PATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'retroarch_v1.0'))
-    OUTPUT_CFG = RETRO_PATH + '\\retroarch.cfg'
+    OUTPUT_CFG = RETRO_PATH + '\\custom.cfg'
 else:
     RETRO_PATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'shaders'))
-    OUTPUT_CFG = os.path.expanduser('~') + '/.config/retroarch/retroarch.cfg'
+    OUTPUT_CFG = os.path.expanduser('~') + '/.config/retroarch/custom.cfg'
 
 
 def write_shader(data):
@@ -18,11 +19,12 @@ def write_shader(data):
         retro_cgp.write(data)
 
 def read_shader(selected_shader):
-    with open(selected_shader, "r") as shader_file:
+    shader = root_path.img_path('shaders') + selected_shader
+    with open(shader, "r") as shader_file:
         if ".cgp" in selected_shader:
             shader_data = shader_file.readlines()
-            first_line = shader_data[0].split()
-            num_of_shaders = int(first_line[2].split('"')[1])
+            first_line = int(shader_data[0].split()[2].replace('"', ''))
+            num_of_shaders = first_line
             for i in range(0, num_of_shaders-1):
                 for line in shader_data:
                     if 'filter_linear{:}'.format(str(i)) == line.split()[0]:
@@ -32,18 +34,20 @@ def read_shader(selected_shader):
             return write_shader(''.join(shader_data))                
         else:
             cg_file = ['shaders = "1"\n', 'shader0 = ""', \
-                       'wrap_mode0 = "clamp_to_border"\n', 'float_framebuffer0 = "false"\n']
+                       'wrap_mode0 = "clamp_to_border"\n', \
+                       'float_framebuffer0 = "false"\n']
             
-            cg_file[1] = 'shader0 = "{:}"\n'.format(selected_shader)
+            cg_file[1] = 'shader0 = "{:}"\n'.format(shader)
             write_cg(''.join(cg_file))
             
     config_data = get_config_data(OUTPUT_CFG)
     ammended_data = ammend_config(config_data)
     write_config(OUTPUT_CFG, ammended_data)
+    return ('Shader wrote to ', )
 
 def write_cg(ammended_data):
-    os.chdir(os.path.expanduser('~') + '/.config/retroarch/)
-    with open('retroarch.cgp', 'w') as ofile:
+    cgp = root_path.img_path('shaders') + '/retroarch.cgp'
+    with open(cgp, 'w') as ofile:
         ofile.seek(0)
         ofile.write(ammended_data)
         ofile.write('wrap_mode0 = "clamp_to_border"\n')
@@ -58,7 +62,7 @@ def ammend_config(data):
     with open(OUTPUT_CFG, 'r') as infile:
         for index, line in enumerate(infile):
             if 'video_shader' == line.split()[0]:
-                data[index] = 'video_shader = ":\shaders/retroarch.cgp"\n'
+                data[index] = 'video_shader = "{:}/retroarch.cgp"\n'.format(root_path.img_path('shaders'))
                 return data
         print('never found')
 

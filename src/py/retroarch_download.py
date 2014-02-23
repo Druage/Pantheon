@@ -1,8 +1,10 @@
+import pyotherside
 import urllib.request
 import struct
 import os
 import zipfile
 
+pyotherside.send('append', "hello")
 def download(url):
     if os.path.exists("retroarch_v1.0"):
         return False

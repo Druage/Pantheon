@@ -83,11 +83,11 @@ def store_artwork(title_name, art_path, tag='image'):
     library = ofile.getroot()
     for game in library:
         for subelement in game:
-            if 'image' in subelement:
-                return 'image'
+            if tag in subelement:
+                return tag
             if subelement.tag == 'title':
                 if subelement.text == title_name:
-                    check_for_image = game.find('image')
+                    check_for_image = game.find(tag)
                     if  check_for_image != None:
                         game.remove(check_for_image)
                     image = ET.SubElement(game, tag)
@@ -149,15 +149,25 @@ def clean_directory(directory):
         print('file:// not in directory, already cleaned.')
         return directory
 
-def scan(directory):
+def scan(directory, filter_extens=('*.sfc', '*.nes', '*.gba', '*.n64', '*.z64',
+        '*.cue' ), tag=None):
     directory = clean_directory(directory)
     matches = {}
+    tag_list = []
     for root, dirnames, filenames in os.walk(directory):
-        for extension in ('*.sfc', '*.nes', '*.gba', '*.n64', '*.z64','*.cue' ):
+        for extension in filter_extens:
             for filename in fnmatch.filter(filenames, extension):
-                matches[filename] = os.path.join(root, filename)
-    if len(matches) == 0:
-        return 'Game files could not be found in the location.'
+                if tag != None:
+                    tag_matches = {}
+                    tag_matches[tag] = filename
+                    print(tag_matches)
+                    tag_list.append(tag_matches)
+                else:
+                    matches[filename] = os.path.join(root, filename)
+    if len(matches) == 0 and tag_list == 0:
+        return 'Files could not be found in the location.'
     else:
+        if tag != None:
+            return tag_list
         print(matches)
         xmlwriter(matches)

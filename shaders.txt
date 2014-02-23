@@ -1,0 +1,9 @@
+Super Eagle:/eagle/super-eagle.cg
+Crt Flat:/crt/crt-geom-flat-sharpness.cg
+Old TV:/mudlord/oldtv.cg
+Pixellate:/pixellate.cg
+Sharp Bilinear:/sharp-bilinear.cg
+Hq4x:/hqx/hq4x.cg
+Sabr 3.0:/sabr/sabr-v3.0.cg
+Phosphor:/crt/phosphor.cg
+4xbr Hybrid Crt:/crt/4xbr-hybrid-crt.cg

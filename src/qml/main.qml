@@ -6,30 +6,104 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.XmlListModel 2.0
 import QtQuick.Dialogs 1.0
 import io.thp.pyotherside 1.0
-import QtQuick.Window 2.0
-
-//import game.launcher 1.0
-//import game.scan 1.0
-//import xml.utils 1.0
-
-//ON RIGHT CLICK IN GRIDVIEW BRING UP GAME DATA
+import QtQuick.LocalStorage 2.0
+import "../js/model.js" as MyModel
 
 ApplicationWindow {
     id: root
     width: 1024
     height: 768
-    //Launcher {id: gameLauncher;}
-    //ScanDirectory {id: scanDirectory;}
-    //XmlLibrary {id: xmlReader}
     SystemPalette {id: systemPalette}
+    Loader {
+        id: pyLoader
+        property string fullscreen: ""
+    }
+    Python {
+        id: py
+        function pyLoad(run, fscreen) {
+            if (run === true) {
+                pyLoader.sourceComponent = callGameLaunch
+                pyLoader.fullscreen = fscreen
+            }
+            else {console.log("Stopped running.")}
+        }
+
+        signal load_installed_cores(string core_data)
+
+        property bool run: false
+        property string fullscreen: ""
+        property string core_path: ""
+        property string rom_path: ""
+
+        Component.onCompleted: {
+            addImportPath(Qt.resolvedUrl('../py'));
+            setHandler('append', load_installed_cores)
+
+            importModule('library', function () {})
+            importModule('retroarch_cfg', function () {})
+            importModule('create_config', function () {
+                py.call('create_config.write_config', [], function(result) {
+                    console.log("Wrote initial config")
+                })
+            })
+
+            importModule('check_cores', function () {
+                py.call('check_cores.get_matches', [], function(result) {
+                    for (var i=0; i<result.length; i++) {
+                        coresModel.append(result[i]);
+                    }
+                });
+                py.call('check_cores.cores_list', [1], function(result) {
+                    for (var i=0; i<result.length; i++) {
+
+                        avaiableCores.append(result[i]);
+                    }
+                })
+                py.call('check_cores.get_title', [1], function(result) {
+                    for (var i=0; i<result.length; i++) {
+                        shaderModel.append(result[i]);
+                    }
+                })
+
+                if (run === true) {
+                    importModule('logger', function () {
+                    importModule('retroarch_launch', function () {
+                        call('retroarch_launch.launch',
+                            [py.rom_path, py.core_path, py.fullscreen], function(result) {
+                                call('logger.log', [result])
+                            })
+                        })
+                    })
+                }
+                else {}
+            });
+        }
+        onReceived: console.log('Unhandled event: ' + data)
+        onLoad_installed_cores: console.log(core_data)
+        onError: console.log('Error: ' + traceback)
+    }
+
+    Loader {id: callDownload}
     menuBar:
         MenuBar {
-            /*Menu {
+            Menu {
                 title: "System"
                 MenuItem {
-                    text: "Log"
+                    text: "Download RetroArch"
+
+                    onTriggered: callDownload.source="CallDownloadRetroArch.qml"
                 }
-            }*/
+                MenuItem {
+                    text: "Clear Library"
+                    onTriggered: {
+                        py.call('library.clear', [], function (result) {
+                            console.log(result)
+                            libraryModel.reload()
+                        })
+                    }
+                }
+            }
+
             Menu {
                 title: "Paths"
                 FileDialog {
@@ -40,6 +114,7 @@ ApplicationWindow {
                         if (callXmlLoader.sourceComponent === callXmlCreator) {
                             callXmlLoader.sourceComponent = blankComponent
                         }
+                        progressBar.visible = true
                         callXmlLoader.sourceComponent = callXmlCreator
                     }
                     onRejected: {console.log("Cancelled"); fileDialog.close()}
@@ -49,7 +124,6 @@ ApplicationWindow {
                     text: "Add Folder"
                     onTriggered: {
                         fileDialog.open()
-                        libraryModel.reload()
                     }
                 }
             }
@@ -75,17 +149,15 @@ ApplicationWindow {
                    title: "Shaders"
                    Instantiator {
                        id: instan
-                       property alias mode1: instan
-                       model: ShaderModel {id: shaderModel}
+                       model: ListModel {id: shaderModel}
                        MenuItem {
                            id: shaders
-                           text: title
-                           property var directory: path
+                           text: shader_path
+                           //property var directory: path
                            onTriggered: {
-                               if (callShaderLoader.sourceComponent === callShaderCreator) {
-                                   callShaderLoader.sourceComponent = blankComponent
-                               }
-                               callShaderLoader.sourceComponent = callShaderCreator
+                                py.call('retroarch_cfg.read_shader', [shader_path], function (result) {
+                                   console.log('shader result: ' + result)
+                               })
                            }
                        }
                        onObjectAdded: shaderbar.insertItem(index, object)
@@ -95,29 +167,70 @@ ApplicationWindow {
                        visible: shaderbar.count > 0
                    }
                    /*MenuItem {
-                       text: "Clear menu"
+                       text: "None"
                        enabled: shaderbar.count > 0
                        onTriggered: shaderbar.clear()
                    }*/
+                    MenuItem {
+                        text: "None"
+                        onTriggered: py.call('retroarch_cfg.read_shader', [''],
+                            function (result) {console.log(result)
+                       })
+                   }
                }
-           }
-        }
+               MenuItem {
+                   id: fullscreenMenu
+                   text: "Full Screen"
+                   onTriggered: {
+                       gameLaunchLoader.fullscreen ? gameLaunchLoader.fullscreen = "" : gameLaunchLoader.fullscreen = " -f "
+                       console.log(gameLaunchLoader.fullscreen)
+                   }
+               }
+            }
+            Menu {
+                id: coreMenu
+                title: "Cores"
+                Menu {
+                    id: installedCores
+                    title: "Installed"
+                    Instantiator {
+                        model: ListModel {id: coresModel}
+                        MenuItem {
+                            text: core_exists
+                            onTriggered: {
+                            }
+                        }
+                        onObjectAdded: installedCores.insertItem(index, object)
+                        onObjectRemoved: installedCores.removeItem(object)
+                        }
+                    }
+                Menu {
+                    id: notInstalledCores
+                    title: "All Cores"
+                    Instantiator {
+                        model: ListModel {id: avaiableCores}
+                        MenuItem {
+                            text: available
+                            onTriggered: {
+                            }
+                        }
+                        onObjectAdded: notInstalledCores.insertItem(index, object)
+                        onObjectRemoved: notInstalledCores.removeItem(object)
+                        }
+                    }
+                }
+            }
 
-    /*toolBar:
+    toolBar:
         ProgressBar {
             id: progressBar
-            height: 20
+            height: 10
             width: parent.width
             maximumValue: 80
             minimumValue: 0
-            value: 40
-            style: ProgressBarStyle {
-                background: Rectangle {color: '#000000FF'}
-                progress: Rectangle {
-                    color: systemPalette.highlight
-                }
-            }
-        }*/
+            visible: false
+            indeterminate: true
+        }
 
     Loader {id: callShaderLoader}
 
@@ -125,9 +238,7 @@ ApplicationWindow {
         id: callShaderCreator
         Python {
             Component.onCompleted: {
-                //gameTable.model.get(gameTable.currentRow).core
                 var shader_path = shaders.directory
-                //importModule isnt stripping file://
                 console.log(library_path)
                 addImportPath(Qt.resolvedUrl('../py/'));
                 importModule('retroarch_cfg', function () {
@@ -153,6 +264,7 @@ ApplicationWindow {
                 importModule('xml_creator', function () {
                     call('xml_creator.scan', [library_path], function(result) {
                         libraryModel.reload()
+                        progressBar.visible = false
                     })
                     }
                 )
@@ -175,7 +287,6 @@ ApplicationWindow {
         color: "#000000FF"
         ColumnLayout {
             id: leftColumn
-            //z: gameTable.z + 1
             anchors.top: parent.top
             width: 250;
             anchors.bottom: parent.bottom
@@ -185,17 +296,6 @@ ApplicationWindow {
                 anchors.top: parent.top
                 width: leftColumn.width; height: root.height * 0.65
                 color: "#000000FF"//Controls background color
-
-               /* InnerShadow {
-                    anchors.fill: source
-                    source: searchBar
-                    visible: true
-                    horizontalOffset: -1
-                    verticalOffset: -1
-                    radius: 1
-                    samples: 2
-                    color: "#80000000"
-                }*/
                 Rectangle {
                     id: header
                     width: 250;
@@ -379,19 +479,32 @@ ApplicationWindow {
             highlightOnFocus: true
             backgroundVisible: true
             model: LibraryModel {id: libraryModel}
-            Loader {id: gameLaunchLoader}
+            Loader {id: gameLaunchLoader
+                property string fullscreen: ""
+
+            }
+
+
             Component {
                 id: callGameLaunch
+
                 Python {
+                    id: pyTableLaunch
+                    //property string fullscreen: ""
+                    //property bool run: true
+
                     Component.onCompleted: {
                         var core_path = gameTable.model.get(gameTable.currentRow).core
                         var rom_path = gameTable.model.get(gameTable.currentRow).path
+
                         addImportPath(Qt.resolvedUrl('../py/'))
                         importModule('logger', function () {
-                        importModule('retroarch_launch', function () {
-                            call('retroarch_launch.launch',
-                                 [rom_path, core_path], function(result) {
-                                     call('logger.log', [result])
+                            importModule('retroarch_launch', function () {
+                                call('retroarch_launch.launch',
+                                     [rom_path, core_path,
+                                      gameLaunchLoader.fullscreen],
+                                      function(result) {
+                                        call('logger.log', [result])
                                 })
                             })
                         })
@@ -399,6 +512,13 @@ ApplicationWindow {
                     onError: console.log('Error: ' + traceback)
                 }
             }
+
+
+
+
+
+
+
             Component {
                 id: blankComponent
                 Rectangle{
@@ -406,10 +526,21 @@ ApplicationWindow {
                 }
             }
 
+
+
+
+
+
+
+
             /*onClicked: {
                 gameLaunchLoader.sourceComponent = blankComponent
             }*/
             onDoubleClicked: {
+                /*py.core_path = gameTable.model.get(gameTable.currentRow).core
+                py.rom_path = gameTable.model.get(gameTable.currentRow).path
+                py.run = true*/
+                //console.log(py.core_path)
                 if(gameLaunchLoader.sourceComponent === callGameLaunch) {
                     gameLaunchLoader.sourceComponent = blankComponent
                 }
@@ -474,7 +605,7 @@ ApplicationWindow {
         Rectangle {
             id: gameGrid
             width: 800; height: 600
-            color: "#000000FF" //Grid Background Color
+            color: "white" //Grid Background Color
             //Image {
                // anchors.fill: parent;
                 //source: "../images/noise.png"
@@ -483,21 +614,25 @@ ApplicationWindow {
                 id: gameView
                 anchors.fill: parent
                 anchors.margins: 20
-                //: 5
-                cellHeight: 250 + slider.value * 2
-                cellWidth: 200 + slider.value * 2
-                focus: true
+                cellHeight: 100 + slider.value * 2
+                cellWidth: 125 + slider.value * 2
                 highlight: gameHighlighter
+                highlightFollowsCurrentItem: false
+                focus: true
                 model: libraryModel
                 delegate: gameDelegate
+
             ////////////////////////////////////////////////////
             Component {
                 id: gameHighlighter
                 Rectangle {
                     opacity: 0.5
                     color: systemPalette.highlight //Highlighter Color
-                    //height: 300; width: 300
+                    height: gameView.cellHeight; width: gameView.cellWidth
+                    x: gameView.currentItem.x;
                     y: gameView.currentItem.y;
+                    Behavior on x { SpringAnimation { spring: 4; damping: 0.5}}
+                    Behavior on y { SpringAnimation { spring: 4; damping: 0.5}}
                 }
             }
             ////////////////////////////////////////////////////
@@ -505,8 +640,8 @@ ApplicationWindow {
                 id: gameDelegate
                 Rectangle {
                     id: gameFrame
-                    width: 175 + slider.value * 2;
-                    height: 200 +  slider.value * 2
+                    width: gameView.cellWidth - 5
+                    height: gameView.cellHeight - 5
                     color: "#000000FF"//gameGrid.color
                     states: State {
                         name: "Current"
@@ -514,7 +649,9 @@ ApplicationWindow {
                     }
                     Rectangle {
                         anchors.centerIn: parent
-                        width: parent.width * 0.8; height: parent.height * 0.8
+                        width: parent.width
+                        height: parent.height
+                        //width: parent.width * 0.8; height: parent.height * 0.8
                         color: "#000000FF"
 
                         Rectangle {
@@ -526,11 +663,11 @@ ApplicationWindow {
 
                             Image {
                                 id: gameImage
-                                cache: true
+                                //cache: true
                                 source: image
                                 anchors.centerIn: parent;
                                 fillMode: Image.PreserveAspectFit
-                                smooth: true
+                                //smooth: true
                                 anchors.fill: parent
                                 sourceSize.width: 500 ; sourceSize.height: 500
                                 /*BorderImage {
@@ -630,6 +767,7 @@ ApplicationWindow {
                                     onError: console.log(traceback)
                                 }
                             }
+
                             Menu {
                                 id: rightClickMenu
                                 title: "Edit"
@@ -647,21 +785,24 @@ ApplicationWindow {
                                         console.log("result: Image Removed")
                                     }
                                 }
+                                MenuItem {
+                                    text: "Core: " + gameView.model.get(gameView.currentIndex).core
+                                }
                             }
 
                         DropShadow{                 // Currently resizing grid
                             id: gameShadow          // takes down performance
-                            cached: true            // because shadow has to be
-                            fast: true              // redrawn everytime
+                            //cached: true            // because shadow has to be
+                            //fast: true              // redrawn everytime
                             transparentBorder: true // grid is resized
-                            enabled: false
+                            enabled: true
                             anchors.fill: source
                             source: gameImage
-                            radius: 2
-                            samples: 4
+                            radius: 4
+                            samples: 8
                             color: "#80000000"
-                            verticalOffset: 5
-                            horizontalOffset: 5
+                            verticalOffset: 3
+                            horizontalOffset: 3
                             }
                         Label {
                             text: title
@@ -722,24 +863,11 @@ ApplicationWindow {
         property alias bottomToolbar: bottomToolbar
         id: bottomToolbar
 
-        height: 30
+        height: 40
         //width: parent.width
         //color: "#cc4d4d"
          RowLayout {
             anchors.fill: parent
-            ToolButton {
-                id: playButton
-                height: 25; width: 25
-                //implicitHeight: bottomToolbar.height * 0.7; implicitWidth:  25
-                //color: "#000000FF"
-                Image {id: playImage; anchors.fill: parent; source: "../images/play.png"}
-
-                //MouseArea {
-                    //anchors.fill: parent
-                    //hoverEnabled: true
-                    //onClicked: gameLauncher.launch
-                //}
-            }
             ToolButton {
                 id: gridButton
                 //width: 25; height: 25
@@ -773,29 +901,12 @@ ApplicationWindow {
                     }
                 }*/
             }
-            ToolButton {
-                id: fullscreenButton
-                width: 25; height: 25
-                Image {
-                    id: fullscreenImage
-                    anchors.fill: parent
-                    source:"../images/fullscreen.png"
-                }
-
-
-                //onClicked:
-                /*MouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: gameLauncher.fullscreen
-                }*/
-            }
             TextField {
                 id: searchBar
-                width: 300; height: 25
+                width: 300; height: 30
                 implicitWidth: 200
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.top: parent.top
+
                 Keys.onReturnPressed: searchBar.state = "CLOSED"
                 placeholderText: "Search..."
                 Timer{

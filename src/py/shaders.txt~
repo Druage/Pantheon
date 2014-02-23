@@ -1,0 +1,10 @@
+Super Eagle:/eagle/super-eagle.cg
+Crt Flat:/crt/crt-geom-flat-sharpness.cg
+Crt Halation:/crt/crt-interlaced-halation/crt-interlaced-halation.cgp
+Old TV:/mudlord/oldtv.cg
+Pixellate:/pixellate.cg
+Sharp Bilinear:/sharp-bilinear.cg
+Hq4x:/hqx/hq4x.cg
+Game Boy:/handheld/gameboy/gb-shader.cgp
+Lcd Cgwg:/handheld/lcd_cgwg/lcd-cgwg.cgp
+Mdapt:/dithering/mdapt-4p/mdapt.cgp

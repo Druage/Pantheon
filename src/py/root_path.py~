@@ -1,3 +1,7 @@
 import os
 
-RETRO_PATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'retroarch_v1.0'))
+def img_path(new_dir='images'):
+    return os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', new_dir))
+
+def path():
+    return os.path.abspath(os.path.join(os.path.dirname( __file__ ))

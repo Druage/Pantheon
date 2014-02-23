@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<Library>
+  <game>
+    <system>Unknown</system>
+    <title>core_ex</title>
+    <path>"/usr/lib/libretro/nestopia_libretro.info"</path>
+    <core />
+    <image>/home/lee/Desktop/Qml/Phoenix/src/images/missing_artwork.png</image>
+  </game>
+</Library>
