@@ -1,0 +1,56 @@
+import pyotherside
+import urllib.request as req
+import struct
+import os
+import zipfile
+
+def retroarch(url):
+    '''Downloads specified file at specific url'''
+    if os.path.exists('retroarch_v1.0'):
+        return False
+    else:
+        pyotherside.send('download', 'Downloading...')
+        download = req.urlretrieve(url, 'retroarch_v1.0.zip')  
+
+        pyotherside.send('download', 'Downloading...')
+        print('RetroArch was successfully downloaded')
+        return True
+
+
+def unzip(zip_file, out_folder):
+    '''Unzips RetroArch zip package'''
+    with zipfile.ZipFile(zip_file, 'r') as z:
+        pyotherside.send('download', 'Extracting...')
+
+        z.extractall(out_folder)
+
+def make_directory(directory):
+    '''Creats a new directory for RetroArch if one is not already present'''
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    status = unzip('retroarch_v1.0.zip', directory)
+    return status        
+            
+retroarch_64bit = '''http://www.libretro.com/wp-content/plugins/cip4-folder-\
+download-widget/cip4-download.php?target=wp-content/releases/Windows/RetroAr\
+ch-20140105-Win64-MegaPack.zip'''
+
+retroarch_32bit = '''http://www.libretro.com/wp-content/plugins/cip4-folder-\
+download-widget/cip4-download.php?target=wp-content/releases/Windows/RetroAr\
+ch-20140105-Win32-MegaPack.zip'''
+
+def start_process():
+    '''Stars the download process'''
+    if struct.calcsize('P') * 8 == 64:  #64 bit systems
+        retroarch(retroarch_64bit)
+        make_directory('retroarch_v1.0')
+        print('Contents successfully extracted')
+        os.remove('retroarch_v1.0.zip')
+    
+    elif struct.calcsize('P') * 8 == 32: #32 bit systems
+        retroarch(retroarch_32bit)
+        make_directory('retroarch_v1.0')
+        print('Contents successfully extracted')
+        os.remove('retroarch_v1.0.zip')
+    return 'Finished'
+

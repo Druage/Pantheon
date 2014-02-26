@@ -1,4 +1,3 @@
-from PyQt5.QtCore import pyqtProperty, QCoreApplication, QObject, QUrl
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import tostring
@@ -133,7 +132,7 @@ def xmlwriter(data): #xmlwriter() is loaded automatically after scan is run
                 clean_key = key.strip(key[-4::])
 
             title.text = clean_key
-            image.text = root_path.img_path() + '/missing_artwork.png'
+            image.text = root_path.change() + '/missing_artwork.png'
             path.text = '"{:}"'.format(value)
 
 
@@ -156,7 +155,7 @@ def scan(directory, filter_extens=('*.sfc', '*.nes', '*.gba', '*.n64', '*.z64',
     tag_list = []
     for root, dirnames, filenames in os.walk(directory):
         for extension in filter_extens:
-            for filename in fnmatch.filter(filenames, filter_extens):
+            for filename in fnmatch.filter(filenames, extension):
                 if tag != None:
                     tag_matches = {}
                     tag_matches[tag] = filename

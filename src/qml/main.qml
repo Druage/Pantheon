@@ -6,47 +6,41 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.XmlListModel 2.0
 import QtQuick.Dialogs 1.0
 import io.thp.pyotherside 1.0
-import QtQuick.LocalStorage 2.0
+
 import "../js/model.js" as MyModel
+import "../js/load_dialog.js" as LoadDialog
 
 ApplicationWindow {
     id: root
     width: 1024
     height: 768
     SystemPalette {id: systemPalette}
-    Loader {
-        id: pyLoader
-        property string fullscreen: ""
-    }
+    Loader {id: customCoreDialog}
+
     Python {
         id: py
-        function pyLoad(run, fscreen) {
-            if (run === true) {
-                pyLoader.sourceComponent = callGameLaunch
-                pyLoader.fullscreen = fscreen
-            }
-            else {console.log("Stopped running.")}
-        }
 
-        signal load_installed_cores(string core_data)
+        signal download(string result)
+        signal unzip(string result)
 
-        property bool run: false
         property string fullscreen: ""
         property string core_path: ""
         property string rom_path: ""
 
         Component.onCompleted: {
             addImportPath(Qt.resolvedUrl('../py'));
-            setHandler('append', load_installed_cores)
+            setHandler('download', download)
 
-            importModule('library', function () {})
+            importModule('storage', [], function (){})
             importModule('retroarch_cfg', function () {})
+            importModule('retroarch_launch', function () {})
+            importModule('download', function () {})
+
             importModule('create_config', function () {
                 py.call('create_config.write_config', [], function(result) {
                     console.log("Wrote initial config")
                 })
             })
-
             importModule('check_cores', function () {
                 py.call('check_cores.get_matches', [], function(result) {
                     for (var i=0; i<result.length; i++) {
@@ -64,39 +58,32 @@ ApplicationWindow {
                         shaderModel.append(result[i]);
                     }
                 })
-
-                if (run === true) {
-                    importModule('logger', function () {
-                    importModule('retroarch_launch', function () {
-                        call('retroarch_launch.launch',
-                            [py.rom_path, py.core_path, py.fullscreen], function(result) {
-                                call('logger.log', [result])
-                            })
-                        })
-                    })
-                }
-                else {}
             });
         }
         onReceived: console.log('Unhandled event: ' + data)
-        onLoad_installed_cores: console.log(core_data)
+        onDownload: {console.log(result); sysMenu.text = result}
         onError: console.log('Error: ' + traceback)
     }
 
-    Loader {id: callDownload}
     menuBar:
         MenuBar {
             Menu {
                 title: "System"
                 MenuItem {
+                    id: sysMenu
                     text: "Download RetroArch"
-
-                    onTriggered: callDownload.source="CallDownloadRetroArch.qml"
+                    onTriggered: {
+                        py.call("download.start_process", [],
+                            function (result) {
+                                console.log('Download: ' + result)}
+                        )
+                        sysMenu.text = "Download RetroArch"
+                    }
                 }
                 MenuItem {
                     text: "Clear Library"
                     onTriggered: {
-                        py.call('library.clear', [], function (result) {
+                        py.call('storage.clear', [], function (result) {
                             console.log(result)
                             libraryModel.reload()
                         })
@@ -111,11 +98,8 @@ ApplicationWindow {
                     title: "Find Folder Containing Games"
                     selectFolder: true
                     onAccepted: {
-                        if (callXmlLoader.sourceComponent === callXmlCreator) {
-                            callXmlLoader.sourceComponent = blankComponent
-                        }
+                        LoadDialog.reloadComponent(callXmlLoader, callXmlCreator)
                         progressBar.visible = true
-                        callXmlLoader.sourceComponent = callXmlCreator
                     }
                     onRejected: {console.log("Cancelled"); fileDialog.close()}
                 }
@@ -134,10 +118,7 @@ ApplicationWindow {
                 MenuItem {
                     text: "Configure Controller"
                     onTriggered: {
-                        if (callJoyConfig.source === "CallTerminal.qml") {
-                            callJoyConfig.source = "BlankComponent.qml"
-                        }
-                        callJoyConfig.source = "CallTerminal.qml"
+                        LoadDialog.reloadComponent(callJoyConfig, Qt.createComponent("CallTerminal.qml"))
                     }
                 }
             }
@@ -181,9 +162,11 @@ ApplicationWindow {
                MenuItem {
                    id: fullscreenMenu
                    text: "Full Screen"
+                   checkable: true
                    onTriggered: {
-                       gameLaunchLoader.fullscreen ? gameLaunchLoader.fullscreen = "" : gameLaunchLoader.fullscreen = " -f "
-                       console.log(gameLaunchLoader.fullscreen)
+                       fullscreenMenu.checked  ? fullscreenMenu.checked = true : fullscreenMenu.checked = false
+                       py.fullscreen ? py.fullscreen = "" : py.fullscreen = " -f "
+                       console.log(py.fullscreen)
                    }
                }
             }
@@ -218,8 +201,21 @@ ApplicationWindow {
                         onObjectRemoved: notInstalledCores.removeItem(object)
                         }
                     }
-                }
+                MenuItem {
+                    id: menu
+                    signal reload(string logFile)
+                    text: "Custom"
+                    onTriggered: {
+                        LoadDialog.reloadComponent(
+                                    customCoreDialog,
+                                    Qt.createComponent(
+                                        "CustomConsoleDialog.qml"))
+
+                    }
+                    }
+
             }
+    }
 
     toolBar:
         ProgressBar {
@@ -422,15 +418,6 @@ ApplicationWindow {
                 }
             }
         }//Rectangle: leftSide
-        /*InnerShadow {
-            anchors.fill:source
-            source: leftColumn
-            horizontalOffset: -1
-            verticalOffset: -1
-            radius: 8
-            samples: 16
-            color: "#80000000"
-        }*/
     StackView {
         id: stackView
         anchors.top: parent.top
@@ -479,72 +466,16 @@ ApplicationWindow {
             highlightOnFocus: true
             backgroundVisible: true
             model: LibraryModel {id: libraryModel}
-            Loader {id: gameLaunchLoader
-                property string fullscreen: ""
 
-            }
-
-
-            Component {
-                id: callGameLaunch
-
-                Python {
-                    id: pyTableLaunch
-                    //property string fullscreen: ""
-                    //property bool run: true
-
-                    Component.onCompleted: {
-                        var core_path = gameTable.model.get(gameTable.currentRow).core
-                        var rom_path = gameTable.model.get(gameTable.currentRow).path
-
-                        addImportPath(Qt.resolvedUrl('../py/'))
-                        importModule('logger', function () {
-                            importModule('retroarch_launch', function () {
-                                call('retroarch_launch.launch',
-                                     [rom_path, core_path,
-                                      gameLaunchLoader.fullscreen],
-                                      function(result) {
-                                        call('logger.log', [result])
-                                })
-                            })
-                        })
-                    }
-                    onError: console.log('Error: ' + traceback)
-                }
-            }
-
-
-
-
-
-
-
-            Component {
-                id: blankComponent
-                Rectangle{
-                    visible: false
-                }
-            }
-
-
-
-
-
-
-
-
-            /*onClicked: {
-                gameLaunchLoader.sourceComponent = blankComponent
-            }*/
             onDoubleClicked: {
-                /*py.core_path = gameTable.model.get(gameTable.currentRow).core
-                py.rom_path = gameTable.model.get(gameTable.currentRow).path
-                py.run = true*/
-                //console.log(py.core_path)
-                if(gameLaunchLoader.sourceComponent === callGameLaunch) {
-                    gameLaunchLoader.sourceComponent = blankComponent
-                }
-                gameLaunchLoader.sourceComponent = callGameLaunch
+                var core_path = gameTable.model.get(gameTable.currentRow).core
+                var rom_path = gameTable.model.get(gameTable.currentRow).path
+
+                py.call('storage.log',[[core_path, rom_path]],
+                        function(result) {console.log(result)})
+                py.call('retroarch_launch.launch', [rom_path, core_path,
+                                                    py.fullscreen],
+                        function(result) {console.log(result)})
 
             }
             /*headerDelegate: Rectangle {
@@ -681,43 +612,20 @@ ApplicationWindow {
                                 }*/
                            }
 
-                           Loader {id: callGridLoader}
-
-                           Component {
-                                id: callGridLaunch
-                                Python {
-                                    Component.onCompleted: {
-                                        var core_path = gameView.model.get(gameView.currentIndex).core
-                                        var rom_path = gameView.model.get(gameView.currentIndex).path
-                                        addImportPath(Qt.resolvedUrl('../py/'))
-                                        importModule('retroarch_launch', function () {
-                                            call('retroarch_launch.launch',
-                                                 [rom_path, core_path], function(result) {
-                                                     console.log('Callback: ' + result)
-                                                 }
-                                                 )
-                                            }
-                                        )
-                                    }
-                                    onError: console.log('Error: ' + traceback)
-                                }
-                            }
-
                            MouseArea {
                                anchors.fill: parent
                                hoverEnabled: true
                                acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                                onDoubleClicked: {
-                                   gameView.currentIndex = index;
-                                   console.log(callGridLoader.sourceComponent)
-                                   if(callGridLoader.sourceComponent === callGridLaunch) {
-                                       callGridLoader.sourceComponent = blankComponent
-                                   }
-                                   callGridLoader.sourceComponent = callGridLaunch
+                                   var core_path = gameView.model.get(gameView.currentIndex).core
+                                   var rom_path = gameView.model.get(gameView.currentIndex).path
+
+                                   py.call('storage.log',[[core_path, rom_path]],
+                                           function(result) {console.log(result)})
+                                   py.call('retroarch_launch.launch', [rom_path, core_path, py.fullscreen],
+                                           function(result) {console.log(result)})
                                }
-
-
                                onClicked: {
                                    gameView.currentIndex = index;
                                    if (mouse.button === Qt.RightButton){
@@ -728,6 +636,7 @@ ApplicationWindow {
                                     }
                                }
                             }
+
                             // Adds game artwork to individual game
                             FileDialog {
                                 id: artworkDialog
@@ -736,10 +645,7 @@ ApplicationWindow {
                                                "All files (*)" ]
                                 onAccepted: {
                                     console.log(artworkDialog.fileUrl)
-                                    if (callArtworkLoader.sourceComponent === callStoreArtwork) {
-                                        callArtworkLoader.sourceComponent = blankComponent
-                                    }
-                                    callArtworkLoader.sourceComponent = callStoreArtwork
+                                    LoadDialog.reloadComponent(callArtworkLoader, callStoreArtwork)
                                 }
                                 onRejected: {
                                    console.log("Cancelled")
@@ -778,10 +684,7 @@ ApplicationWindow {
                                 MenuItem {
                                     text: "Remove Artwork"
                                     onTriggered: {
-                                        if (callArtworkLoader.sourceComponent === callStoreArtwork) {
-                                            callArtworkLoader.sourceComponent = blankComponent
-                                        }
-                                        callArtworkLoader.sourceComponent = callStoreArtwork
+                                        LoadDialog.reloadComponent(callArtworkLoader, callStoreArtwork)
                                         console.log("result: Image Removed")
                                     }
                                 }

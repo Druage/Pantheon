@@ -1,6 +1,6 @@
 import os
 
-def img_path(new_dir='images'):
+def change(new_dir='images'):
     return os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', new_dir))
 
 def path():

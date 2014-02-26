@@ -36,7 +36,7 @@ def get_shader_path(shader_list):
     return get_jslist(path_list, tag='shader_path', index=1)
 
 def get_title(get_path=0):
-    with open(root_path.path() + '/shaders.txt', 'r') as fid:
+    with open(root_path.img_path('..') + '/shaders.txt', 'r') as fid:
         lines = fid.readlines()
         if get_path:
             return get_shader_path(lines)

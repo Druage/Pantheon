@@ -1,0 +1,9 @@
+import root_path
+
+def write(data):
+    textfile = root_path.img_path('..') + 'additional_systems.txt'
+    with open(textfile, 'w') as fid:
+        fid.seek(0)
+        for i in data:
+            fid.write(i)
+    return "Additional Systems Updated"

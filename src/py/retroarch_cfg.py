@@ -19,7 +19,7 @@ def write_shader(data):
         retro_cgp.write(data)
 
 def read_shader(selected_shader):
-    shader = root_path.img_path('shaders') + selected_shader
+    shader = root_path.change('shaders') + selected_shader
     with open(shader, "r") as shader_file:
         if ".cgp" in selected_shader:
             shader_data = shader_file.readlines()
@@ -46,7 +46,7 @@ def read_shader(selected_shader):
     return ('Shader wrote to ', )
 
 def write_cg(ammended_data):
-    cgp = root_path.img_path('shaders') + '/retroarch.cgp'
+    cgp = root_path.change('shaders') + '/retroarch.cgp'
     with open(cgp, 'w') as ofile:
         ofile.seek(0)
         ofile.write(ammended_data)
@@ -62,7 +62,7 @@ def ammend_config(data):
     with open(OUTPUT_CFG, 'r') as infile:
         for index, line in enumerate(infile):
             if 'video_shader' == line.split()[0]:
-                data[index] = 'video_shader = "{:}/retroarch.cgp"\n'.format(root_path.img_path('shaders'))
+                data[index] = 'video_shader = "{:}/retroarch.cgp"\n'.format(root_path.change('shaders'))
                 return data
         print('never found')
 

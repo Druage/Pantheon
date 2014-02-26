@@ -1,4 +1,3 @@
-from PyQt5.QtCore import pyqtProperty, QCoreApplication, QObject, QUrl
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import tostring
@@ -133,7 +132,7 @@ def xmlwriter(data): #xmlwriter() is loaded automatically after scan is run
                 clean_key = key.strip(key[-4::])
 
             title.text = clean_key
-            image.text = root_path.img_path() + '/missing_artwork.png'
+            image.text = root_path.change() + '/missing_artwork.png'
             path.text = '"{:}"'.format(value)
 
 
