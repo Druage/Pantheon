@@ -6,6 +6,7 @@ import os
 import fnmatch
 import win32_check
 import root_path
+
 PLATFORM = sys.platform #Check what operating system this is running on for the cores.
 
 def win32_tags(sys_element, core_element, extension):
@@ -148,8 +149,8 @@ def clean_directory(directory):
         print('file:// not in directory, already cleaned.')
         return directory
 
-def scan(directory, filter_extens=('*.sfc', '*.nes', '*.gba', '*.n64', '*.z64',
-        '*.cue' ), tag=None):
+def scan(directory, filter_extens=('*.sfc', '*.smc', '*.nes', '*.gba', '*.n64', '*.z64',
+        '*.cue'), tag=None):
     directory = clean_directory(directory)
     matches = {}
     tag_list = []
