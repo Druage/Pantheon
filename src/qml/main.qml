@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.0
 import QtQuick.Controls.Styles 1.1
 import QtQuick.XmlListModel 2.0
 import QtQuick.Dialogs 1.0
-import io.thp.pyotherside 1.0
+import io.thp.pyotherside 1.2
 
 import "../js/model.js" as MyModel
 import "../js/load_dialog.js" as LoadDialog
@@ -21,7 +21,6 @@ ApplicationWindow {
         id: py
 
         signal download(string result)
-        signal unzip(string result)
 
         property string fullscreen: ""
         property string core_path: ""
@@ -61,7 +60,11 @@ ApplicationWindow {
             });
         }
         onReceived: console.log('Unhandled event: ' + data)
-        onDownload: {console.log(result); sysMenu.text = result}
+        onDownload: {
+            progressBar.indeterminate = false
+            progressBar.visible = true
+            progressBar.value = result
+        }
         onError: console.log('Error: ' + traceback)
     }
 
@@ -75,15 +78,24 @@ ApplicationWindow {
                     onTriggered: {
                         py.call("download.start_process", [],
                             function (result) {
-                                console.log('Download: ' + result)}
-                        )
-                        sysMenu.text = "Download RetroArch"
+                                console.log('Download: ' + result)
+                                progressBar.value = 0
+                                progressBar.visible = false
+                            })
+                    }
+                }
+                MenuItem {
+                    text: "Delete RetroArch"
+                    onTriggered: {
+                        py.call('storage.purge_folder', ['retroarch_v1.0'], function (result) {
+                            console.log(result)
+                        })
                     }
                 }
                 MenuItem {
                     text: "Clear Library"
                     onTriggered: {
-                        py.call('storage.clear', [], function (result) {
+                        py.call('storage.reset_library', ['games.xml'], function (result) {
                             console.log(result)
                             libraryModel.reload()
                         })
@@ -222,7 +234,7 @@ ApplicationWindow {
             id: progressBar
             height: 10
             width: parent.width
-            maximumValue: 80
+            maximumValue: 100
             minimumValue: 0
             visible: false
             indeterminate: true

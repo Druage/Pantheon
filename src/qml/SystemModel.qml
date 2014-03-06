@@ -4,6 +4,7 @@ ListModel {
     ListElement {name: "All"}
     ListElement {name: "Nintendo"}
     ListElement {name: "Super Nintendo"}
+    ListElement {name: "Nintendo 64"}
     ListElement {name: "Sony PlayStation"}
     ListElement {name: "Virtual Boy"}
     ListElement {name: "Game Boy"}
