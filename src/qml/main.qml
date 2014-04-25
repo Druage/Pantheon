@@ -6,228 +6,377 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.XmlListModel 2.0
 import QtQuick.Dialogs 1.0
 import io.thp.pyotherside 1.2
+import Scanner 1.0
 
+// Themes
+import "Themes/OpenEmu (Red)/TableView"
+import "Themes/OpenEmu (Red)/SliderStyled"
+import "Themes/OpenEmu (Red)/SearchBarStyle"
+import "Themes/OpenEmu (Red)/CheckBoxStyled"
+
+// Local Folders
+import "RomTable"
+import "RomGrid"
+import "TopMenuBar"
+import "BottomStatusBar"
+import "Settings"
+import "GameCounter"
+import "LeftConsoleList"
+import "JSONListModel"
+
+
+// Javascript
+import "../js/toggleChecked.js" as ToggleChecked
 import "../js/model.js" as MyModel
 import "../js/load_dialog.js" as LoadDialog
+import "../js/check.js" as Check
 
 ApplicationWindow {
-    id: root
-    width: 1024
-    height: 768
-    SystemPalette {id: systemPalette}
-    Loader {id: customCoreDialog}
+    id: root;
+    width: 1024;
+    height: 768;
+    property var libraryModel: _libraryModel;
+    property string shader_cgp_path;
+    property var custom_emulators;
+    property var core_options;
+    property var shader_data;
+    property var cfg;
+    property var frontend_cfg;
+    property var style;
+    property var defaultStyle;
+    property var defaultSliderStyle;
+    property var defaultSearchBarStyle;
+    property string currentStyle: "OpenEmuRed";
+    property bool openEmuThemeChecked;
+
+    Scanner {
+        id: scan;
+    }
+
+    onFrontend_cfgChanged: {
+        if (frontend_cfg !== undefined) {
+            leftColumnStackView.enabled = true;
+        }
+    }
+
+    function appendConsoles(model, core_array, system) {
+        for (var core in core_array) {
+            model.append({system: core_array[core]})
+        }
+    }
 
     Python {
-        id: py
-
-        signal download(string result)
-
-        property string fullscreen: ""
-        property string core_path: ""
-        property string rom_path: ""
+        id: py;
+        signal pyerror(string result);
+        signal status(string result);
+        signal download(string result);
 
         Component.onCompleted: {
-            addImportPath(Qt.resolvedUrl('../py'));
+            addImportPath(Qt.resolvedUrl('../py'))
             setHandler('download', download)
+            setHandler('pyerror', pyerror)
+            setHandler('status', status)
 
-            importModule('storage', [], function (){})
-            importModule('retroarch_cfg', function () {})
-            importModule('retroarch_launch', function () {})
-            importModule('download', function () {})
-
-            importModule('create_config', function () {
-                py.call('create_config.write_config', [], function(result) {
-                    console.log("Wrote initial config")
+            importModule('constants', function () {
+                py.call('constants.shader_cgp_path', [], function (result) {
+                    root.shader_cgp_path = result
                 })
             })
-            importModule('check_cores', function () {
-                py.call('check_cores.get_matches', [], function(result) {
-                    for (var i=0; i<result.length; i++) {
-                        coresModel.append(result[i]);
-                    }
-                });
-                py.call('check_cores.cores_list', [1], function(result) {
-                    for (var i=0; i<result.length; i++) {
 
-                        avaiableCores.append(result[i]);
+            importModule_sync('retroarch_launch')
+            importModule('library', function() {
+                py.call('library.read_data', [], function(result) {
+                    if (result) {
+                        for (var i=0; i < result.length; i++) {
+                            libraryModel.append(result[i]);
+                            oldModel.append(result[i]);
+                        }
                     }
                 })
-                py.call('check_cores.get_title', [1], function(result) {
-                    for (var i=0; i<result.length; i++) {
-                        shaderModel.append(result[i]);
+            })
+            importModule_sync('download')
+            importModule_sync('shaders')
+            importModule_sync('call_joyconfig')
+            importModule('storage', function () {
+                py.call("storage.cfg_to_json", ["frontend.cfg"], function(result){
+                    frontend_cfg = eval(result)
+                    advancedDialog._frontend_cfg = frontend_cfg
+
+                    var cfg_path;
+                    if (frontend_cfg["config_file"] !== "") {
+                        cfg_path = frontend_cfg["config_file"];
                     }
+                    else {
+                        cfg_path = "win32_retroarch.cfg";
+                    }
+                    py.call("storage.cfg_to_json", [cfg_path], function(result){
+                        cfg = eval(result);
+                        advancedDialog._cfg = cfg;
+                    })
+                    //py.call("storage.cfg_to_json", [".retroarch-core-options.cfg"], function (result) {
+                    //    root.core_options = eval(result);
+                    //})
+                    //py.call('storage.import_custom_emulator', ['skeleton.cfg'], function(result) {
+                    //    root.custom_emulators = eval(result);
+                    //})
                 })
-            });
+
+            })
         }
-        onReceived: console.log('Unhandled event: ' + data)
+
         onDownload: {
-            progressBar.indeterminate = false
-            progressBar.visible = true
-            progressBar.value = result
+            progressBar.indeterminate = false;
+            progressBar.visible = true;
+            progressBar.value = result;
         }
-        onError: console.log('Error: ' + traceback)
+        onStatus: {
+            console.log('Status: ' + result);
+            statusLabel.text = result;
+            statusUpdate.visible = true;
+            statusTimer.start();
+        }
+
+        onReceived: console.log('Unhandled event: ' + data);
+        onPyerror: console.log('PyError: ' + result);
+        onError: console.log('Error: ' + traceback);
+    }
+
+    Component.onCompleted: {
+        defaultStyle = gameTable.style;
+        defaultSliderStyle = bottomToolbar.sliderStyle;
+        defaultSearchBarStyle = bottomToolbar.textFieldStyle;
+    }
+
+    Component.onDestruction: {
+        var jsonArr = [];
+        py.call_sync('storage.json_to_cfg', ['frontend.cfg', frontend_cfg]);
+        if (libraryModel.count > 0) {
+            for (var i=0; i < oldModel.count; i++) {
+                jsonArr.push({
+                                 "title": oldModel.get(i).title,
+                                 "image": oldModel.get(i).image,
+                                 "path": oldModel.get(i).path,
+                                 "console": oldModel.get(i).console,
+                                 "extension": oldModel.get(i).ext,
+                                 "XML": oldModel.get(i).xml,
+                            });
+            }
+            py.call_sync('library.save_data', [jsonArr]);
+
+        }
+        var cfg_file;
+        if (frontend_cfg["config_file"] !== "") {
+            cfg_file = frontend_cfg["config_file"];
+        }
+        else {cfg_file = "win32_retroarch.cfg"}
+        py.call_sync("storage.json_to_cfg", [frontend_cfg["config_file"], cfg]);
+    }
+
+    ListModel {id: nesModel;}
+    ListModel {id: snesModel}
+    ListModel {id: n64Model}
+    ListModel {id: psxModel;}
+    ListModel {id: genesisModel}
+    ListModel {id: gbModel}
+    ListModel {id: gbaModel;}
+    ListModel {id: vbModel}
+    ListModel {id: arcadeModel}
+    ListModel {id: filmModel;}
+    ListModel {id: indieModel}
+    ListModel {id: pcModel}
+
+    SystemPalette {id: systemPalette;}
+
+    Loader {id: loader;}
+    ListModel {id: _libraryModel;}
+
+
+    ListModel {id: oldModel;}
+    ListModel {id: newLibraryModel;}
+
+    CoreModel {
+        id: coreModel
+        onStatusChanged: {
+            if (status === XmlListModel.Ready) { //Gotta add those cores!
+                for (var i=0; i < count; i++) {
+                    var item = get(i);
+                    if (item.NES) {
+                        if (item.NES.indexOf('bnes') !== -1) {
+                            nesModel.append({system: item.NES, name: "bNES"})
+                        }
+                        else if (item.NES.indexOf('fceumm') !== -1) {
+                            nesModel.append({system: item.NES, name: "FCEUmm"})
+                        }
+                        else if (item.NES.indexOf('nestopia') !== -1) {
+                            nesModel.append({system: item.NES, name: "NEStopia"})
+                        }
+                        else if (item.NES.indexOf('quick') !== -1) {
+                            nesModel.append({system: item.NES, name: "QuickNES"})
+                        }
+                        else {
+                            nesModel.append({system: item.NES, name: item.NES})
+                        }
+                    }
+                    else if (item.SNES) {
+                        if (item.SNES.indexOf('bsnes_accuracy') !== -1) {
+                            snesModel.append({system: item.SNES, name: "bSNES Accuracy"})
+                        }
+                        else if (item.SNES.indexOf('bsnes_balanced') !== -1) {
+                            snesModel.append({system: item.SNES, name: "bSNES Balanced"})
+                        }
+                        else if (item.SNES.indexOf('bsnes_performance') !== -1) {
+                            snesModel.append({system: item.SNES, name: "bSNES Performance"})
+                        }
+                        else if (item.SNES.indexOf('snes9x_next') !== -1) {
+                            snesModel.append({system: item.SNES, name: "Snes9x Next"})
+                        }
+                        else if (item.SNES.indexOf('snes9x') !== -1) {
+                            snesModel.append({system: item.SNES, name: "Snes9x"})
+                        }
+                        else {
+                            snesModel.append({system: item.SNES, name: item.SNES})
+                        }
+                    }
+                    else if (item.N64) {
+                        if (item.N64.indexOf('mupen64') !== -1) {
+                            n64Model.append({system: item.N64, name: "Mupen64Plus"})
+                        }
+                        else {
+                            n64Model.append({system: item.N64, name: item.N64})
+                        }
+                    }
+                    else if (item.PSX) {
+                        if (item.PSX.indexOf('mednafen') !== -1) {
+                            psxModel.append({system: item.PSX, name: "Mednafen PlayStation"})
+                        }
+                        else if (item.PSX.indexOf('pcsx') !== -1) {
+                            psxModel.append({system: item.PSX, name: "PCSX ReArmed"})
+                        }
+
+                        else {
+                            psxModel.append({system: item.PSX, name: item.PSX})
+                        }
+                    }
+                    else if (item.VB) {
+                        if (item.VB.indexOf('mednafen') !== -1) {
+                            vbModel.append({system: item.VB, name: "Mednafen Virtual Boy"})
+                        }
+                        else {
+                            vbModel.append({system: item.VB, name: "TyrQuake"})
+                        }
+                    }
+                    else if (item.GB) {
+                        if (item.GB.indexOf('gambatte') !== -1) {
+                            gbModel.append({system: item.GB, name: "Gambatte"})
+                        }
+                        else {
+                            gbModel.append({system: item.GB, name: item.GB})
+                        }
+                    }
+                    else if (item.GBA) {
+                        if (item.GBA.indexOf('vbam') !== -1) {
+                            gbaModel.append({system: item.GBA, name: "Visual Boy Advance M"})
+                            gbModel.append({system: item.GBA, name: "Visual Boy Advance M"})
+                        }
+                        else if (item.GBA.indexOf('vba') !== -1){
+                            gbaModel.append({system: item.GBA, name: "Visual Boy Advance"})
+                            gbModel.append({system: item.GBA, name: "Visual Boy Advance"})
+                        }
+                        else if (item.GBA.indexOf('meteor') !== -1){
+                            gbaModel.append({system: item.GBA, name: "Meteor"})
+                        }
+                        else if (item.GBA.indexOf('mednafen') !== -1){
+                            gbaModel.append({system: item.GBA, name: "Mednafen Game Boy Advance"})
+                        }
+                        else {
+                            gbaModel.append({system: item.GBA, name: item.GBA})
+                        }
+                    }
+                    else if (item.GENESIS) {
+                        if (item.GENESIS.indexOf('gx') !== -1) {
+                            genesisModel.append({system: item.GENESIS, name: "Genesis Plus GX"})
+                        }
+                        else {
+                            genesisModel.append({system: item.GENESIS, name: item.GENESIS})
+                        }
+                    }
+                    else if (item.ARCADE) {
+                        if (item.ARCADE.indexOf('fb') !== -1) {
+                            arcadeModel.append({system: item.ARCADE, name: "Final Burn Alpha"})
+                        }
+                        else if (item.ARCADE.indexOf('mame') !== -1){
+                            arcadeModel.append({system: item.ARCADE, name: "Multiple Arcade Machine Emulator"})
+                        }
+                        else {
+                            arcadeModel.append({system: item.ARCADE, name: "TyrQuake"})
+                        }
+                    }
+                    else if (item.FILM) {
+                        if (item.FILM.indexOf('ffmpeg') !== -1) {
+                            filmModel.append({system: item.FILM, name: "FFmpeg"})
+                        }
+                        else {
+                            filmModel.append({system: item.FILM, name: "TyrQuake"})
+                        }
+                    }
+                    else if (item.PC) {
+                        if (item.PC.indexOf('quake') !== -1) {
+                            pcModel.append({system: item.PC, name: "TyrQuake"})
+                        }
+                        else {
+                            pcModel.append({system: item.PC, name: "TyrQuake"})
+                        }
+                    }
+                    else if (item.ATARI2600) {
+                        if (item.ATARI2600.indexOf('stella') !== -1) {
+                            filmModel.append({system: item.ATARI2600, name: "Stella"})
+                        }
+                        else {
+                            filmModel.append({system: item.ATARI2600, name: "TyrQuake"})
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    AdvancedSettings {
+        id: advancedDialog;
+        visible: false;
+        //_defaultTableStyle: gameTable.style
+        //openEmuRedTable: openEmuRed
+
+        onClosing: {
+            root.cfg = advancedDialog._cfg;
+            root.frontend_cfg = advancedDialog._frontend_cfg
+            if (coreModel.count <= 0) {
+                coreModel.reload()
+            }
+        }
+    }
+
+    Component {id: openEmuRed;TableStyle {}}
+    Component {id: openEmuRedSlider; SliderStyled {}}
+    Component {id: openEmuRedSearchBar; SearchBarStyle {}}
+    Component {id: openEmuCheckBox; CheckBoxStyled {}}
+
+    Gradient {
+        id: openEmuRedGradient;
+        GradientStop {position: 0.0; color: "#cc4d4d";}
+        GradientStop{position: 0.5; color: "#ad4141";}
+        GradientStop {position: 1.0; color: "#933b3b";}
+    }
+
+    Gradient {
+        id: openEmuRedBottomGradient
+        GradientStop {position: 0.0; color: "#333333";}
+        GradientStop {position: 0.3; color: "#303030";}
+        GradientStop {position: 0.7; color: "#2b2b2b";}
+        GradientStop {position: 1.0; color: "#262626";}
     }
 
     menuBar:
-        MenuBar {
-            Menu {
-                title: "System"
-                MenuItem {
-                    id: sysMenu
-                    text: "Download RetroArch"
-                    onTriggered: {
-                        py.call("download.start_process", [],
-                            function (result) {
-                                console.log('Download: ' + result)
-                                progressBar.value = 0
-                                progressBar.visible = false
-                            })
-                    }
-                }
-                MenuItem {
-                    text: "Delete RetroArch"
-                    onTriggered: {
-                        py.call('storage.purge_folder', ['retroarch_v1.0'], function (result) {
-                            console.log(result)
-                        })
-                    }
-                }
-                MenuItem {
-                    text: "Clear Library"
-                    onTriggered: {
-                        py.call('storage.reset_library', ['games.xml'], function (result) {
-                            console.log(result)
-                            libraryModel.reload()
-                        })
-                    }
-                }
-            }
-
-            Menu {
-                title: "Paths"
-                FileDialog {
-                    id: fileDialog
-                    title: "Find Folder Containing Games"
-                    selectFolder: true
-                    onAccepted: {
-                        LoadDialog.reloadComponent(callXmlLoader, callXmlCreator)
-                        progressBar.visible = true
-                    }
-                    onRejected: {console.log("Cancelled"); fileDialog.close()}
-                }
-
-                MenuItem {
-                    text: "Add Folder"
-                    onTriggered: {
-                        fileDialog.open()
-                    }
-                }
-            }
-
-            Menu {
-                Loader {id: callJoyConfig}
-                title: "Input"
-                MenuItem {
-                    text: "Configure Controller"
-                    onTriggered: {
-                        LoadDialog.reloadComponent(callJoyConfig, Qt.createComponent("CallTerminal.qml"))
-                    }
-                }
-            }
-
-           Menu {
-               title: "Video"
-               Menu {
-                   id: shaderbar
-                   title: "Shaders"
-                   Instantiator {
-                       id: instan
-                       model: ListModel {id: shaderModel}
-                       MenuItem {
-                           id: shaders
-                           text: shader_path
-                           //property var directory: path
-                           onTriggered: {
-                                py.call('retroarch_cfg.read_shader', [shader_path], function (result) {
-                                   console.log('shader result: ' + result)
-                               })
-                           }
-                       }
-                       onObjectAdded: shaderbar.insertItem(index, object)
-                       onObjectRemoved: shaderbar.removeItem(object)
-                   }
-                   MenuSeparator {
-                       visible: shaderbar.count > 0
-                   }
-                   /*MenuItem {
-                       text: "None"
-                       enabled: shaderbar.count > 0
-                       onTriggered: shaderbar.clear()
-                   }*/
-                    MenuItem {
-                        text: "None"
-                        onTriggered: py.call('retroarch_cfg.read_shader', [''],
-                            function (result) {console.log(result)
-                       })
-                   }
-               }
-               MenuItem {
-                   id: fullscreenMenu
-                   text: "Full Screen"
-                   checkable: true
-                   onTriggered: {
-                       fullscreenMenu.checked  ? fullscreenMenu.checked = true : fullscreenMenu.checked = false
-                       py.fullscreen ? py.fullscreen = "" : py.fullscreen = " -f "
-                       console.log(py.fullscreen)
-                   }
-               }
-            }
-            Menu {
-                id: coreMenu
-                title: "Cores"
-                Menu {
-                    id: installedCores
-                    title: "Installed"
-                    Instantiator {
-                        model: ListModel {id: coresModel}
-                        MenuItem {
-                            text: core_exists
-                            onTriggered: {
-                            }
-                        }
-                        onObjectAdded: installedCores.insertItem(index, object)
-                        onObjectRemoved: installedCores.removeItem(object)
-                        }
-                    }
-                Menu {
-                    id: notInstalledCores
-                    title: "All Cores"
-                    Instantiator {
-                        model: ListModel {id: avaiableCores}
-                        MenuItem {
-                            text: available
-                            onTriggered: {
-                            }
-                        }
-                        onObjectAdded: notInstalledCores.insertItem(index, object)
-                        onObjectRemoved: notInstalledCores.removeItem(object)
-                        }
-                    }
-                MenuItem {
-                    id: menu
-                    signal reload(string logFile)
-                    text: "Custom"
-                    onTriggered: {
-                        LoadDialog.reloadComponent(
-                                    customCoreDialog,
-                                    Qt.createComponent(
-                                        "CustomConsoleDialog.qml"))
-
-                    }
-                    }
-
-            }
-    }
+        TopMenuBar {id: menuBar}
 
     toolBar:
         ProgressBar {
@@ -240,506 +389,222 @@ ApplicationWindow {
             indeterminate: true
         }
 
-    Loader {id: callShaderLoader}
-
-    Component {
-        id: callShaderCreator
-        Python {
-            Component.onCompleted: {
-                var shader_path = shaders.directory
-                console.log(library_path)
-                addImportPath(Qt.resolvedUrl('../py/'));
-                importModule('retroarch_cfg', function () {
-                    call('retroarch_cfg.read_shader', [shader_path], function(result) {
-                        console.log('result: ' + result)
-                    })
-                    }
-                )
-            }
-        }
-    }
-
-    Loader {id: callXmlLoader}
-
-    Component {
-        id: callXmlCreator
-        Python {
-            Component.onCompleted: {
-                var library_path = Qt.resolvedUrl(fileDialog.fileUrl)
-                //importModule isnt stripping file://
-                console.log(library_path)
-                addImportPath(Qt.resolvedUrl('../py/'));
-                importModule('xml_creator', function () {
-                    call('xml_creator.scan', [library_path], function(result) {
-                        libraryModel.reload()
-                        progressBar.visible = false
-                    })
-                    }
-                )
-            }
-
-    }
-    }
-
-
-    //Loader{id: loader}
+    /// Creates Rectangle over ApplicationWindow
     Rectangle {
         id: gameLayout
         anchors.top: parent.top
         anchors.bottom: settings.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        /////////////////////////////////////////////////////
-        /////////          System List             //////////
-        /////////////////////////////////////////////////////
         color: "#000000FF"
-        ColumnLayout {
-            id: leftColumn
-            anchors.top: parent.top
-            width: 250;
+
+        GameCounter {
             anchors.bottom: parent.bottom
-            state:  "ON"
-            Rectangle {
-                id: leftSide
-                anchors.top: parent.top
-                width: leftColumn.width; height: root.height * 0.65
-                color: "#000000FF"//Controls background color
-                Rectangle {
-                    id: header
-                    width: 250;
-                    height: 25
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    color: "#000000FF"
-                    radius: 2
-                    state: "ON"
-                    Label {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        anchors.leftMargin: 10
-                        text: "<b>System</b>"
-                        //color: "white"
-                        font.pointSize: 10.5
-                    }
-                }
-                Rectangle {
-                    id: background
-                    height: filterMenu.contentHeight
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: header.bottom
-                    color: "#000000FF"
-                    //////////////////////////////////////////////////
-                    Component {
-                        id: highlightBar
-                        Rectangle {
-                            width: background.width; height: 25
-                            anchors.margins: 10
-                            y: filterMenu.currentItem.y;
-                            color: systemPalette.highlight //Highlighter Color
-                            /*gradient: Gradient {
-                                GradientStop {position: 0.0; color: "#cc4d4d"}
-                                GradientStop{position: 0.5; color: "#ad4141"}
-                                GradientStop {position: 1.0; color: "#933b3b"}
-                            }*/
-                        }
-                    }
-                    //////////////////////////////////////////////////
-                ListView {
-                    id: filterMenu
-                    anchors.fill: parent
-                    focus: true
-                    highlightFollowsCurrentItem: false
-                    highlight: highlightBar
-                    interactive: false
-                    model: SystemModel {}
-                    delegate: Rectangle {
-                        id: wrapper
-                        width: filterMenu.width; height: 25
-                        color: "#000000FF"
-                        states: State {
-                            name: "Current"
-                            when: wrapper.ListView.isCurrentItem
-                            PropertyChanges { target: wrapper; //x: -40
-                            }
-                            PropertyChanges { target: label; color: "white"}
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            function filter () {
-                                if (label.text === "All") {
-                                    libraryModel.query = "/Library/game[*]"; // * displays all nodes
-                                    libraryModel.reload()
-                                }
-                                else {
-                                    libraryModel.query = "/Library/game[contains(lower-case(child::system),lower-case(\""+label.text+"\"))]";
-                                    libraryModel.reload()
-                                }
-                            }
-                            onClicked: {filterMenu.currentIndex = index; filter()}
-                        }
-                        Label {id: label;
-                            anchors.verticalCenter: parent.verticalCenter;
-                            text: name;
-                            //opacity: 0.7
-                            //color: "black";
-                            x: 25
-                        }
-                    }   // Delegate
-                }       // ListView; id: filterMenu
-            }           // Rectangle; id: background
+            anchors.right: parent.right
+            anchors.bottomMargin: 20
+            anchors.rightMargin: 20
+            height: 20
         }
-            Rectangle {
-                anchors.top: leftSide.bottom
-                anchors.bottom: parent.bottom
-                height: 50; width: parent.width
-                color: "#000000FF"
-                    Label {
-                        id: settingsLabel
-                        anchors.left: parent.left
-                        anchors.leftMargin: 10
-                        text: "Settings"
-                        //color: systemPalette.
-                        font.bold: true
-                        font.pointSize: 10.5
-                    }
-                ColumnLayout {
-                    anchors.top: settingsLabel.bottom
-                    anchors.bottom: parent.bottom
-                    width: parent.width
-                    Rectangle {
-                        id: inputButton
-                        width: parent.width; height: 25
-                        anchors.top: parent.top
-                        anchors.left: parent.left
-                        anchors.leftMargin: 15
-                        color: "#000000FF"
-                        Label {
-                            anchors.left: parent.left
-                            anchors.leftMargin: 15
-                            text: "Input"
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: gameLauncher.joy
-                        }
-                    }
-                        //was shadermenu
+
+        /// Status Update at Top Right Edge
+        Rectangle {
+            id: statusUpdate
+            property string text
+            z: 1
+            visible: false
+            radius: 6
+            color: systemPalette.highlight;
+            width: statusLabel.width + 15
+            height: 25
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.margins: 30
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: statusUpdate.visible = false
+            }
+
+            Label {
+                id: statusLabel
+                anchors.centerIn: parent
+                color: "white"
+                onLinkActivated: Qt.openUrlExternally(link)
+                text: statusUpdate.text
+                Timer {
+                    id: statusTimer
+                    interval: 5000
+                    onTriggered: {statusUpdate.visible = false}
                 }
             }
-        }//Rectangle: leftSide
-    StackView {
-        id: stackView
-        anchors.top: parent.top
-        anchors.bottom: parent.bttom
-        anchors.left: leftColumn.right
-        anchors.right: parent.right
-        initialItem: gameTable
-        delegate: StackViewDelegate {
-                    function transitionFinished(properties)
-                    {
-                        properties.exitItem.x = 0
-                        properties.exitItem.rotation = 0
-                    }
+        }
 
-                    property Component pushTransition: StackViewTransition {
-                        SequentialAnimation {
-                            ScriptAction {
-                                script: enterItem.rotation = 90
-                            }
-                            PropertyAnimation {
-                                target: enterItem
-                                property: "x"
-                                from: enterItem.width
-                                to: 0
-                            }
-                            PropertyAnimation {
-                                target: enterItem
-                                property: "rotation"
-                                from: 90
-                                to: 0
-                            }
+        StackView {
+            id: leftColumnStackView
+            property string artworkSource
+            property var gradientStyle
+            property string fontColor
+            property string backgroundColor: '#000000FF'
+            property string borderColor: "lightgray"
+            property var _frontend_cfg: root.frontend_cfg;
+            enabled: false
+            anchors.top: parent.top
+            width: 250
+            anchors.bottom: parent.bottom
+            initialItem: leftColumn
+            delegate: StackViewDelegate {
+                function transitionFinished(properties)
+                {
+                    properties.exitItem.x = 0
+                    properties.exitItem.rotation = 0
+                }
+
+                property Component pushTransition: StackViewTransition {
+                    SequentialAnimation {
+                        ScriptAction {
+                            script: enterItem.rotation = 90
                         }
                         PropertyAnimation {
-                            target: exitItem
+                            target: enterItem
                             property: "x"
-                            from: 0
-                            to: -exitItem.width
+                            from: enterItem.width
+                            to: 0
+                        }
+                        PropertyAnimation {
+                            target: enterItem
+                            property: "rotation"
+                            from: 90
+                            to: 0
                         }
                     }
-                }
-        //////////////////////////////////////////////////////////////////
-        /////////               Game Table View                  /////////
-        //////////////////////////////////////////////////////////////////
-        TableView {
-            id: gameTable
-            highlightOnFocus: true
-            backgroundVisible: true
-            model: LibraryModel {id: libraryModel}
-
-            onDoubleClicked: {
-                var core_path = gameTable.model.get(gameTable.currentRow).core
-                var rom_path = gameTable.model.get(gameTable.currentRow).path
-
-                py.call('storage.log',[[core_path, rom_path]],
-                        function(result) {console.log(result)})
-                py.call('retroarch_launch.launch', [rom_path, core_path,
-                                                    py.fullscreen],
-                        function(result) {console.log(result)})
-
-            }
-            /*headerDelegate: Rectangle {
-                height: 25;
-                color: leftSide.color
-                Label {
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: styleData.value
-                    //color: "white"
-                    font.bold: true
-                    x: 13
-                }
-            }*/
-            /*rowDelegate: Rectangle {
-                height: 25; color: styleData.selected ?  "#b7b7b7" : "#E4E7E9"
-                border.color: "lightgray"
-            }*/
-            /*itemDelegate: Item {
-                    Label  {
-                        x: 12
-                        width: Text.contentWidth
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: styleData.value
-                        color: "#29070F"
-                        elide: Text.ElideRight
-                        font.bold: true
-                        font.pixelSize: 11
-                }
-            }*/
-            //style: TableViewStyle {
-               //frame: Rectangle {
-                    //color: leftSide.color
-                //}
-            //}
-            TableViewColumn{role: "title"; title: "Name"; width: 400}
-            /*TableViewColumn{ //Rating system is not yet implemented
-                role: "rating"
-                title: "Rating"
-                width: 100
-                delegate: Item {
-                    width: 100; height: 15
-                    Loader{
-                        id: rating_img
-                        anchors.verticalCenter: parent.verticalCenter
-                        source: styleData.value
+                    PropertyAnimation {
+                        target: exitItem
+                        property: "x"
+                        from: 0
+                        to: -exitItem.width
                     }
                 }
-            }*/
-            TableViewColumn{role: "system"; title: "System"; width: 200}
-            TableViewColumn{role: "core"; title: "Core"; width: 200}
+            }
+        }
+
+        Component {
+            id: leftColumn;
+            LeftConsoleList {
+                artworkSource: leftColumnStackView.artworkSource
+            }
+        }
+
+
+    StackView {
+        id: stackView
+        property string gridTextColor
+        property string gridBackgroundColor: "white"
+        property string noiseGradient: ""
+        anchors.top: parent.top
+        height: parent.height + 1
+        anchors.left: leftColumnStackView.right
+        anchors.right: parent.right
+        initialItem: gameTable
+        delegate:
+            StackViewDelegate {
+                function transitionFinished(properties) {
+                    properties.exitItem.x = 0
+                    properties.exitItem.rotation = 0
+                }
+                property Component pushTransition: StackViewTransition {
+                    SequentialAnimation {
+                        ScriptAction {
+                            script: enterItem.rotation = 90
+                        }
+                        PropertyAnimation {
+                            target: enterItem
+                            property: "x"
+                            from: enterItem.width
+                            to: 0
+                        }
+                        PropertyAnimation {
+                            target: enterItem
+                            property: "rotation"
+                            from: 90
+                            to: 0
+                        }
+                    }
+                    PropertyAnimation {
+                        target: exitItem
+                        property: "x"
+                        from: 0
+                        to: -exitItem.width
+                    }
+                }
         }
     }
-    //////////////////////////////////////////////////////////////////
-    /////////               Game Cover Art Grid              /////////
-    //////////////////////////////////////////////////////////////////
+
+    RomTable {
+        id: gameTable
+        theme: systemPalette;
+        _model: libraryModel;
+        _cfg: root.cfg;
+        _frontend_cfg: root.frontend_cfg;
+        _py: py
+        onRowImageSourceChanged: {
+            leftColumnStackView.artworkSource = rowImageSource
+        }
+        Component.onCompleted: console.log(root.cfg)
+    }
+
     Component {
         id: componentGrid
+
         Rectangle {
             id: gameGrid
             width: 800; height: 600
-            color: "white" //Grid Background Color
-            //Image {
-               // anchors.fill: parent;
-                //source: "../images/noise.png"
-            //}
-            GridView {
-                id: gameView
-                anchors.fill: parent
-                anchors.margins: 20
-                cellHeight: 100 + slider.value * 2
-                cellWidth: 125 + slider.value * 2
-                highlight: gameHighlighter
-                highlightFollowsCurrentItem: false
-                focus: true
-                model: libraryModel
-                delegate: gameDelegate
+            color: stackView.gridBackgroundColor //Grid Background Color
 
-            ////////////////////////////////////////////////////
-            Component {
-                id: gameHighlighter
-                Rectangle {
-                    opacity: 0.5
-                    color: systemPalette.highlight //Highlighter Color
-                    height: gameView.cellHeight; width: gameView.cellWidth
-                    x: gameView.currentItem.x;
-                    y: gameView.currentItem.y;
-                    Behavior on x { SpringAnimation { spring: 4; damping: 0.5}}
-                    Behavior on y { SpringAnimation { spring: 4; damping: 0.5}}
-                }
+            Image {
+                anchors.fill: parent
+                source: stackView.noiseGradient
             }
-            ////////////////////////////////////////////////////
+            RomGrid {
+                id: gameView
+            }
+
             Component {
                 id: gameDelegate
-                Rectangle {
-                    id: gameFrame
-                    width: gameView.cellWidth - 5
-                    height: gameView.cellHeight - 5
-                    color: "#000000FF"//gameGrid.color
-                    states: State {
-                        name: "Current"
-                        when: gameList.ListView.isCurrentItem
-                    }
-                    Rectangle {
-                        anchors.centerIn: parent
-                        width: parent.width
-                        height: parent.height
-                        //width: parent.width * 0.8; height: parent.height * 0.8
-                        color: "#000000FF"
-
-                        Rectangle {
+                    Item {
+                        id: gameFrame
+                        width: gameView.cellWidth
+                        height: gameView.cellHeight
+                        states:
+                            State {
+                                name: "Current"
+                                when: gameList.ListView.isCurrentItem
+                            }
+                        Item {
                             id: gameRectangle
-                            color: "#000000FF"
                             anchors.fill: parent
                             anchors.centerIn: parent
-                            anchors.margins: 50
-
+                            anchors.margins: 40
                             Image {
                                 id: gameImage
-                                //cache: true
+                                z: gameRectangle.z + 1
+                                cache: true
                                 source: image
-                                anchors.centerIn: parent;
                                 fillMode: Image.PreserveAspectFit
-                                //smooth: true
-                                anchors.fill: parent
-                                sourceSize.width: 500 ; sourceSize.height: 500
-                                /*BorderImage {
-                                    id: name
-                                    source: "../images/goldborder.png"
-                                    anchors.centerIn: parent
-                                    width: parent.width
-                                    height:parent.height
-                                    border.left: 0; border.top: 0
-                                    border.right: 0; border.bottom: 0
-                                }*/
-                           }
-
-                           MouseArea {
-                               anchors.fill: parent
-                               hoverEnabled: true
-                               acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-                               onDoubleClicked: {
-                                   var core_path = gameView.model.get(gameView.currentIndex).core
-                                   var rom_path = gameView.model.get(gameView.currentIndex).path
-
-                                   py.call('storage.log',[[core_path, rom_path]],
-                                           function(result) {console.log(result)})
-                                   py.call('retroarch_launch.launch', [rom_path, core_path, py.fullscreen],
-                                           function(result) {console.log(result)})
-                               }
-                               onClicked: {
-                                   gameView.currentIndex = index;
-                                   if (mouse.button === Qt.RightButton){
-                                       rightClickMenu.popup()
-                                   }
-                                   else {
-                                       console.log(gameView.model.get(gameView.currentIndex).path)
-                                    }
-                               }
+                                anchors {
+                                    fill: parent;
+                                    margins: 20
+                                }
+                                asynchronous: true
+                                sourceSize.width: 500;
+                                sourceSize.height: 500;
                             }
-
-                            // Adds game artwork to individual game
-                            FileDialog {
-                                id: artworkDialog
-                                title: "Find Artwork"
-                                nameFilters: [ "Image files (*.jpg *.png *.svg)",
-                                               "All files (*)" ]
-                                onAccepted: {
-                                    console.log(artworkDialog.fileUrl)
-                                    LoadDialog.reloadComponent(callArtworkLoader, callStoreArtwork)
-                                }
-                                onRejected: {
-                                   console.log("Cancelled")
-                                   fileDialog.close()
-                                }
-                            }
-                            Loader {id: callArtworkLoader}
-
-                            Component {
-                                id: callStoreArtwork
-                                Python {
-                                    Component.onCompleted: {
-                                        var artwork_path = Qt.resolvedUrl(artworkDialog.fileUrl)
-                                        var title = gameView.model.get(gameView.currentIndex).title
-                                        addImportPath(Qt.resolvedUrl('../py/'));
-                                        console.log(artwork_path + ' ' + title)
-                                        importModule('xml_creator', function () {
-                                            call('xml_creator.store_artwork', [title, artwork_path], function(result) {
-                                                console.log('result: ' + result)
-                                                libraryModel.reload()
-                                            })
-                                            }
-                                        )
-                                    }
-                                    onError: console.log(traceback)
-                                }
-                            }
-
-                            Menu {
-                                id: rightClickMenu
-                                title: "Edit"
-                                MenuItem {
-                                    text: "Add Artwork"
-                                    onTriggered: artworkDialog.open()
-                                }
-                                MenuItem {
-                                    text: "Remove Artwork"
-                                    onTriggered: {
-                                        LoadDialog.reloadComponent(callArtworkLoader, callStoreArtwork)
-                                        console.log("result: Image Removed")
-                                    }
-                                }
-                                MenuItem {
-                                    text: "Core: " + gameView.model.get(gameView.currentIndex).core
-                                }
-                            }
-
-                        DropShadow{                 // Currently resizing grid
-                            id: gameShadow          // takes down performance
-                            //cached: true            // because shadow has to be
-                            //fast: true              // redrawn everytime
-                            transparentBorder: true // grid is resized
-                            enabled: true
-                            anchors.fill: source
-                            source: gameImage
-                            radius: 4
-                            samples: 8
-                            color: "#80000000"
-                            verticalOffset: 3
-                            horizontalOffset: 3
-                            }
-                        Label {
-                            text: title
-                            font.bold: true
-                            font.pixelSize: 14
-                            width: parent.width
-                            anchors.top: gameRectangle.bottom
-                            anchors.topMargin: 10
-                            elide: Text.ElideRight
-                            horizontalAlignment:  Text.AlignHCenter
                         }
-                        }
-                    }
                 }
             }
-            }
-        }//ListView
-    }//Component; id: componentGrid
+
+        }
     }
-    //////////////////////////////////////////////////////////////////
-    /////////              Advanced Settings                //////////
-    //////////////////////////////////////////////////////////////////
+    }
     Rectangle {
         anchors.bottom: parent.bottom
         id: settings
@@ -762,107 +627,10 @@ ApplicationWindow {
             anchors.fill: parent
             enabled: false
             rotation: 180
-            //Button {id: settingsButton; visible: false; text:
-            //"Advanced Settings"; onClicked: stackView.push(advancedSettings)}
-            //Button {visible: settingsButton.visible; text: "
-            //Cores"; onClicked: stackView.push(cores)}
-            //Button {visible: settingsButton.visible; tex
-            //t: "Library Paths"; onClicked: stackView.push(libraryPaths)}
         }
     }
-    //////////////////////////////////////////////////////////////////
-    /////////               Bottom Toolbar                  //////////
-    //////////////////////////////////////////////////////////////////
     statusBar:
-        StatusBar{
-        property alias bottomToolbar: bottomToolbar
-        id: bottomToolbar
-
-        height: 40
-        //width: parent.width
-        //color: "#cc4d4d"
-         RowLayout {
-            anchors.fill: parent
-            ToolButton {
-                id: gridButton
-                //width: 25; height: 25
-                Image {
-                    id: gridImage
-                    anchors.centerIn: parent
-                    source: "../images/grid.png"
-                }
-                onClicked: {
-                    function switchViews() { // Put in separate .js file
-                        if (gridButton.state === "clicked") {
-                            stackView.push(componentGrid)
-                        }
-                        else {stackView.push(gameTable)}
-                    }
-                    gridButton.state === "clicked" ? gridButton.state = "" : gridButton.state = "clicked"
-                    switchViews()
-                }
-                /*MouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    function switchViews() { // Put in separate .js file
-                        if (gridButton.state === "clicked") {
-                            stackView.push(componentGrid)
-                        }
-                        else {stackView.push(gameTable)}
-                    }
-                    onClicked: {
-                        gridButton.state === "clicked" ? gridButton.state = "" : gridButton.state = "clicked"
-                        switchViews()
-                    }
-                }*/
-            }
-            TextField {
-                id: searchBar
-                width: 300; height: 30
-                implicitWidth: 200
-                anchors.horizontalCenter: parent.horizontalCenter
-
-                Keys.onReturnPressed: searchBar.state = "CLOSED"
-                placeholderText: "Search..."
-                Timer{
-                    id: filterTimer
-                    interval:500
-                    running: false
-                    repeat: false
-                    onTriggered: {
-                        console.log("triggered");
-                        libraryModel.query = "/Library/game[contains(lower-case(child::title),lower-case(\""+searchBar.text+"\"))]";
-                        libraryModel.reload();
-                    }
-                }//Timer
-                onTextChanged:{
-                    console.log(searchBar.text);
-                    if (filterTimer.running) { console.log("restarted"); filterTimer.restart() }
-                    else { console.log("started"); filterTimer.start() }
-                }
-            }
-            Slider { //Controls gameGrid icon size
-                id: slider
-                value: 100
-                minimumValue: 50; maximumValue: 200
-                implicitWidth: 100
-                width: bottomToolbar.width / 6
-                anchors.right: parent.right
-                anchors.rightMargin: 20
-                anchors.verticalCenter: parent.verticalCenter
-                /*style:
-                    SliderStyle {
-                        groove: Rectangle {
-                            radius: 8
-                            implicitHeight: 5
-                            color: "white"
-                        }
-                        handle: Rectangle {
-                            implicitWidth: 5 ;implicitHeight: 20
-                            color: "white"
-                        }
-                    }*/
-            }
+        BottomStatusBar {
+            id: bottomToolbar
         }
-    }
 }

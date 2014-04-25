@@ -1,0 +1,4 @@
+float_framebuffer0 = "false"
+shader0 = "hellworld.cg"
+wrap_mode0 = "clamp_to_border"
+shaders = "1"

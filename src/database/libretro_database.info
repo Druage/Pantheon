@@ -1,0 +1,418 @@
+>>bNES
+display_name = "NES / Famicom (bNES)"
+authors = "byuu"
+supported_extensions = "nes"
+corename = "bNES/higan"
+manufacturer = "Nintendo"
+systemname = "Nintendo Entertainment System"
+license = "GPLv3"
+permissions = ""
+
+>>bSNES
+display_name = "SNES / Super Famicom (bSNES Accuracy)"
+authors = "byuu"
+supported_extensions = "smc|sfc"
+corename = "bsnes/higan Accuracy"
+manufacturer = "Nintendo"
+systemname = "Super Nintendo Entertainment System"
+license = "GPLv3"
+permissions = ""
+
+>>bSNES C++98
+display_name = "SNES / Super Famicom (bSNES C++98 (v085))"
+authors = "byuu|Themaister|Ver GreenEyes"
+supported_extensions = "smc|sfc"
+corename = "bsnes C++98 (v085)"
+manufacturer = "Nintendo"
+systemname = "Super Nintendo Entertainment System"
+license = "GPLv3"
+permissions = ""
+
+>>DeSmuME
+display_name = "Nintendo DS (DeSmuME)"
+authors = "Zeromus"
+supported_extensions = "nds"
+corename = "DeSmuME"
+manufacturer = "Nintendo"
+systemname = "Nintendo DS"
+license = "GPLv2"
+permissions = ""
+
+>>Dinothawr
+display_name = "Dinothawr"
+authors = "Themaister"
+supported_extensions = "game"
+corename = "Dinothawr"
+systemname = "Game"
+license = "Non-commercial"
+permissions = ""
+
+>>DOSBox
+display_name = "DOS (DOSBox)"
+supported_extensions = "exe|com|bat|conf"
+corename = "DOSBox"
+license = "GPLv2"
+permissions = ""
+
+>>FBA
+display_name = "Arcade (FBA)"
+authors = "Barry Harris"
+supported_extensions = "zip"
+corename = "Final Burn Alpha"
+manufacturer = "Various"
+systemname = "Arcade (various)"
+license = "Non-commercial"
+permissions = ""
+
+>>FCEUmm
+display_name = "NES / Famicom (FCEUmm)"
+supported_extensions = "nes|unif"
+corename = "FCEUmm"
+manufacturer = "Nintendo"
+systemname = "Nintendo Entertainment System"
+license = "GPLv2"
+permissions = ""
+
+>>FFmpeg
+display_name = "FFmpeg"
+supported_extensions = "mkv|avi|f4v|f4f|3gp|ogm|flv|mp4|mp3|flac|ogg|m4a"
+corename = "FFmpeg"
+license = "LGPLv2, GPLv2"
+permissions = ""
+
+>>Gambatte
+display_name = "Game Boy / Game Boy Color (Gambatte)"
+authors = "Sinamas"
+supported_extensions = "gb|gbc|dmg"
+corename = "Gambatte"
+manufacturer = "Nintendo"
+systemname = "Game Boy/Game Boy Color"
+license = "GPLv2"
+permissions = ""
+
+>>Genesis Plus GX
+display_name = "Sega MS/GG/MD/CD (Genesis Plus GX)"
+authors = "Charles McDonald|Eke-Eke"
+supported_extensions = "md|smd|gen|sms|gg|sg|bin|cue|ios"
+corename = "Genesis Plus GX"
+manufacturer = "Sega"
+systemname = "Sega 8/16bit (Various)"
+license = "Non-commercial"
+permissions = ""
+firmware_count = 7
+firmware1_desc = "bios_CD_E.bin (MegaCD EU BIOS)"
+firmware1_path = "%sysdir%/bios_CD_E.bin"
+firmware2_desc = "bios_CD_U.bin (SegaCD US BIOS)"
+firmware2_path = "%sysdir%/bios_CD_U.bin"
+firmware3_desc = "bios_CD_J.bin (MegaCD JP BIOS)"
+firmware3_path = "%sysdir%/bios_CD_J.bin"
+firmware4_desc = "bios_E.sms (MasterSystem EU BIOS)"
+firmware4_path = "%sysdir%/bios_E.sms"
+firmware5_desc = "bios_U.sms (MasterSystem US BIOS)"
+firmware5_path = "%sysdir%/bios_U.sms"
+firmware6_desc = "bios_J.sms (MasterSystem JP BIOS)"
+firmware6_path = "%sysdir%/bios_J.sms"
+firmware7_desc = "bios.gg (GameGear BIOS)"
+firmware7_path = "%sysdir%/bios.gg"
+
+>>Lynx
+display_name = "Lynx (Handy)"
+supported_extensions = "lnx"
+corename = "Handy"
+manufacturer = "Atari"
+systemname = "Atari Lynx"
+license = "Zlib"
+permissions = ""
+
+>>InstancingViewer Camera
+authors = "Team Libretro"
+display_name = "PNG Images (InstancingViewer Camera)"
+supported_extensions = "png"
+corename = "InstancingViewer Camera"
+manufacturer = "Various"
+systemname = "Instantiation of objects displaying the camera image"
+license = "GPLv3"
+permissions = "camera"
+
+>>InstancingViewer
+authors = "Team Libretro"
+display_name = "PNG Images (InstancingViewer)"
+supported_extensions = "png"
+corename = "InstancingViewer"
+manufacturer = "Various"
+systemname = "Instantiation of objects"
+license = "GPLv3"
+permissions = ""
+
+>>MAME 2013
+display_name = "Arcade (MAME 2013)"
+authors = "MAMEdev"
+supported_extensions = "zip|7z|chd"
+corename = "MAME 2013 (0.150)"
+manufacturer = "Various"
+systemname = "Arcade (various)"
+license = "MAME"
+permissions = ""
+
+>>MAME 2010
+display_name = "Arcade (MAME 2010)"
+authors = "MAMEdev"
+supported_extensions = "zip|7z|chd"
+corename = "MAME 2010 (0.139)"
+manufacturer = "Various"
+systemname = "Arcade (various)"
+license = "MAME"
+permissions = ""
+
+>>MAME 2003
+display_name = "Arcade (MAME 2003)"
+authors = "MAMEdev"
+supported_extensions = "zip"
+corename = "MAME 2003 (0.78)"
+manufacturer = "Various"
+systemname = "Arcade (various)"
+license = "MAME"
+permissions = ""
+
+>>Mednafen VBA
+display_name = "Game Boy Advance (Mednafen VBA)"
+authors = "Forgotten|Ryphecha"
+supported_extensions = "gba"
+corename = "Mednafen VBA"
+manufacturer = "Nintendo"
+systemname = "Game Boy Advance"
+license = "GPLv2"
+permissions = ""
+
+>>Mednafen Neopop
+display_name = "Neo Geo Pocket/Color (Mednafen Neopop)"
+supported_extensions = "ngp|ngc"
+corename = "Mednafen Neopop"
+manufacturer = "SNK"
+systemname = "Neo Geo Pocket (Color)"
+license = "GPLv2"
+permissions = ""
+
+>>Mednafen PCE Fast
+display_name = "PC Engine/TurboGrafx-16 (Mednafen PCE Fast)"
+authors = "Ryphecha"
+supported_extensions = "pce|sgx|cue"
+corename = "Mednafen PCE Fast"
+manufacturer = "NEC"
+systemname = "PC Engine/TurboGrafx-16"
+license = "GPLv2"
+permissions = ""
+firmware_count = 1
+firmware1_desc = "syscard3.pce"
+firmware1_path = "%sysdir%/syscard3.pce"
+
+>>Mednafen PSX
+display_name = "PlayStation1 (Mednafen PSX)"
+authors = "Ryphecha"
+supported_extensions = "cue|toc|ccd"
+corename = "Mednafen PSX"
+manufacturer = "Sony"
+systemname = "PlayStation"
+license = "GPLv2"
+permissions = ""
+
+>>Mednafen SNES
+display_name = "SNES / Super Famicom (Mednafen SNES)"
+supported_extensions = "sfc|smc"
+corename = "Mednafen SNES"
+manufacturer = "Nintendo"
+systemname = "Super Nintendo Entertainment System"
+license = "GPLv2"
+permissions = ""
+
+>>Mednafen VB
+display_name = "Virtual Boy (Mednafen VB)"
+authors = "Ryphecha"
+supported_extensions = "vb|vboy|bin"
+corename = "Mednafen VB"
+manufacturer = "Nintendo"
+systemname = "Virtual Boy"
+license = "GPLv2"
+permissions = ""
+
+>>Mednafen Cygne
+display_name = "WonderSwan/Color (Mednafen Cygne)"
+supported_extensions = "ws|wsc"
+corename = "Mednafen WonderSwan"
+manufacturer = "Bandai"
+systemname = "WonderSwan/Color"
+license = "GPLv2"
+permissions = ""
+
+>>Modelviewer
+authors = "Team Libretro"
+display_name = "3D Models (Modelviewer)"
+supported_extensions = "obj"
+corename = "Modelviewer"
+manufacturer = "Various"
+systemname = "3D Models"
+license = "GPLv3"
+permissions = ""
+
+>>Mupen64plus
+display_name = "Nintendo 64 (Mupen64plus)"
+supported_extensions = "n64|v64|z64"
+corename = "Mupen64Plus"
+manufacturer = "Nintendo"
+systemname = "Nintendo 64"
+license = "GPLv2"
+permissions = "dynarec_optional"
+
+>>NEStopia
+display_name = "NES / Famicom (NEStopia)"
+supported_extensions = "nes|fds"
+corename = "Nestopia"
+manufacturer = "Nintendo"
+systemname = "Nintendo Entertainment System"
+license = "GPLv2"
+permissions = ""
+
+>>NXEngine
+display_name = "Cave Story (NXEngine)"
+authors = "Caithlin Shaw"
+supported_extensions = "exe"
+corename = "NXEngine"
+systemname = "Cave Story game engine"
+license = "GPLv3"
+permissions = ""
+
+>>PCSX ReARMed
+display_name = "PlayStation1 (PCSX ReARMed)"
+authors = "PCSX Team|notaz|Exophase"
+supported_extensions = "bin|cue|img|mdf|pbp|cbn|toc"
+corename = "PCSX ReARMed"
+manufacturer = "Sony"
+systemname = "PlayStation"
+license = "GPLv2"
+permissions = "dynarec"
+firmware_count = 3
+firmware1_desc = "scph1001 (US BIOS)"
+firmware1_path = "%sysdir%/scph1001.bin"
+firmware2_desc = "scph5501 (US BIOS Alternative)"
+firmware2_path = "%sysdir%/scph5501.bin"
+firmware3_desc = "scph7001 (US BIOS Alternative)"
+firmware3_path = "%sysdir%/scph7001.bin"
+
+>>PCSX ReARMed NEON
+display_name = "PlayStation1 (PCSX ReARMed) [NEON]"
+authors = "PCSX Team|notaz|Exophase"
+supported_extensions = "bin|cue|img|mdf|pbp|cbn|toc"
+corename = "PCSX ReARMed [NEON]"
+manufacturer = "Sony"
+systemname = "PlayStation"
+license = "GPLv2"
+permissions = "dynarec"
+firmware_count = 3
+firmware1_desc = "scph1001 (US BIOS)"
+firmware1_path = "%sysdir%/scph1001.bin"
+firmware2_desc = "scph5501 (US BIOS Alternative)"
+firmware2_path = "%sysdir%/scph5501.bin"
+firmware3_desc = "scph7001 (US BIOS Alternative)"
+firmware3_path = "%sysdir%/scph7001.bin"
+
+>>Picodrive
+display_name = "Sega MS/GG/MD/CD/32X (Picodrive)"
+authors = "notaz"
+supported_extensions = "md|smd|gen|sms|gg|sg|bin|cue|ios|32x"
+corename = "Picodrive"
+manufacturer = "Sega"
+systemname = "Sega 16bit + 32X (Various)"
+license = "MAME"
+permissions = "dynarec_optional"
+
+>>PrBoom
+display_name = "Doom (PrBoom)"
+supported_extensions = "wad|iwad"
+corename = "PrBoom"
+systemname = "DOOM game engine"
+license = "GPLv2"
+permissions = ""
+
+>>QuickNES
+display_name = "NES / Famicom (QuickNES)"
+authors = "blargg|kode54"
+supported_extensions = "nes"
+corename = "QuickNES"
+manufacturer = "Nintendo"
+systemname = "Nintendo Entertainment System"
+license = "GPLv2"
+permissions = ""
+
+>>SceneWalker
+authors = "Team Libretro"
+display_name = "3D Models (SceneWalker)"
+supported_extensions = "obj"
+corename = "SceneWalker"
+manufacturer = "Various"
+systemname = "3D Models"
+license = "GPLv3"
+permissions = ""
+
+>>ScummVM
+display_name = "ScummVM"
+supported_extensions = ""
+corename = "ScummVM"
+license = "GPLv2"
+permissions = ""
+
+>>SNES9x
+display_name = "SNES / Super Famicom (SNES9x)"
+authors = "SNES9x Team"
+supported_extensions = "smc|fig|sfc|gd3|gd7|dx2|bsx|swc"
+corename = "SNES9x"
+manufacturer = "Nintendo"
+systemname = "Super Nintendo Entertainment System"
+license = "Non-commercial"
+permissions = ""
+
+>>SNES9x Next
+display_name = "SNES / Super Famicom (SNES9x Next)"
+authors = "SNES9x Team|Squarepusher2"
+supported_extensions = "smc|fig|sfc|gd3|gd7|dx2|bsx|swc"
+corename = "SNES9x Next"
+manufacturer = "Nintendo"
+systemname = "Super Nintendo Entertainment System"
+license = "Non-commercial"
+permissions = ""
+
+>>Stella
+display_name = "Atari 2600 (Stella)"
+supported_extensions = "a26|bin"
+corename = "Stella"
+manufacturer = "Atari"
+systemname = "Atari 2600"
+license = "GPLv2"
+permissions = ""
+
+>>TyrQuake
+display_name = "Quake 1 (TyrQuake)"
+supported_extensions = "pak"
+corename = "TyrQuake"
+systemname = "Quake 1 game engine"
+license = "GPLv2"
+permissions = ""
+
+>>VBA Next
+display_name = "Game Boy Advance (VBA Next)"
+authors = "VBA-M Team|Squarepusher2"
+supported_extensions = "gba"
+corename = "VBA Next"
+manufacturer = "Nintendo"
+systemname = "Game Boy Advance"
+license = "GPLv2"
+permissions = ""
+
+>>VBA-M
+display_name = "Game Boy Advance (VBA-M)"
+authors = "VBA-M Team"
+supported_extensions = "gba"
+corename = "VBA-M"
+manufacturer = "Nintendo"
+systemname = "Game Boy Advance"
+license = "GPLv2"
+permissions = ""

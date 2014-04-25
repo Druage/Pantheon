@@ -1,7 +1,0 @@
-import sys
-
-def win32_check():
-    if sys.platform == 'win32':
-        return True
-    else:
-        return False

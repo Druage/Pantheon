@@ -1,3 +1,0 @@
-import pyotherside
-
-pyotherside.send('Mother')

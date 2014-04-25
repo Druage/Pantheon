@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+	<core>
+		<display_name>NES / Famicom (bNes)</display_name>
+		<authors>byuu</authors>
+		<supported_extensions>nes</supported_extensions>
+		<corename>bNES/higan</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Nintendo Entertainment System</systemname>
+		<license>GPLv3</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>SNES / Super Famicom (bSNES Accuracy)</display_name>
+		<authors>byuu</authors>
+		<supported_extensions>smc, sfc</supported_extensions>
+		<corename>bsnes/higan Accuracy</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Super Nintendo Entertainment System</systemname>
+		<license>GPLv3</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>SNES / Super Famicom (bSNES C++98 (v085))</display_name>
+		<authors>byuu</authors>
+		<supported_extensions>smc, sfc</supported_extensions>
+		<corename>bsnes C++98 (v085)</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Super Nintendo Entertainment System</systemname>
+		<license>GPLv3</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Nintendo DS (DeSmuME)</display_name>
+		<authors>Zeromus</authors>
+		<supported_extensions>nds</supported_extensions>
+		<corename>DeSmuME</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Nintendo DS</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Dinothawr</display_name>
+		<authors>Themaister</authors>
+		<supported_extensions>game</supported_extensions>
+		<corename>Dinothawr</corename>
+		<manufacturer>?</manufacturer>
+		<systemname>Game</systemname>
+		<license>Non-commercial</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>DOSBox</display_name>
+		<authors>?</authors>
+		<supported_extensions>exe, com, bat, conf</supported_extensions>
+		<corename>DOSBox</corename>
+		<manufacturer>?</manufacturer>
+		<systemname>?</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Arcase (FBA)</display_name>
+		<authors>Barry Harris</authors>
+		<supported_extensions>zip</supported_extensions>
+		<corename>Final Burn Alpha</corename>
+		<manufacturer>Various</manufacturer>
+		<systemname>Arcade (various)</systemname>
+		<license>Non-commercial</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>NES / Famicom (FCEUmm)</display_name>
+		<authors>?</authors>
+		<supported_extensions>nes, unif</supported_extensions>
+		<corename>FCEUmm</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Nintendo Entertainment System</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>FFmpeg</display_name>
+		<authors>?</authors>
+		<supported_extensions>mkv, avi, f4v, f4f, 3gp, ogm, flv, mp4, mp3, flac, ogg, m4a</supported_extensions>
+		<corename>FFmpeg</corename>
+		<manufacturer>?</manufacturer>
+		<systemname>Film</systemname>
+		<license>LGPLv2, GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Game Boy / Game Boy Color (Gambatte)</display_name>
+		<authors>Sinamas</authors>
+		<supported_extensions>gb, gbc, dmg</supported_extensions>
+		<corename>Gambatte</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Game Boy/Game Boy Color</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Sega MS/GG/MD/CD (Genesis Plus GX)</display_name>
+		<authors>Charles McDonald, Eke-Eke</authors>
+		<supported_extensions>md, smd, gen, sms, gg, sg, bin, cue, ios</supported_extensions>
+		<corename>Genesis Plus GX</corename>
+		<manufacturer>Sega</manufacturer>
+		<systemname>Sega 8/16bit (Various)</systemname>
+		<license>GPLv3</license>
+		<permissions>Non-commercial</permissions>
+		<firmware_count>7</firmware_count>
+	</core>
+	<core>
+		<display_name>Lynx (Handy)</display_name>
+		<authors>?</authors>
+		<supported_extensions>lnx</supported_extensions>
+		<corename>Handy</corename>
+		<manufacturer>Atari</manufacturer>
+		<systemname>Atari Lynx</systemname>
+		<license>Zlib</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>PNG Images (InstancingViewer Camera)</display_name>
+		<authors>Team Libretro</authors>
+		<supported_extensions>png</supported_extensions>
+		<corename>InstancingViewer Camera</corename>
+		<manufacturer>Various</manufacturer>
+		<systemname>Instantiation of objects displaying the camera image</systemname>
+		<license>GPLv3</license>
+		<permissions>camera</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>PNG Images (InstancingViewer)</display_name>
+		<authors>Team Libretro</authors>
+		<supported_extensions>png</supported_extensions>
+		<corename>InstancingViewer</corename>
+		<manufacturer>Various</manufacturer>
+		<systemname>Instantiation of objects</systemname>
+		<license>GPLv3</license>
+		<permissions>camera</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Arcade (MAME 2013)</display_name>
+		<authors>MAMEdev</authors>
+		<supported_extensions>zip, 7z, chd</supported_extensions>
+		<corename>MAME 2013 (0.150)</corename>
+		<manufacturer>Various</manufacturer>
+		<systemname>Arcade (various)</systemname>
+		<license>MAME</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Arcade (MAME 2010)</display_name>
+		<authors>MAMEdev</authors>
+		<supported_extensions>zip, 7z, chd</supported_extensions>
+		<corename>MAME 2010 (0.139)</corename>
+		<manufacturer>Various</manufacturer>
+		<systemname>Arcade (various)</systemname>
+		<license>MAME</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Arcade (MAME 2003)</display_name>
+		<authors>MAMEdev</authors>
+		<supported_extensions>zip</supported_extensions>
+		<corename>MAME 2003 (0.78)</corename>
+		<manufacturer>Various</manufacturer>
+		<systemname>Arcade (various)</systemname>
+		<license>MAME</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Game Boy Advance (Mednafen VBA)</display_name>
+		<authors>Forgotten, Ryphecha</authors>
+		<supported_extensions>gba</supported_extensions>
+		<corename>Mednafen VBA</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Game Boy Advance</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Neo Geo Pocket/Color (Mednafen Neopop)</display_name>
+		<authors>byuu</authors>
+		<supported_extensions>ngp, ngc</supported_extensions>
+		<corename>Mednafen Neopop</corename>
+		<manufacturer>SNK</manufacturer>
+		<systemname>Neo Geo Pocket (Color)</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>PC Engine/TurboGrafx-16 (Mednafen PCE Fast)</display_name>
+		<authors>Ryphecha</authors>
+		<supported_extensions>pce, sgx, cue</supported_extensions>
+		<corename>Mednafen PCE Fast</corename>
+		<manufacturer>NEC</manufacturer>
+		<systemname>PC Engine/TurboGrafx-16</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>1</firmware_count>
+	</core>
+	<core>
+		<display_name>PlayStation1 (Mednafen PSX)</display_name>
+		<authors>Ryphecha</authors>
+		<supported_extensions>cue, toc, ccd</supported_extensions>
+		<corename>Mednafen PSX</corename>
+		<manufacturer>Sony</manufacturer>
+		<systemname>PlayStation</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>SNES / Super Famicom (Mednafen SNES)</display_name>
+		<authors>?</authors>
+		<supported_extensions>sfc, smc</supported_extensions>
+		<corename>Mednafen SNES</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Super Nintendo Entertainment System</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Virtual Boy (Mednafen VB)</display_name>
+		<authors>Ryphecha</authors>
+		<supported_extensions>vb, vboy, bin</supported_extensions>
+		<corename>Mednafen VB</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Virtual Boy</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>WonderSwan/Color (Mednafen Cygne)</display_name>
+		<authors>?</authors>
+		<supported_extensions>ws, wsc</supported_extensions>
+		<corename>Mednafen WonderSwan</corename>
+		<manufacturer>Bandai</manufacturer>
+		<systemname>WonderSwan/Color</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>3D Models (Modelviewer)</display_name>
+		<authors>Team Libretro</authors>
+		<supported_extensions>obj</supported_extensions>
+		<corename>Modelviewer</corename>
+		<manufacturer>Various</manufacturer>
+		<systemname>3D Models</systemname>
+		<license>GPLv3</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Nintendo 64 (Mupen64plus)</display_name>
+		<authors>?</authors>
+		<supported_extensions>n64, v64, z64</supported_extensions>
+		<corename>Mupen64Plus</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Nintendo 64</systemname>
+		<license>GPLv2</license>
+		<permissions>dynarec_optional</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>NES / Famicom (NEStopia)</display_name>
+		<authors>?</authors>
+		<supported_extensions>nes, fds</supported_extensions>
+		<corename>Nestopia</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Nintendo Entertainment System</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Cave Story (NXEngine)</display_name>
+		<authors>Caithlin Shaw</authors>
+		<supported_extensions>exe</supported_extensions>
+		<corename>NXEngine</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Cave Story game engine</systemname>
+		<license>GPLv3</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>PlayStation1 (PCSX ReARMed)</display_name>
+		<authors>PCSX Team, notaz, Exophase</authors>
+		<supported_extensions>bin, cue, img, mdf, pbp, cbn, toc</supported_extensions>
+		<corename>PCSX ReARMed</corename>
+		<manufacturer>Sony</manufacturer>
+		<systemname>PlayStation</systemname>
+		<license>GPLv2</license>
+		<permissions>dynarec</permissions>
+		<firmware_count>3</firmware_count>
+	</core>
+	<core>
+		<display_name>PlayStation1 (PCSX ReARMed) [NEON]</display_name>
+		<authors>PCSX Team, notaz, Exophase</authors>
+		<supported_extensions>bin, cue, img, mdf, pbp, cbn, toc</supported_extensions>
+		<corename>PCSX ReARMed [NEON]</corename>
+		<manufacturer>Sony</manufacturer>
+		<systemname>PlayStation</systemname>
+		<license>GPLv2</license>
+		<permissions>dynarec</permissions>
+		<firmware_count>3</firmware_count>
+	</core>
+	<core>
+		<display_name>Sega MS/GG/MD/CD/32X (Picodrive)</display_name>
+		<authors>notaz</authors>
+		<supported_extensions>md, smd, gen, sms, gg, sg, bin, cue, ios, 32x</supported_extensions>
+		<corename>Picodrive</corename>
+		<manufacturer>Sega</manufacturer>
+		<systemname>Sega 16bit + 32X (Various)</systemname>
+		<license>MAME</license>
+		<permissions>dynarec_optional</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+    <core>
+    <display_name>SNES / Super Famicom (PocketSNES)</display_name>
+		<authors>SNES9x Team, PocketSNES Team, Toadking</authors>
+		<supported_extensions>smc, fig, sfc, gd3, gd7, dx2, bsx, swc</supported_extensions>
+		<corename>PocketSNES</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Super Nintendo Entertainment System</systemname>
+		<license>Non-commercial</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+    </core>
+	<core>
+		<display_name>Doom (PrBoom)</display_name>
+		<authors>?</authors>
+		<supported_extensions>wad, iwad</supported_extensions>
+		<corename>PrBoom</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>DOOM game engine</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>NES / Famicom (QuickNES)</display_name>
+		<authors>blargg, kode54</authors>
+		<supported_extensions>nes</supported_extensions>
+		<corename>QuickNES</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Nintendo Entertainment System</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>3D Models (SceneWalker)</display_name>
+		<authors>Team Libretro</authors>
+		<supported_extensions>obj</supported_extensions>
+		<corename>SceneWalker</corename>
+		<manufacturer>Various</manufacturer>
+		<systemname>3D Models</systemname>
+		<license>GPLv3</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>ScummVM</display_name>
+		<authors>?</authors>
+		<supported_extensions>?</supported_extensions>
+		<corename>ScummVM</corename>
+		<manufacturer>?</manufacturer>
+		<systemname>?</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>SNES / Super Famicom (SNES9x)</display_name>
+		<authors>SNES9x Team</authors>
+		<supported_extensions>smc, fig, sfc, gd3, gd7, dx2, bsx, swc</supported_extensions>
+		<corename>SNES9x</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Super Nintendo Entertainment System</systemname>
+		<license>Non-commercial</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>SNES / Super Famicom (SNES9x Next)</display_name>
+		<authors>SNES9x Team, Squarepusher2</authors>
+		<supported_extensions>smc, fig, sfc, gd3, gd7, dx2, bsx, swc</supported_extensions>
+		<corename>SNES9x Next</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Super Nintendo Entertainment System</systemname>
+		<license>Non-commercial</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Atari 2600 (Stella)</display_name>
+		<authors>?</authors>
+		<supported_extensions>a26, bin</supported_extensions>
+		<corename>Stella</corename>
+		<manufacturer>Atari</manufacturer>
+		<systemname>Atari 2600</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Quake 1 (TyrQuake)</display_name>
+		<authors>?</authors>
+		<supported_extensions>pak</supported_extensions>
+		<corename>TyrQuake</corename>
+		<manufacturer>?</manufacturer>
+		<systemname>Quake 1 game engine</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+    <core>
+		<display_name>MULTI (UME 2014)</display_name>
+		<authors>MAMEdev</authors>
+		<supported_extensions>zip, 7z, chd</supported_extensions>
+		<corename>UME 2014 (0.152)</corename>
+		<manufacturer>Various</manufacturer>
+		<systemname>MULTI (various)</systemname>
+		<license>MAME</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Game Boy Advance (VBA Next)</display_name>
+		<authors>VBA-M Team, Squarepusher2</authors>
+		<supported_extensions>gba</supported_extensions>
+		<corename>VBA Next</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Game Boy Advance</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+	<core>
+		<display_name>Game Boy Advance (VBA-M)</display_name>
+		<authors>VBA-M Team</authors>
+		<supported_extensions>gba</supported_extensions>
+		<corename>VBA-M</corename>
+		<manufacturer>Nintendo</manufacturer>
+		<systemname>Game Boy Advance</systemname>
+		<license>GPLv2</license>
+		<permissions>None</permissions>
+		<firmware_count>0</firmware_count>
+	</core>
+</Database>

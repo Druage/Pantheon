@@ -2,15 +2,26 @@ import os
 import win32_check
 import root_path
 import xml_creator
+import pyotherside
 
-
-def get_matches(path='/usr/lib/libretro'):
+def scan_cores(path, exten):
     if os.path.exists(path):
-        matches = xml_creator.scan(path, ('*.so'), tag='core_exists')
+        matches = xml_creator.scan(path, exten, tag='core_exists')
         return matches
     else:
-        return '''The directory entered doesn't exist.'''
+        return False
 
+def get_matches():
+    if win32_check.check():
+        path = root_path.change('..') + '/retroarch_v1.0/libretro'
+        result = scan_cores(path, ('*.dll'))
+    else:
+        result = scan_cores('/usr/lib/libretro', ('*.so'))
+        
+    if result is not False:
+        return result
+    else:
+        pyotherside.send('status', 'Cores were not found')
 
 def get_jslist(a_list, tag='core_exists', index=0):
     jscript_list = []
@@ -43,14 +54,31 @@ def get_title(get_path=0):
         
         shader_title = get_jslist(lines, tag='shader')
         #shader_path = get_jslist(lines[1], tag='shader_path')
-        #pyotherside.send('shader_path',shader_path)
+        #pyotherside.send('shader_path', shader_path)
     return shader_title
     
-def cores_list(path='/usr/lib/libretro'):
+def cores_list():
     if win32_check.check():
-        pass
+        path = root_path.change('retroarch_v1.0')
     else:
-        with open(root_path.path() + '/linux_cores.txt', 'r') as fid:
-            cores = fid.readlines()
-            clean_cores = get_jslist(cores, tag='available')
-        return clean_cores
+        path = '/usr/lib/libretro'
+    with open(root_path.path() + '/linux_cores.txt', 'r') as fid:
+        cores = fid.readlines()
+        clean_cores = get_jslist(cores, tag='available')
+    return clean_cores
+
+def get_core_database():
+    input_file = root_path.change('..') + '/libretro_database.info'
+    with open(input_file, 'r') as infile:
+        data = {}
+        for line in infile:
+            if '>>' in line:
+                key = line.replace('>>', '').replace('\n', '')
+                data[key] = []
+            elif line != '\n':
+                value = line.replace('\n', '')
+                data[key].append(value)
+            else:
+                pass
+    return data
+
