@@ -12,7 +12,7 @@ Furthermore, this project is unofficial and so please directy ask questions abou
 RetroArch developers will not know what you are talking about.
 The official version of RetroArch is located at this [site](http://www.libretro.com/), this is the preferred. 
 
-This frontend is free as in freedom and beer. I will not accept donations for building upon the hard work of others. I could however, use some help with the frontend, so please feel free to contact me at Druage@gmx.com.
+This frontend is free as in freedom and beer. If you wish to help with the frontend, please feel free to contact me at Druage@gmx.com.
 
 ###How it works:
   The frontend was built with [Qt 5.2](http://qt-project.org/downloads) Qml and so, utilizes Javascript and C++. I use [pyotherside](http://thp.io/2011/pyotherside/) as an alternative to PyQt5 in order to provide scripting capabilities that are written in [Python 3.3](http://www.python.org/download/releases/3.3.3/). The project also uses XML files to store user game data, I may switch this over to JSON once I have finished with the UI development. The frontend will work on Linux, OSX, and Windows; however these builds are tested alomst exclusively on Linux, though I will periodically test them on Windows, OSX is currently unknown. No binary packages currently exist because I haven't create any yet.
