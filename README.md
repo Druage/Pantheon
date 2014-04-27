@@ -96,7 +96,7 @@ Only functions are in camel case.
     #define MAX_SIZE = 600;
     
     // Right!
-    const MAX_SIZE = 600;
+    const int MAX_SIZE = 600;
     
     // Wrong! 
     int someCounter = 20;
