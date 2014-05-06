@@ -5,8 +5,12 @@ import QtGraphicalEffects 1.0
 import QtQuick.Controls.Styles 1.1
 import QtQuick.XmlListModel 2.0
 import QtQuick.Dialogs 1.0
-import io.thp.pyotherside 1.2
-import Scanner 1.0
+//import io.thp.pyotherside 1.2
+
+import Library 1.0
+import Launch 1.0
+import Shader 1.0
+import Config 1.0
 
 // Themes
 import "Themes/OpenEmu (Red)/TableView"
@@ -24,7 +28,6 @@ import "GameCounter"
 import "LeftConsoleList"
 import "JSONListModel"
 
-
 // Javascript
 import "../js/toggleChecked.js" as ToggleChecked
 import "../js/model.js" as MyModel
@@ -33,9 +36,8 @@ import "../js/check.js" as Check
 
 ApplicationWindow {
     id: root;
-    width: 1024;
-    height: 768;
-    property var libraryModel: _libraryModel;
+
+    property var libraryModel: _libraryModel.model;
     property string shader_cgp_path;
     property var custom_emulators;
     property var core_options;
@@ -49,23 +51,45 @@ ApplicationWindow {
     property string currentStyle: "OpenEmuRed";
     property bool openEmuThemeChecked;
 
-    Scanner {
-        id: scan;
+    width: 1024;
+    height: 768;
+    title: "Pantheon";
+
+    Library {                                             // Imported from C++
+        id: library;
+    }
+
+    Launch {
+        id: launcher;
+    }
+
+    Config {
+        id: config;
+        Component.onCompleted: {
+            frontend_cfg = readDefaultFrontEndConfigFile();
+            advancedDialog._frontend_cfg = frontend_cfg;
+            if (frontend_cfg["config_file"] === '""' ||
+                frontend_cfg["config_file"] === undefined ||
+                frontend_cfg["config_file"] === "")
+                cfg = readDefaultRetroArchConfigFile();
+            else {
+                cfg = readConfigFile(frontend_cfg["config_file"]);
+            }
+            advancedDialog._cfg = cfg;
+        }
     }
 
     onFrontend_cfgChanged: {
-        if (frontend_cfg !== undefined) {
+        if (frontend_cfg !== undefined)
             leftColumnStackView.enabled = true;
-        }
     }
 
     function appendConsoles(model, core_array, system) {
-        for (var core in core_array) {
+        for (var core in core_array)
             model.append({system: core_array[core]})
-        }
     }
 
-    Python {
+    /*Python {
         id: py;
         signal pyerror(string result);
         signal status(string result);
@@ -79,49 +103,14 @@ ApplicationWindow {
 
             importModule('constants', function () {
                 py.call('constants.shader_cgp_path', [], function (result) {
-                    root.shader_cgp_path = result
+                    root.shader_cgp_path = result;
                 })
-            })
+            });
 
-            importModule_sync('retroarch_launch')
-            importModule('library', function() {
-                py.call('library.read_data', [], function(result) {
-                    if (result) {
-                        for (var i=0; i < result.length; i++) {
-                            libraryModel.append(result[i]);
-                            oldModel.append(result[i]);
-                        }
-                    }
-                })
-            })
-            importModule_sync('download')
-            importModule_sync('shaders')
-            importModule_sync('call_joyconfig')
-            importModule('storage', function () {
-                py.call("storage.cfg_to_json", ["frontend.cfg"], function(result){
-                    frontend_cfg = eval(result)
-                    advancedDialog._frontend_cfg = frontend_cfg
-
-                    var cfg_path;
-                    if (frontend_cfg["config_file"] !== "") {
-                        cfg_path = frontend_cfg["config_file"];
-                    }
-                    else {
-                        cfg_path = "win32_retroarch.cfg";
-                    }
-                    py.call("storage.cfg_to_json", [cfg_path], function(result){
-                        cfg = eval(result);
-                        advancedDialog._cfg = cfg;
-                    })
-                    //py.call("storage.cfg_to_json", [".retroarch-core-options.cfg"], function (result) {
-                    //    root.core_options = eval(result);
-                    //})
-                    //py.call('storage.import_custom_emulator', ['skeleton.cfg'], function(result) {
-                    //    root.custom_emulators = eval(result);
-                    //})
-                })
-
-            })
+            importModule_sync('library');
+            importModule_sync('download');
+            importModule_sync('shaders');
+            importModule_sync('storage');
         }
 
         onDownload: {
@@ -139,7 +128,7 @@ ApplicationWindow {
         onReceived: console.log('Unhandled event: ' + data);
         onPyerror: console.log('PyError: ' + result);
         onError: console.log('Error: ' + traceback);
-    }
+    }*/
 
     Component.onCompleted: {
         defaultStyle = gameTable.style;
@@ -148,51 +137,34 @@ ApplicationWindow {
     }
 
     Component.onDestruction: {
-        var jsonArr = [];
-        py.call_sync('storage.json_to_cfg', ['frontend.cfg', frontend_cfg]);
-        if (libraryModel.count > 0) {
-            for (var i=0; i < oldModel.count; i++) {
-                jsonArr.push({
-                                 "title": oldModel.get(i).title,
-                                 "image": oldModel.get(i).image,
-                                 "path": oldModel.get(i).path,
-                                 "console": oldModel.get(i).console,
-                                 "extension": oldModel.get(i).ext,
-                                 "XML": oldModel.get(i).xml,
-                            });
-            }
-            py.call_sync('library.save_data', [jsonArr]);
-
-        }
-        var cfg_file;
-        if (frontend_cfg["config_file"] !== "") {
-            cfg_file = frontend_cfg["config_file"];
-        }
-        else {cfg_file = "win32_retroarch.cfg"}
-        py.call_sync("storage.json_to_cfg", [frontend_cfg["config_file"], cfg]);
+        config.saveFrontendConfig(frontend_cfg);
+        var outfile = frontend_cfg["config_file"];
+        if (outfile !== '""')
+            config.saveConfig(outfile, cfg);
     }
 
     ListModel {id: nesModel;}
-    ListModel {id: snesModel}
-    ListModel {id: n64Model}
+    ListModel {id: snesModel;}
+    ListModel {id: n64Model;}
     ListModel {id: psxModel;}
-    ListModel {id: genesisModel}
-    ListModel {id: gbModel}
+    ListModel {id: genesisModel;}
+    ListModel {id: gbModel;}
     ListModel {id: gbaModel;}
-    ListModel {id: vbModel}
-    ListModel {id: arcadeModel}
+    ListModel {id: vbModel;}
+    ListModel {id: arcadeModel;}
     ListModel {id: filmModel;}
-    ListModel {id: indieModel}
-    ListModel {id: pcModel}
+    ListModel {id: indieModel;}
+    ListModel {id: pcModel;}
 
     SystemPalette {id: systemPalette;}
 
     Loader {id: loader;}
-    ListModel {id: _libraryModel;}
 
-
-    ListModel {id: oldModel;}
-    ListModel {id: newLibraryModel;}
+    JSONListModel {
+        id: _libraryModel;
+        source: "library.json";
+        query:  "$[*]";
+    }
 
     CoreModel {
         id: coreModel
@@ -545,7 +517,7 @@ ApplicationWindow {
         _model: libraryModel;
         _cfg: root.cfg;
         _frontend_cfg: root.frontend_cfg;
-        _py: py
+        //_py: py
         onRowImageSourceChanged: {
             leftColumnStackView.artworkSource = rowImageSource
         }
