@@ -48,25 +48,34 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter;
             Keys.onReturnPressed: searchBar.state = "CLOSED";
             placeholderText: "Search...";
-            function filter() {
-                for (var i=0; i < libraryModel.count; i++) {
-                    var x = libraryModel.get(i)
-                    if (!x.title.toLowerCase().indexOf(text.toLowerCase())) {
-                        newLibraryModel.append(x);
-                        libraryModel = newLibraryModel;
-                        break;
-                    }
+
+
+
+            Timer {
+                id: timer;
+                interval: 700;
+                running: false;
+
+                function filter(text) {
+                    _libraryModel.query = "$[?(@.title.toLowerCase().indexOf('"
+                                           + text.toLowerCase() +"') !== -1)]";
                 }
-            }
-            onAccepted: {
-                newLibraryModel.clear();
-                libraryModel = oldModel;
-                if (text !== "") {
-                    filter();
-                }
+
+                onTriggered: filter(searchBar.text);
             }
 
+            onTextChanged: {
+                if (text !== "") {
+                    if (timer.running)
+                        timer.restart();
+                    else
+                        timer.running = true;
+                }
+                else
+                    _libraryModel.query = "$[*]";
+            }
         }
+
         Slider {
             id: slider
             value: 25
