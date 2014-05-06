@@ -8,6 +8,7 @@ import QtQuick 2.1
 import "jsonpath.js" as JSONPath
 
 Item {
+    id: jsonListModel;
     property string source: ""
     property string json: ""
     property string query: ""
@@ -48,4 +49,9 @@ Item {
 
         return objectArray;
     }
+
+    function reload() {
+            jsonListModel.source = "";
+            jsonListModel.source = "library.json"
+        }
 }
