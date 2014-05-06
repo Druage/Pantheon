@@ -104,8 +104,7 @@ MenuBar {
             property string shaderFile;
             onShaderFileChanged: {
                 root.cfg['video_shader'] = shader_cgp_path;
-                console.log(shaderFile)
-                py.call_sync("shaders.write_shader", [shaderFile]);
+                shader.writeCG(shaderFile);
             }
         }
 
@@ -545,8 +544,9 @@ MenuBar {
                 text: shader_path
                 //property var directory: path
                 onTriggered: {
-                    py.call('retroarch_cfg.read_shader', [shader_path], function (result) {
-                        console.log('shader result: ' + result)})
+                    console.log("ADD XML READER FOR CORES");
+                    //py.call('retroarch_cfg.read_shader', [shader_path], function (result) {
+                    //    console.log('shader result: ' + result)})
                 }
             }
             onObjectAdded: shaderbar.insertItem(index, object)
