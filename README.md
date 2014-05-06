@@ -1,4 +1,4 @@
-# Pantheon
+#Pantheon
 
 
 ###The Rebirth of a Desktop U.I.
@@ -28,3 +28,79 @@ The frontend is built with [Qt 5.2.1](http://qt-project.org/downloads) and uses 
 My name is Lee and I am the creator of this project. I go by the name of Druage and you can contact me at Druage@gmx.com.
 
 The other developer goes the name of TheCanadianBacon, and he is the reason for why this frontend is going to become it's own Libretro Api.
+
+####Coding Style:
+
+Since this project is written using Qt's framework, we will follow the Qt C++ Coding Style [Guide](http://qt-project.org/wiki/Qt_Coding_Style). 
+
+Some of the differences are that else statements should be on their own line and not on the same line as a preceeding if statement.
+
+``` c++ 
+    // Wrong!
+    if (x == 1) {
+    } else {
+    }
+       
+    // Right!
+    if (x == 1) {
+    }
+    else {
+    }
+```
+Also case blocks in switch statements should be indented 4 spaces from the switch keyword.
+
+``` c++    
+    // Wrong!
+    switch(1) {
+    case 1:
+        doSomething();
+        break;
+    default;
+        // ...
+    }
+       
+    // Right!
+    switch(1) {
+        case 1:
+            doSomething();
+            break;
+        default:
+            // ...
+    }
+```
+Private variables are declared with two leading underscore. While protected variables are declared with a single leading underscore.
+
+``` c++
+    // Right!
+    class Library {
+    
+    protected:
+        int _counter;
+        
+    private:
+        int __counter;
+        
+    }
+    
+    
+```
+
+Futhermore, do not use #define statements unless you have a very good reason. Use the const keyword instead.
+
+Lastly, instead of defining variables in camelCase, use only lowercase letters separated by a_single_space. 
+
+Only functions are in camel case.
+
+``` c++
+    // Wrong!
+    #define MAX_SIZE = 600;
+    
+    // Right!
+    const int MAX_SIZE = 600;
+    
+    // Wrong! 
+    int someCounter = 20;
+    
+    // Right!
+    int some_counter = 20;
+```
