@@ -7,6 +7,7 @@
 #include <QMap>
 #include <QFile>
 #include <QTextStream>
+#include <QDir>
 
 #include "qdebug.h"
 
@@ -17,11 +18,11 @@ public:
     explicit Shader(QObject *parent = 0);
 
 public slots:
-    bool writeCG(QString input_file);
+    bool writeCG(QString shader_file);
     //bool writeCGP();
 
 private:
-    QMap<QString, QString> cg_data;
+    QMap<QString, QString> __cg_data;
 };
 
 #endif // SHADER_H
