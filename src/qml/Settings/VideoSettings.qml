@@ -11,7 +11,7 @@ ColumnLayout {
     id: root;
     property var cfg;
     property var frontend_cfg;
-    property var _py;
+    //property var _py;
     property var _shaderModel;
     //property var _defaultVideoStyle
    // property string _videoTextColor
@@ -19,12 +19,12 @@ ColumnLayout {
     //property var defaultCheckBoxStyle
 
     Component.onCompleted: {
-        _py.importModule_sync('shaders')
-        _py.importModule_sync('xml_creator')
+        //_py.importModule_sync('shaders')
+        //_py.importModule_sync('xml_creator')
     }
 
     ShaderModel {
-        id: shaderModel
+        id: shaderModel;
     }
 
     Rectangle {
@@ -39,11 +39,11 @@ ColumnLayout {
             font.bold: true;
             //color: _videoTextColor
         }
+
         ColumnLayout {
             id: shaderColumn;
             anchors.left: parent.left;
             anchors.right: parent.right;
-
 
         Label {
             anchors {

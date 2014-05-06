@@ -4,7 +4,7 @@ import QtQuick.Window 2.0
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.XmlListModel 2.0
-import io.thp.pyotherside 1.2
+//import io.thp.pyotherside 1.2
 
 import "Settings"
 
@@ -180,7 +180,7 @@ ApplicationWindow {
         VideoSettings {
             cfg: _cfg;
             frontend_cfg: _frontend_cfg;
-            _py: py;
+            //_py: py;
             //checkBoxStyle: root.checkBoxStyle;
             //_defaultVideoStyle: defaultVideoStyle;
             //_videoTextColor: videoTextColor;
@@ -215,7 +215,7 @@ ApplicationWindow {
         property var cfg: root._cfg
         property var frontend_cfg: root._frontend_cfg
 
-        Python {
+        /*Python {
             id: py
 
             Component.onCompleted: {
@@ -224,6 +224,6 @@ ApplicationWindow {
                 importModule_sync('scan');
                 importModule_sync('xml_creator');
             }
-        }
+        }*/
     }
 }

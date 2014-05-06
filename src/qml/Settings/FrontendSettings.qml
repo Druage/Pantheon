@@ -4,20 +4,20 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 
 Rectangle {
-    id: root
+    id: root;
 
-    property var _cfg
-    property var _frontend_cfg
-    property var shaders
+    property var _cfg;
+    property var _frontend_cfg;
+    property var shaders;
     //property string backgroundColor: "#000000FF"
     //property string fontColor
     //color: backgroundColor;
     color: "#000000FF"
     ColumnLayout {
-        anchors.fill: parent
+        anchors.fill: parent;
 
         CoreModel {
-            id: coreModel
+            id: coreModel;
         }
 
         /*Label {
@@ -75,8 +75,8 @@ Rectangle {
         }*/
 
         Label {
-            anchors.left: parent.left
-            anchors.margins: 20
+            anchors.left: parent.left;
+            anchors.margins: 20;
             font.bold: true;
             text: "RetroArch Executable:";
         }
@@ -95,12 +95,12 @@ Rectangle {
                 anchors.right: emulatorSaveButton.left;
                 anchors.rightMargin: 10;
                 placeholderText: "/path/to/emulator.exe";
-                text: _cfg["retroarch_exe_path"];
+                text: (_cfg["retroarch_exe_path"] === '""') ? "" : _cfg["retroarch_exe_path"];
                 //textColor: fontColor;
                 readOnly: true
                 onTextChanged: {
                     _cfg["retroarch_exe_path"] = text;
-                    py.call('scan.retroarch_folder', [text], function (result) {
+                    /*py.call('scan.retroarch_folder', [text], function (result) {
                         var cores_key;
                         if ("cores" in result) {
                             cores_key = result["cores"]
@@ -112,7 +112,7 @@ Rectangle {
                         coreTextField.text = cores_key
                         cfgTextField.text = result["cfg_file"]
                         systemTextField.text = result["system"]
-                    })
+                    })*/
                 }
 
                 FileDialog {
@@ -168,16 +168,17 @@ Rectangle {
                 anchors.right: coreSaveButton.left;
                 anchors.rightMargin: 10;
                 placeholderText: "/path/to/libretro/core";
-                text: _cfg["libretro_path"];
+                text: (_cfg["libretro_path"] === '""') ? "" : _cfg["libretro_path"];
                 //textColor: fontColor;
                 readOnly: true
                 onTextChanged: {
                     coreTextField.text = text
                     _cfg["libretro_path"] = text;
-                    if (text !== "") {
-                        py.call('scan.cores_quick', [text], function(result) {
+                    if (text !== '""') {
+                        console.log("ADD CORE SCANNER");
+                        /*py.call('scan.cores_quick', [text], function(result) {
                             py.call_sync('xml_creator.core_xml_writer', [result])
-                        })
+                        })*/
                     }
                 }
 
@@ -235,7 +236,7 @@ Rectangle {
                 anchors.right: systemSaveButton.left;
                 anchors.rightMargin: 10;
                 placeholderText: "/path/to/system.exe";
-                text: _cfg["system_directory"];
+                text: (_cfg["system_directory"] === '""') ? "" : _cfg["system_directory"];
                 //textColor: fontColor;
                 readOnly: true
                 onTextChanged: {
@@ -295,7 +296,7 @@ Rectangle {
                 anchors.right: saveSaveButton.left
                 anchors.rightMargin: 10
                 placeholderText: "/path/to/gamefolder"
-                text: _cfg["savefile_directory"]
+                text: (_cfg["savefile_directory"] === '""') ? "" : _cfg["savefile_directory"];
                 //textColor: fontColor;
                 readOnly: true
                 onTextChanged: {
@@ -357,7 +358,7 @@ Rectangle {
                 anchors.right: cfgSaveButton.left
                 anchors.rightMargin: 10
                 placeholderText: "/path/to/retroarch.cfg"
-                text: _cfg["rgui_config_directory"]
+                text: (_frontend_cfg["config_file"] === '""') ? "" : _frontend_cfg["config_file"];
                 //textColor: fontColor;
                 readOnly: true
                 onTextChanged: {
@@ -431,22 +432,81 @@ Rectangle {
 
         RowLayout {
             id: deleteEmu
-            anchors.right: parent.right
-            anchors.left: parent.left
-            anchors.margins: 20
-            height: 50
+            anchors.right: parent.right;
+            anchors.left: parent.left;
+            anchors.margins: 20;
+            height: 50;
 
             Label {
-                text: "Delete RetroArch:"
+                text: "Delete RetroArch:";
                 //color: fontColor;
             }
 
             Button {
-                text: "Delete"
+                text: "Delete";
                 onClicked: {
-                    py.call_sync('storage.purge_folder', ['retroarch_v1.0'])
+                    console.log("ADD LIBRARY DELETE")
+                    //py.call_sync('storage.purge_folder', ['retroarch_v1.0']);
                 }
             }
+        }
+
+        RowLayout {
+            id: backupLibrary;
+            anchors.right: parent.right;
+            anchors.left: parent.left;
+            anchors.margins: 20;
+            height: 50;
+
+            Label {
+                text: "Backup Library:";
+                //color: fontColor;
+            }
+
+            Button {
+                text: "Backup";
+            }
+        }
+
+        RowLayout {
+            id: restoreLibrary;
+            anchors.right: parent.right;
+            anchors.left: parent.left;
+            anchors.margins: 20;
+            height: 50;
+
+            Label {
+
+                text: "Restore Library:";
+                //color: fontColor;
+            }
+
+            TextField {
+                id: restoreTextField
+                height: 30
+                anchors.right: restoreButton.left
+                anchors.rightMargin: 10
+            }
+
+            FileDialog {
+                id: restoreDialog;
+                title: "Select Library File";
+                nameFilters: ["Library file (*.json)"];
+                onAccepted:  {
+                    var cfgUrl = fileUrl.toString();
+                    cfgUrl = cfgUrl.replace('file:///', '');
+                    restoreTextField.text = cfgUrl;
+                }
+            }
+
+            Button {
+                id: restoreButton;
+                text: "Restore";
+                onClicked: {
+                    restoreDialog.open();
+                }
+            }
+
         }
     }
 }
