@@ -1,26 +1,28 @@
 #include "shader.h"
 
-Shader::Shader(QObject *parent): QObject(parent) {}
+Shader::Shader(QObject *parent): QObject(parent) {
+    cg_data["shaders"] = QString("1");
+    cg_data["shader0"] = QString("null");
+    cg_data["wrap_mode0"] = QString("clamp_to_border");
+    cg_data["float_framebuffer0"] = QString("false");
+}
 
-bool Shader::readCG(QString input_file) {
-    QFile infile(input_file);
-
-    if (!infile.open(QIODevice::ReadOnly)) {
-        qDebug() << "Error at Shader::readCG: " << input_file
-                 << "was not found.";
-        infile.close();
+bool Shader::writeCG(QString output_file) {
+    cg_data["shader0"] = output_file;
+    QFile outfile(output_file);
+    if (!outfile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+        qDebug() << "Error at Shader::writeCG: " << output_file << "was not found.";
+        outfile.close();
         return false;
     }
-
-    QStringList string_list;
-    QTextStream in(&infile);
-    int count = 0;
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        string_list.append(line);
-        qDebug() << string_list[count];
-        count++;
+    QStringList keys = cg_data.keys();
+    QTextStream outstream(&outfile);
+    for (int i=0; i < keys.length(); i++) {
+        QString current_key = keys.at(i);
+        QString value = cg_data[current_key];
+        outstream << current_key << " = " << value << '\n';
     }
-    infile.close();
+    qDebug() << "Saved cg file";
+    outfile.close();
     return true;
 }
