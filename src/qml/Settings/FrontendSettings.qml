@@ -95,7 +95,7 @@ Rectangle {
                 anchors.right: emulatorSaveButton.left;
                 anchors.rightMargin: 10;
                 placeholderText: "/path/to/emulator.exe";
-                text: (_cfg["retroarch_exe_path"] === '""') ? "" : _cfg["retroarch_exe_path"];
+                text: (_frontend_cfg["retroarch_exe_path"] === '""') ? "" : _frontend_cfg["retroarch_exe_path"];
                 //textColor: fontColor;
                 readOnly: true
                 onTextChanged: {
