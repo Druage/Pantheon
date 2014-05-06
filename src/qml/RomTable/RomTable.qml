@@ -1,7 +1,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
-import io.thp.pyotherside 1.2
 
 import "../../js/check.js" as Check
 
@@ -16,14 +15,6 @@ TableView {
     backgroundVisible: true;
     alternatingRowColors: true;
     model: _model;
-
-    Python {
-        id: py
-        Component.onCompleted: {
-            addImportPath(Qt.resolvedUrl('../../py'))
-            importModule_sync('retroarch_launch')
-        }
-    }
 
     function compareSystem(system) {
         var result = "";
@@ -117,14 +108,11 @@ TableView {
         else {
             if (frontend_cfg["config_file"] !== "") {
                 py.call("storage.json_to_cfg", [frontend_cfg["config_file"], cfg], function (result) {
-                    console.log(result)
                     if (result) {
-                        py.call_sync('retroarch_launch.launch',
-                                     [cfg["retroarch_exe_path"],
-                                      rom_path,
-                                      core_path,
-                                      frontend_cfg["config_file"]]
-                                    )
+                        launcher.launch([cfg["retroarch_exe_path"],
+                                         rom_path,
+                                         core_path,
+                                         frontend_cfg["config_file"]]);
                     }
                 })
             }
