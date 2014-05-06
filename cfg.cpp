@@ -23,9 +23,7 @@ QJsonObject Config::readConfigFile(QString input_file) {
     QJsonObject json_object;
 
     if (!infile.open(QIODevice::ReadOnly)) {
-        qDebug() << "Error at Config::readConfigFile: " << input_file
-                 << "was not found.";
-        infile.close();
+        qDebug() << "Error at Config::readConfigFile: " << input_file << "was not found.";
         return json_object;
     }
 
