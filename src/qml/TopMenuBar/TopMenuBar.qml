@@ -22,42 +22,28 @@ MenuBar {
     phosphorTrailsMenu.value = shader_data["phosphor_trails"]*/
     Menu {
         title: "System"
-        MenuItem {
-            id: sysMenu
-            text: "Download RetroArch"
-            onTriggered: {
-                py.call("download.retroarch", [],
-                    function (result) {
-                        progressBar.value = 0
-                        progressBar.visible = false
-                    })
-            }
-        }
 
         MenuItem {
             text: "Delete RetroArch"
             onTriggered: {
-                py.call('storage.purge_folder', ['retroarch_v1.0'], function (result) {
-                    console.log(result)
-                })
+                console.log("ADD DELETE RETROARCH FUNCTION");
             }
         }
 
         MenuItem {
             text: "Clear Library"
             onTriggered: {
-                py.call_sync('storage.reset_library', [])
+                console.log("deleted: " + library.deleteLibraryFile());
                 libraryModel.clear();
-                oldModel.clear();
             }
         }
 
         MenuItem {
             text: "Advanced"
             onTriggered: {
-                advancedDialog.visible = true
-                root.cfg = advancedDialog.stack_cfg
-                root.frontend_cfg = advancedDialog.stack_frontend_cfg
+                advancedDialog.visible = true;
+                root.cfg = advancedDialog.stack_cfg;
+                root.frontend_cfg = advancedDialog.stack_frontend_cfg;
             }
         }
     }
@@ -73,17 +59,8 @@ MenuBar {
                 progressBar.visible = true;
                 progressBar.indeterminate = true;
                 libraryModel.clear();
-                oldModel.clear();
-                if (scan.scanRecursively(url, "library.json")) {
-                    py.call('library.read_data', [], function(result) {
-                        if (result) {
-                            for (var i=0; i < result.length; i++) {
-                                libraryModel.append(result[i]);
-                                oldModel.append(result[i]);
-                            }
-                        }
-                    })
-                }
+                if (library.scanRecursively(url, "library.json"))
+                    _libraryModel.reload();
                 progressBar.visible = false;
             }
         }
