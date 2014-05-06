@@ -7,6 +7,7 @@ import QtQuick.XmlListModel 2.0
 import QtQuick.Dialogs 1.0
 //import io.thp.pyotherside 1.2
 
+// C++
 import Library 1.0
 import Launch 1.0
 import Shader 1.0
@@ -55,8 +56,12 @@ ApplicationWindow {
     height: 768;
     title: "Pantheon";
 
-    Library {                                             // Imported from C++
+    Library {
         id: library;
+    }
+
+    Shader {
+        id: shader;
     }
 
     Launch {
