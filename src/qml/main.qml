@@ -5,7 +5,6 @@ import QtGraphicalEffects 1.0
 import QtQuick.Controls.Styles 1.1
 import QtQuick.XmlListModel 2.0
 import QtQuick.Dialogs 1.0
-//import io.thp.pyotherside 1.2
 
 // C++
 import Library 1.0
@@ -62,9 +61,6 @@ ApplicationWindow {
 
     Shader {
         id: shader;
-        /*Component.onCompleted: {
-            shader.writeCG("pixellate.cg");
-        }*/
     }
 
     Launch {
@@ -328,17 +324,32 @@ ApplicationWindow {
 
         onClosing: {
             root.cfg = advancedDialog._cfg;
-            root.frontend_cfg = advancedDialog._frontend_cfg
+            root.frontend_cfg = advancedDialog._frontend_cfg;
             if (coreModel.count <= 0) {
-                coreModel.reload()
+                coreModel.reload();
             }
         }
     }
 
-    Component {id: openEmuRed;TableStyle {}}
-    Component {id: openEmuRedSlider; SliderStyled {}}
-    Component {id: openEmuRedSearchBar; SearchBarStyle {}}
-    Component {id: openEmuCheckBox; CheckBoxStyled {}}
+    Component {
+        id: openEmuRed;
+        TableStyle {}
+    }
+
+    Component {
+        id: openEmuRedSlider;
+        SliderStyled {}
+    }
+
+    Component {
+        id: openEmuRedSearchBar;
+        SearchBarStyle {}
+    }
+
+    Component {
+        id: openEmuCheckBox;
+        CheckBoxStyled {}
+    }
 
     Gradient {
         id: openEmuRedGradient;
@@ -443,21 +454,21 @@ ApplicationWindow {
         Component {
             id: leftColumn;
             LeftConsoleList {
-                artworkSource: leftColumnStackView.artworkSource
+                artworkSource: leftColumnStackView.artworkSource;
             }
         }
 
 
     StackView {
         id: stackView
-        property string gridTextColor
-        property string gridBackgroundColor: "white"
-        property string noiseGradient: ""
-        anchors.top: parent.top
-        height: parent.height + 1
-        anchors.left: leftColumnStackView.right
-        anchors.right: parent.right
-        initialItem: gameTable
+        property string gridTextColor;
+        property string gridBackgroundColor: "white";
+        property string noiseGradient: "";
+        anchors.top: parent.top;
+        height: parent.height + 1;
+        anchors.left: leftColumnStackView.right;
+        anchors.right: parent.right;
+        initialItem: gameTable;
         delegate:
             StackViewDelegate {
                 function transitionFinished(properties) {
@@ -493,61 +504,61 @@ ApplicationWindow {
     }
 
     RomTable {
-        id: gameTable
+        id: gameTable;
         theme: systemPalette;
         _model: libraryModel;
         _cfg: root.cfg;
         _frontend_cfg: root.frontend_cfg;
-        //_py: py
         onRowImageSourceChanged: {
-            leftColumnStackView.artworkSource = rowImageSource
+            leftColumnStackView.artworkSource = rowImageSource;
         }
-        Component.onCompleted: console.log(root.cfg)
+        Component.onCompleted: console.log(root.cfg);
     }
 
     Component {
-        id: componentGrid
+        id: componentGrid;
 
         Rectangle {
-            id: gameGrid
-            width: 800; height: 600
-            color: stackView.gridBackgroundColor //Grid Background Color
+            id: gameGrid;
+            width: 800;
+            height: 600;
+            color: stackView.gridBackgroundColor; //Grid Background Color
 
             Image {
-                anchors.fill: parent
-                source: stackView.noiseGradient
+                anchors.fill: parent;
+                source: stackView.noiseGradient;
             }
             RomGrid {
-                id: gameView
+                id: gameView;
             }
 
             Component {
-                id: gameDelegate
+                id: gameDelegate;
                     Item {
-                        id: gameFrame
-                        width: gameView.cellWidth
-                        height: gameView.cellHeight
+                        id: gameFrame;
+                        width: gameView.cellWidth;
+                        height: gameView.cellHeight;
                         states:
                             State {
-                                name: "Current"
-                                when: gameList.ListView.isCurrentItem
+                                name: "Current";
+                                when: gameList.ListView.isCurrentItem;
                             }
                         Item {
-                            id: gameRectangle
-                            anchors.fill: parent
-                            anchors.centerIn: parent
-                            anchors.margins: 40
+                            id: gameRectangle;
+                            anchors.fill: parent;
+                            anchors.centerIn: parent;
+                            anchors.margins: 40;
                             Image {
-                                id: gameImage
-                                z: gameRectangle.z + 1
-                                cache: true
-                                source: image
-                                fillMode: Image.PreserveAspectFit
+                                id: gameImage;
+                                z: gameRectangle.z + 1;
+                                cache: true;
+                                source: image;
+                                fillMode: Image.PreserveAspectFit;
                                 anchors {
                                     fill: parent;
-                                    margins: 20
+                                    margins: 20;
                                 }
-                                asynchronous: true
+                                asynchronous: true;
                                 sourceSize.width: 500;
                                 sourceSize.height: 500;
                             }
@@ -559,31 +570,32 @@ ApplicationWindow {
     }
     }
     Rectangle {
-        anchors.bottom: parent.bottom
-        id: settings
-        width: parent.width
-        height: 0
-        rotation: 180
+        anchors.bottom: parent.bottom;
+        id: settings;
+        width: parent.width;
+        height: 0;
+        rotation: 180;
         states: [
             State {
-                name: "clicked"
-                PropertyChanges { target: settings; height: 100 }
-                PropertyChanges { target: topMenu; enabled: true }
-                PropertyChanges { target: settingsButton; visible: true }
+                name: "clicked";
+                PropertyChanges {target: settings; height: 100;}
+                PropertyChanges {target: topMenu; enabled: true;}
+                PropertyChanges {target: settingsButton; visible: true;}
             }
         ]
-        transitions: Transition {
-            PropertyAnimation {property: "height"; easing.type: Easing.OutQuad}
-        }
+        transitions:
+            Transition {
+                PropertyAnimation {property: "height"; easing.type: Easing.OutQuad;}
+            }
         RowLayout {
-            id: topMenu
-            anchors.fill: parent
-            enabled: false
-            rotation: 180
+            id: topMenu;
+            anchors.fill: parent;
+            enabled: false;
+            rotation: 180;
         }
     }
     statusBar:
         BottomStatusBar {
-            id: bottomToolbar
+            id: bottomToolbar;
         }
 }
