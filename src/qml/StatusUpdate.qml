@@ -14,15 +14,17 @@ Rectangle {
     anchors.right: parent.right;
     anchors.top: parent.top;
     anchors.margins: 30;
+    color: systemPalette.highlight;
 
     onTextChanged: {
-        if (statusTimer.running)
-            statusTimer.restart();
-    }
-
-    MouseArea {
-        anchors.fill: parent;
-        onClicked: statusUpdate.visible = false;
+        if (text !== "") {
+            visible = true;
+            if (statusTimer.running)
+                statusTimer.restart();
+            else {
+                statusTimer.start();
+            }
+        }
     }
 
     Label {
@@ -34,7 +36,10 @@ Rectangle {
         Timer {
             id: statusTimer;
             interval: 5000;
-            onTriggered: statusUpdate.visible = false;
+            onTriggered: {
+                statusUpdate.text = "";
+                statusUpdate.visible = false;
+            }
         }
     }
 }
