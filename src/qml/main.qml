@@ -62,6 +62,9 @@ ApplicationWindow {
 
     Shader {
         id: shader;
+        /*Component.onCompleted: {
+            shader.writeCG("pixellate.cg");
+        }*/
     }
 
     Launch {
@@ -168,7 +171,7 @@ ApplicationWindow {
     JSONListModel {
         id: _libraryModel;
         source: "library.json";
-        query:  "$[*]";
+        query: "$[*]";
     }
 
     CoreModel {
@@ -378,8 +381,8 @@ ApplicationWindow {
         GameCounter {
             anchors.bottom: parent.bottom
             anchors.right: parent.right
-            anchors.bottomMargin: 20
-            anchors.rightMargin: 20
+            anchors.bottomMargin: 30
+            anchors.rightMargin: 30
             height: 20
         }
 
