@@ -348,7 +348,7 @@ ApplicationWindow {
     }
 
     Gradient {
-        id: openEmuRedBottomGradient
+        id: openEmuRedBottomGradient;
         GradientStop {position: 0.0; color: "#333333";}
         GradientStop {position: 0.3; color: "#303030";}
         GradientStop {position: 0.7; color: "#2b2b2b";}
@@ -356,34 +356,35 @@ ApplicationWindow {
     }
 
     menuBar:
-        TopMenuBar {id: menuBar}
+        TopMenuBar {id: menuBar;}
 
     toolBar:
         ProgressBar {
-            id: progressBar
-            height: 10
-            width: parent.width
-            maximumValue: 100
-            minimumValue: 0
-            visible: false
-            indeterminate: true
+            id: progressBar;
+            height: 10;
+            width: parent.width;
+            maximumValue: 100;
+            minimumValue: 0;
+            visible: false;
+            indeterminate: true;
         }
 
     /// Creates Rectangle over ApplicationWindow
     Rectangle {
-        id: gameLayout
-        anchors.top: parent.top
-        anchors.bottom: settings.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        color: "#000000FF"
+        id: gameLayout;
+        anchors.top: parent.top;
+        anchors.bottom: settings.bottom;
+        anchors.left: parent.left;
+        anchors.right: parent.right;
+        color: "#000000FF";
 
         GameCounter {
-            anchors.bottom: parent.bottom
-            anchors.right: parent.right
-            anchors.bottomMargin: 30
-            anchors.rightMargin: 30
-            height: 20
+            id: gameCount
+            anchors.bottom: parent.bottom;
+            anchors.right: parent.right;
+            anchors.bottomMargin: 30;
+            anchors.rightMargin: 30;
+            height: 20;
         }
 
         /// Status Update at Top Right Edge
@@ -392,23 +393,23 @@ ApplicationWindow {
         }
 
         StackView {
-            id: leftColumnStackView
-            property string artworkSource
-            property var gradientStyle
-            property string fontColor
-            property string backgroundColor: '#000000FF'
-            property string borderColor: "lightgray"
+            id: leftColumnStackView;
+            property string artworkSource;
+            property var gradientStyle;
+            property string fontColor;
+            property string backgroundColor: "#000000FF";
+            property string borderColor: "lightgray";
             property var _frontend_cfg: root.frontend_cfg;
-            enabled: false
-            anchors.top: parent.top
-            width: 250
-            anchors.bottom: parent.bottom
-            initialItem: leftColumn
+            enabled: false;
+            anchors.top: parent.top;
+            width: 250;
+            anchors.bottom: parent.bottom;
+            initialItem: leftColumn;
             delegate: StackViewDelegate {
                 function transitionFinished(properties)
                 {
-                    properties.exitItem.x = 0
-                    properties.exitItem.rotation = 0
+                    properties.exitItem.x = 0;
+                    properties.exitItem.rotation = 0;
                 }
 
                 property Component pushTransition: StackViewTransition {
