@@ -33,7 +33,10 @@ MenuBar {
         MenuItem {
             text: "Clear Library"
             onTriggered: {
-                console.log("deleted: " + library.deleteLibraryFile());
+                if (library.deleteLibraryFile())
+                    statusUpdate.text = "Library Deleted";
+                else
+                    statusUpdate.text = "Library Doesn't Exist"
                 libraryModel.clear();
             }
         }
@@ -59,8 +62,10 @@ MenuBar {
                 progressBar.visible = true;
                 progressBar.indeterminate = true;
                 libraryModel.clear();
-                if (library.scanRecursively(url, "library.json"))
+                if (library.scanRecursively(url, "library.json")) {
                     _libraryModel.reload();
+                    statusUpdate.text = "Library Imported";
+                }
                 progressBar.visible = false;
             }
         }
@@ -68,7 +73,7 @@ MenuBar {
         MenuItem {
             text: "Add Folder"
             onTriggered: {
-                fileDialog.open()
+                fileDialog.open();
             }
         }
 

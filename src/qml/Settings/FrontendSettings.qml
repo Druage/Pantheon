@@ -100,19 +100,6 @@ Rectangle {
                 readOnly: true
                 onTextChanged: {
                     _cfg["retroarch_exe_path"] = text;
-                    /*py.call('scan.retroarch_folder', [text], function (result) {
-                        var cores_key;
-                        if ("cores" in result) {
-                            cores_key = result["cores"]
-                        }
-                        else if ("libretro" in result) {
-                            cores_key = result["libretro"]
-                        }
-                        _cfg["libretro_path"] = cores_key
-                        coreTextField.text = cores_key
-                        cfgTextField.text = result["cfg_file"]
-                        systemTextField.text = result["system"]
-                    })*/
                 }
 
                 FileDialog {
@@ -121,7 +108,17 @@ Rectangle {
                     nameFilters: ["Executable file (*.exe)"];
                     onAccepted: {
                         var url = fileUrl.toString();
-                        url = url.replace('file:///', '');
+                        url = url.replace('file:///', '').replace("retroarch.exe", "");
+                        var folders = library.getPaths(url);
+                        if (cfgTextField.text === "") {
+                            cfgTextField.text = url + "/retroarch.cfg";
+                        }
+                        if (folders) {
+                            if (coreTextField.text === "")
+                                coreTextField.text = folders["cores"];
+                            if (systemTextField.text === "")
+                                systemTextField.text = folders["system"];
+                        }
                         emulatorTextField.text = url;
                     }
                 }
