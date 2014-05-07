@@ -187,3 +187,28 @@ int Library::scanRecursively(QString directory, QString outputPath) {
         return 0;
     }
 }
+
+QJsonObject Library::getPaths(QString retroarch_path) {
+    QDir retroarch(retroarch_path);
+    retroarch.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+    QJsonObject folders;
+    QDirIterator iterator(retroarch.absolutePath(), QDirIterator::Subdirectories);
+    while (iterator.hasNext()) {
+        iterator.next();
+        if (iterator.fileInfo().isDir()) {
+            QString folder_name = iterator.fileName();
+            if (folder_name == "autoconfig"
+                || folder_name == "configs"
+                || folder_name == "cores"
+                || folder_name == "libretro"
+                || folder_name == "shaders"
+                || folder_name == "system") {
+
+                qDebug() << iterator.filePath();
+                folders[folder_name] = iterator.filePath();
+            }
+        }
+    }
+    qDebug() << folders.length();
+    return folders;
+}
