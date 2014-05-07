@@ -264,25 +264,20 @@ Rectangle {
                         acceptedButtons: Qt.LeftButton | Qt.RightButton
                         hoverEnabled: true
 
-                        function filter() {
-                            if (model.console !== "All") {
-                                for (var i=0; i < libraryModel.count; i++) {
-                                    var x = libraryModel.get(i)
-                                    if (x.console === model.console) {
-                                        newLibraryModel.append(x);
-                                    }
-                                }
-                            libraryModel = newLibraryModel;
-                            }
+                        function filter(text) {
+                            _libraryModel.query = "$[?(@.console.indexOf('"
+                                                  + model.console +"') !== -1)]";
                         }
 
                         onClicked: {
                             listDelegate.ListView.view.currentIndex = index;
-                            libraryModel = oldModel;
-                            newLibraryModel.clear();
-
                             if (mouse.button == Qt.LeftButton) {
-                               filter();
+                                if (model.console !== "All")
+                                    filter();
+                                else {
+                                    _libraryModel.reload();
+                                    _libraryModel.query = "$[*]";
+                                }
                             }
                             else if (mouse.button == Qt.RightButton) {
                                 if (consoleInstan.model !== undefined) {
