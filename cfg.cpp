@@ -38,8 +38,7 @@ QJsonObject Config::readConfigFile(QString input_file) {
 }
 
 bool Config::saveFrontendConfig(QJsonObject json_object) {
-    QString output_file = QApplication::applicationDirPath()
-                          + "/src/database/frontend.cfg";
+    QString output_file = QApplication::applicationDirPath() + "/src/database/frontend.cfg";
     QFile outfile(output_file);
 
     if (!outfile.open(QIODevice::WriteOnly
@@ -67,7 +66,6 @@ bool Config::saveFrontendConfig(QJsonObject json_object) {
 }
 
 bool Config::saveConfig(QString output_file, QJsonObject json_object) {
-    qDebug() << output_file;
     QFile outfile(output_file);
 
     if (!outfile.open(QIODevice::WriteOnly
