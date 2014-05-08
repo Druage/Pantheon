@@ -204,11 +204,13 @@ QJsonObject Library::getPaths(QString retroarch_path) {
                 || folder_name == "shaders"
                 || folder_name == "system") {
 
-                qDebug() << iterator.filePath();
                 folders[folder_name] = iterator.filePath();
             }
         }
     }
-    qDebug() << folders.length();
+    if (folders.length() > 4)
+        qDebug() << "Paths found successfully";
+    else
+        qDebug() << "Only " << folders.length() << " folders found.";
     return folders;
 }
