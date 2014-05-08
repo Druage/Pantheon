@@ -151,9 +151,9 @@ Rectangle {
             ListElement {
                 console: "Film";
             }
-            //ListElement {
-            //    console: "Indie";
-            //}
+            ListElement {
+                console: "Indie";
+            }
         }
         Label {
             anchors.top: parent.top;
@@ -218,16 +218,18 @@ Rectangle {
                             }
                             Instantiator {
                                 id: consoleInstan;
-                                model: switchSystems(listDelegate.ListView.view.model.get(listDelegate.ListView.view.currentIndex).console);
+                                model: switchSystems(
+                                           listDelegate.ListView.view.model.get(
+                                               listDelegate.ListView.view.currentIndex).console);
                                 MenuItem {
                                     id: menuItem;
                                     property bool popped: consoleRightClickMenu.opened;
                                     checkable: true;
                                     exclusiveGroup: coreGroup;
-                                    text: model.system ? model.system : "";
+                                    text: model.title ? model.title : "";
                                     onTriggered: {
                                         consoleRightClickMenu.systemConsole = listDelegate.ListView.view.model.get(listDelegate.ListView.view.currentIndex).console;
-                                        cfg[selectCore(consoleRightClickMenu.systemConsole)] = text;
+                                        cfg[selectCore(consoleRightClickMenu.systemConsole)] = model.core;
                                         menuItem.checked = (text === cfg[selectCore(consoleRightClickMenu.systemConsole)]);
 
                                     }
