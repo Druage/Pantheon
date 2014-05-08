@@ -212,7 +212,9 @@ Rectangle {
                         Menu {
                             id: consoleRightClickMenu;
                             property bool opened: false;
-                            property var systemConsole: listDelegate.ListView.view.model.get(listDelegate.ListView.view.currentIndex).console;
+                            property string systemConsole: listDelegate.ListView.view.model.get(
+                                                            listDelegate.ListView.view.currentIndex
+                                                            ).console;
                             ExclusiveGroup {
                                 id: coreGroup;
                             }
@@ -235,7 +237,10 @@ Rectangle {
                                     }
                                     onPoppedChanged: {
                                         if (popped) {
-                                            checked = (text === cfg[selectCore(consoleRightClickMenu.systemConsole)]);
+                                            checked = (model.core === cfg[
+                                                           selectCore(
+                                                               consoleRightClickMenu.systemConsole
+                                                               )]);
                                         }
                                     }
                                 }
@@ -307,7 +312,6 @@ Rectangle {
                 }
         }
 
-
             Image {
                 id: tableArtwork
                 height: 200
@@ -336,6 +340,5 @@ Rectangle {
                 verticalOffset: 3
                 horizontalOffset: 3
             }
-
     }
 }
