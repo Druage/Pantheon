@@ -2,7 +2,7 @@
 
 //const, Qdir in shader.h, added readCG
 
-const QString SHADERS_PATH = QDir::currentPath() + "/src/common-shaders-master/";
+const QString SHADERS_PATH = QDir::currentPath() + "/retroarch-v1.0.0.2/shaders/";
 const QString RETROARCH_CGP = SHADERS_PATH + "retroarch.cgp";
 
 Shader::Shader(QObject *parent): QObject(parent) {
@@ -28,10 +28,9 @@ bool Shader::writeCG(QString shader_file) {
     for (int i=0; i < keys.length(); i++) {
         QString current_key = keys.at(i);
         QString value = __cg_data[current_key];
-        qDebug() << current_key << " = " << value;
         outstream << current_key << " = " << value << '\n';
     }
-    qDebug() << "Saved cg file";
+    qDebug() << "Saved shader file";
     outfile.close();
     return true;
 }
