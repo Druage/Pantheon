@@ -173,12 +173,6 @@ Rectangle {
                 onTextChanged: {
                     coreTextField.text = text
                     _cfg["libretro_path"] = text;
-                    if (text !== '""') {
-                        console.log("ADD CORE SCANNER");
-                        /*py.call('scan.cores_quick', [text], function(result) {
-                            py.call_sync('xml_creator.core_xml_writer', [result])
-                        })*/
-                    }
                 }
 
                 FileDialog {
@@ -301,7 +295,6 @@ Rectangle {
                 onTextChanged: {
                     _cfg["savefile_directory"] = text;
                     _cfg["savestate_directory"] = text;
-                    console.log(_cfg["savefile_directory"]);
                 }
 
                 FileDialog {

@@ -512,7 +512,6 @@ ApplicationWindow {
         onRowImageSourceChanged: {
             leftColumnStackView.artworkSource = rowImageSource;
         }
-        Component.onCompleted: console.log(root.cfg);
     }
 
     Component {
