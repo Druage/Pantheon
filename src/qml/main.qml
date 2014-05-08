@@ -152,14 +152,15 @@ ApplicationWindow {
         ListElement {title: "bNES"; core: "bnes_libretro.dll";}
         ListElement {title: "Nestopia"; core: "nestopia_libretro.dll";}
         ListElement {title: "QuickNES"; core: "quicknes_libretro.dll";}
-        ListElement {title: "Snes9x"; core: "snes9x_libretro.dll";}
-        ListElement {title: "Snes9x Next"; core: "snes9x_next_libretro.dll";}
     }
+
     ListModel {
         id: snesModel;
         ListElement {title: "bsnes (Accurarcy)"; core: "bsnes_accuracy_libretro.dll";}
         ListElement {title: "bsnes (Balanced)"; core: "bsnes_balanced_libretro.dll";}
         ListElement {title: "bsnes (Performance)"; core: "bsnes_performance_libretro.dll";}
+        ListElement {title: "Snes9x"; core: "snes9x_libretro.dll";}
+        ListElement {title: "Snes9x Next"; core: "snes9x_next_libretro.dll";}
     }
     ListModel {
         id: n64Model;
