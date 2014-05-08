@@ -147,18 +147,63 @@ ApplicationWindow {
             config.saveConfig(outfile, cfg);
     }
 
-    ListModel {id: nesModel;}
-    ListModel {id: snesModel;}
-    ListModel {id: n64Model;}
-    ListModel {id: psxModel;}
-    ListModel {id: genesisModel;}
-    ListModel {id: gbModel;}
-    ListModel {id: gbaModel;}
-    ListModel {id: vbModel;}
-    ListModel {id: arcadeModel;}
-    ListModel {id: filmModel;}
-    ListModel {id: indieModel;}
-    ListModel {id: pcModel;}
+    ListModel {
+        id: nesModel;
+        ListElement {title: "bNES"; core: "bnes_libretro.dll";}
+        ListElement {title: "Nestopia"; core: "nestopia_libretro.dll";}
+        ListElement {title: "QuickNES"; core: "quicknes_libretro.dll";}
+        ListElement {title: "Snes9x"; core: "snes9x_libretro.dll";}
+        ListElement {title: "Snes9x Next"; core: "snes9x_next_libretro.dll";}
+    }
+    ListModel {
+        id: snesModel;
+        ListElement {title: "bsnes (Accurarcy)"; core: "bsnes_accuracy_libretro.dll";}
+        ListElement {title: "bsnes (Balanced)"; core: "bsnes_balanced_libretro.dll";}
+        ListElement {title: "bsnes (Performance)"; core: "bsnes_performance_libretro.dll";}
+    }
+    ListModel {
+        id: n64Model;
+        ListElement {title: "Mupen64Plus"; core: "mupen64plus_libretro.dll";}
+    }
+    ListModel {
+        id: psxModel;
+        ListElement {title: "Mednafen PlayStation"; core: "mednafen_psx_libretro.dll";}
+    }
+    ListModel {
+        id: genesisModel;
+        ListElement {title: "Genesis Plus GX"; core: "genesis_plus_gx_libretro.dll";}
+    }
+    ListModel {
+        id: gbModel;
+        ListElement {title: "Gambatte"; core: "gambatte_libretro.dll";}
+    }
+    ListModel {
+        id: gbaModel;
+        ListElement {title: "Meteor"; core: "meteor_libretro.dll";}
+        ListElement {title: "Visual Boy Advance Next"; core: "vba_next_libretro.dll";}
+        ListElement {title: "Visual Boy Advance - M"; core: "vbam_libretro.dll";}
+    }
+    ListModel {
+        id: vbModel;
+        ListElement {title: "Mednafen Virtual Boy"; core: "mednafen_vb_libretro.dll";}
+    }
+    ListModel {
+        id: arcadeModel;
+        ListElement {title: "MAME"; core: "mame078_libretro.dll";}
+        ListElement {title: "Final Burn Alpha"; core: "fb_alpha_libretro.dll";}
+    }
+    ListModel {
+        id: filmModel;
+        ListElement {title: "FFmpeg"; core: "ffmpeg_libretro.dll";}
+    }
+    ListModel {
+        id: indieModel;
+        ListElement {title: "Dinothawr"; core: "dinothawr_libretro.dll";}
+    }
+    ListModel {
+        id: pcModel;
+        ListElement {title: "DOSbox"; core: "dosbox_libretro.dll";}
+    }
 
     SystemPalette {id: systemPalette;}
 
