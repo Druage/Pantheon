@@ -95,11 +95,12 @@ Rectangle {
                 anchors.right: emulatorSaveButton.left;
                 anchors.rightMargin: 10;
                 placeholderText: "/path/to/emulator.exe";
-                text: (_frontend_cfg["retroarch_exe_path"] === '""') ? "" : _frontend_cfg["retroarch_exe_path"];
+                text: (_frontend_cfg["retroarch_exe_path"] === '""') ?
+                          "" : _frontend_cfg["retroarch_exe_path"];
                 //textColor: fontColor;
                 readOnly: true
                 onTextChanged: {
-                    _cfg["retroarch_exe_path"] = text;
+                    _frontend_cfg["retroarch_exe_path"] = text;
                 }
 
                 FileDialog {
@@ -108,10 +109,12 @@ Rectangle {
                     nameFilters: ["Executable file (*.exe)"];
                     onAccepted: {
                         var url = fileUrl.toString();
-                        url = url.replace('file:///', '').replace("retroarch.exe", "");
+                        url = url.replace('file:///', '');
+                        emulatorTextField.text = url;
+                        url = url.replace("retroarch.exe", "");
                         var folders = library.getPaths(url);
                         if (cfgTextField.text === "") {
-                            cfgTextField.text = url + "/retroarch.cfg";
+                            cfgTextField.text = url + "retroarch.cfg";
                         }
                         if (folders) {
                             if (coreTextField.text === "")
@@ -119,7 +122,6 @@ Rectangle {
                             if (systemTextField.text === "")
                                 systemTextField.text = folders["system"];
                         }
-                        emulatorTextField.text = url;
                     }
                 }
             }
@@ -426,27 +428,6 @@ Rectangle {
                 }
             }
         }*/
-
-        RowLayout {
-            id: deleteEmu
-            anchors.right: parent.right;
-            anchors.left: parent.left;
-            anchors.margins: 20;
-            height: 50;
-
-            Label {
-                text: "Delete RetroArch:";
-                //color: fontColor;
-            }
-
-            Button {
-                text: "Delete";
-                onClicked: {
-                    console.log("ADD LIBRARY DELETE")
-                    //py.call_sync('storage.purge_folder', ['retroarch_v1.0']);
-                }
-            }
-        }
 
         RowLayout {
             id: backupLibrary;
