@@ -93,47 +93,6 @@ ApplicationWindow {
             model.append({system: core_array[core]})
     }
 
-    /*Python {
-        id: py;
-        signal pyerror(string result);
-        signal status(string result);
-        signal download(string result);
-
-        Component.onCompleted: {
-            addImportPath(Qt.resolvedUrl('../py'))
-            setHandler('download', download)
-            setHandler('pyerror', pyerror)
-            setHandler('status', status)
-
-            importModule('constants', function () {
-                py.call('constants.shader_cgp_path', [], function (result) {
-                    root.shader_cgp_path = result;
-                })
-            });
-
-            importModule_sync('library');
-            importModule_sync('download');
-            importModule_sync('shaders');
-            importModule_sync('storage');
-        }
-
-        onDownload: {
-            progressBar.indeterminate = false;
-            progressBar.visible = true;
-            progressBar.value = result;
-        }
-        onStatus: {
-            console.log('Status: ' + result);
-            statusLabel.text = result;
-            statusUpdate.visible = true;
-            statusTimer.start();
-        }
-
-        onReceived: console.log('Unhandled event: ' + data);
-        onPyerror: console.log('PyError: ' + result);
-        onError: console.log('Error: ' + traceback);
-    }*/
-
     Component.onCompleted: {
         defaultStyle = gameTable.style;
         defaultSliderStyle = bottomToolbar.sliderStyle;
@@ -225,9 +184,6 @@ ApplicationWindow {
         onClosing: {
             root.cfg = advancedDialog._cfg;
             root.frontend_cfg = advancedDialog._frontend_cfg;
-            if (coreModel.count <= 0) {
-                coreModel.reload();
-            }
         }
     }
 
@@ -280,6 +236,10 @@ ApplicationWindow {
             indeterminate: true;
         }
 
+    statusBar:
+        BottomStatusBar {
+            id: bottomToolbar;
+        }
     /// Creates Rectangle over ApplicationWindow
     Rectangle {
         id: gameLayout;
@@ -313,7 +273,7 @@ ApplicationWindow {
             property var _frontend_cfg: root.frontend_cfg;
             enabled: false;
             anchors.top: parent.top;
-            width: 250;
+            width: 300;
             anchors.bottom: parent.bottom;
             initialItem: leftColumn;
             delegate: StackViewDelegate {
@@ -493,8 +453,5 @@ ApplicationWindow {
             rotation: 180;
         }
     }
-    statusBar:
-        BottomStatusBar {
-            id: bottomToolbar;
-        }
+
 }
