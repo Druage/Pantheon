@@ -4,7 +4,7 @@
 ###The Rebirth of a Desktop U.I.
 
 This is a "rebirth" of the RetroArch Phoenix project that was deprecated.
-This project provides RetroArch, and soon a new Libretro Api, with an all-in-one graphical interface that focuses on desktop use. This project draws heavy influence from the [OpenEmu](http://openemu.org/) frontend and so please show support for their hard work if you are running the Mac operting system. 
+This project provides RetroArch, and soon a new Libretro implentation, with an all-in-one graphical interface that focuses on desktop use. This project draws heavy influence from the [OpenEmu](http://openemu.org/) frontend and so please show support for their hard work if you are running the Mac operting system. 
 This project will provide a lot of the functionality that they have provided, which includes supporting shaders, configuring controllers, and playing games on your favorite emulator.
 
 There will be two versions, one will be our frontend that will target the Libretro api, for tight integration with the latest Qt technology. The other version will be using RetroArch as a backend and will simply be a launcher. This frontend is free as in freedom and beer. If you wish to help with the frontend in any way, please feel free to contact me. This frontend is gets worked on almost daily and so features will soon be piling in.
@@ -27,7 +27,7 @@ The frontend is built with [Qt 5.2.1](http://qt-project.org/downloads) and uses 
 
 My name is Lee and I am the creator of this project. I go by the name of Druage and you can contact me at Druage@gmx.com.
 
-The other developer goes the name of TheCanadianBacon, and he is the reason for why this frontend is going to become it's own Libretro Api.
+The other developer goes the name of TheCanadianBacon, and he is the reason for why this frontend is going to become its own Libretro Api.
 
 ####Coding Style:
 
