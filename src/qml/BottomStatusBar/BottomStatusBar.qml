@@ -10,13 +10,11 @@ Rectangle {
     property var textFieldStyle: searchBar.style;
     height: 40;
     width: parent.width;
-    Rectangle {
-        id: rectBorder;
-        color: "#000000";
-        anchors.top: parent.top;
-        height: 1;
-        width: parent.width;
-    }
+    gradient:
+        Gradient {
+            GradientStop {position: 0.0; color: "#e24939";}
+            GradientStop {position: 1.0; color: "#c13a2c";}
+        }
 
      RowLayout {
         anchors.fill: parent;
@@ -48,8 +46,6 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter;
             Keys.onReturnPressed: searchBar.state = "CLOSED";
             placeholderText: "Search...";
-
-
 
             Timer {
                 id: timer;
