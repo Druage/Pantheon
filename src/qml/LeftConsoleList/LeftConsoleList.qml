@@ -7,9 +7,11 @@ Rectangle {
     id: root;
     property string artworkSource;
     property var originalLibrary: libraryModel;
+    color: "#2f2f2f";
+
     Rectangle {
         id: borderRectangle;
-        color: "gray"
+        color: "#2f2f2f";
         anchors.right: parent.right
         height: parent.height
         width: 1
@@ -109,44 +111,44 @@ Rectangle {
             ListElement {console: "All";}
             ListElement {
                 console: "Nintendo Entertainment System";
-                icon: "../../images/console_icons/nes.png"
+                //icon: "../../images/console_icons/nes.png"
 
             }
             ListElement {
                 console: "Super Nintendo";
-                icon: "../../images/console_icons/super-nintendo.png"
+                //icon: "../../images/console_icons/super-nintendo.png"
             }
             ListElement {
                 console: "Nintendo 64";
-                icon: "../../images/console_icons/nintendo-64.png"
+                //icon: "../../images/console_icons/nintendo-64.png"
             }
             ListElement {
                 console: "Sony PlayStation";
-                icon: "../../images/console_icons/sony-playstation.png"
+                //icon: "../../images/console_icons/sony-playstation.png"
             }
             ListElement {
                 console: "Virtual Boy";
-                icon: "../../images/console_icons/virtual_boy.png"
+                //icon: "../../images/console_icons/virtual_boy.png"
             }
             ListElement {
                 console: "Game Boy";
-                icon: "../../images/console_icons/gameboy.png"
+                //icon: "../../images/console_icons/gameboy.png"
             }
             ListElement {
                 console: "Game Boy Color";
-                icon: "../../images/console_icons/gameboy_color.png"
+                //icon: "../../images/console_icons/gameboy_color.png"
             }
             ListElement {
                 console: "Game Boy Advance";
-                icon: "../../images/console_icons/gameboy_advance.png"
+                //icon: "../../images/console_icons/gameboy_advance.png"
             }
             ListElement {
                 console: "Sega Genesis";
-                icon: "../../images/console_icons/sega-genesis.png"
+                //icon: "../../images/console_icons/sega-genesis.png"
             }
             ListElement {
                 console: "Arcade";
-                icon: "../../images/console_icons/arcade.png"
+                //icon: "../../images/console_icons/arcade.png"
             }
             ListElement {
                 console: "Film";
@@ -161,6 +163,7 @@ Rectangle {
             anchors.margins: 10;
             id: systemLabel;
             text: "System";
+            color: "#bfbcbc";
             font.bold: true;
 
         }
@@ -175,15 +178,19 @@ Rectangle {
             model: systemListModel;
             highlightFollowsCurrentItem: false;
             keyNavigationWraps: true;
-            spacing: 1;
+            spacing: 2;
 
             highlight:
                 Component {
                     Rectangle {
-
                         //anchors.verticalCenter: parent.verticalCenter
-                        width: parent.width; height: 23
-                        color: systemPalette.highlight;
+                        width: 245;
+                        height: 2;
+                        x: 25;
+                        anchors {
+                            bottom: listView.currentItem.bottom;
+                        }
+                        color: "white";
                         y: listView.currentItem.y
                        /*Behavior on y {
                             SpringAnimation {
@@ -194,6 +201,7 @@ Rectangle {
 
                     }
                 }
+
             delegate:
                 Item {
                     id: listDelegate
@@ -307,6 +315,7 @@ Rectangle {
                             id: labelDelegate
                             anchors.verticalCenter: parent.verticalCenter
                             text: model.console
+                            color: "#bfbcbc";
                         }
                     }
                 }
