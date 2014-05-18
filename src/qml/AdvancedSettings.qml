@@ -169,13 +169,6 @@ ApplicationWindow {
     }
 
     Component {
-        id: cores
-        CoreSettings {
-        }
-    }
-
-
-    Component {
         id: video
         VideoSettings {
             cfg: _cfg;
