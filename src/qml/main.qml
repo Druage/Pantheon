@@ -222,11 +222,14 @@ ApplicationWindow {
         GradientStop {position: 1.0; color: "#262626";}
     }
 
-    menuBar:
-        TopMenuBar {id: menuBar;}
+    //menuBar:
+        //TopMenuBar {id: menuBar;}
 
     toolBar:
-        ProgressBar {
+        BottomStatusBar {
+            id: bottomToolbar;
+        }
+        /*ProgressBar {
             id: progressBar;
             height: 10;
             width: parent.width;
@@ -234,12 +237,10 @@ ApplicationWindow {
             minimumValue: 0;
             visible: false;
             indeterminate: true;
-        }
+        }*/
 
-    statusBar:
-        BottomStatusBar {
-            id: bottomToolbar;
-        }
+    //statusBar:
+
     /// Creates Rectangle over ApplicationWindow
     Rectangle {
         id: gameLayout;
@@ -381,7 +382,7 @@ ApplicationWindow {
             id: gameGrid;
             width: 800;
             height: 600;
-            color: stackView.gridBackgroundColor; //Grid Background Color
+            color: "#222222"; //Grid Background Color
 
             Image {
                 anchors.fill: parent;
