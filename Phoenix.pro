@@ -19,8 +19,8 @@ HEADERS += "library.h"  \
            "cfg.h"      \
            "shader.h"
 
-#win32:INCLUDEPATH += "C:/Users/robert/Desktop/RetroarchPhoenix-master" \
-                     #"C:\SDL2\include"
+win32:INCLUDEPATH += "C:/Users/robert/Desktop/RetroarchPhoenix-master" \
+                     "C:\SDL2\include"
 # Installation path
 # target.path =
 # unix:LIBS += -L/usr/lib/x86_64-linux-gnu/mesa/
