@@ -22,8 +22,7 @@ import "Themes/OpenEmu (Red)/CheckBoxStyled"
 import "RomTable"
 import "RomGrid"
 import "TopMenuBar"
-import "BottomStatusBar"
-import "Settings"
+import "HeaderBar"
 import "GameCounter"
 import "LeftConsoleList"
 import "JSONListModel"
@@ -129,31 +128,8 @@ ApplicationWindow {
         }
     }
 
-    Component {
-        id: openEmuRed;
-        TableStyle {}
-    }
-
-    Component {
-        id: openEmuRedSlider;
-        SliderStyled {}
-    }
-
-    Component {
-        id: openEmuRedSearchBar;
-        SearchBarStyle {}
-    }
-
-    Component {
-        id: openEmuCheckBox;
-        CheckBoxStyled {}
-    }
-
-    //menuBar:
-        //TopMenuBar {id: menuBar;}
-
     toolBar:
-        BottomStatusBar {
+        HeaderBar {
             id: bottomToolbar;
         }
         /*ProgressBar {
