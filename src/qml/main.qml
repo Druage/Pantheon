@@ -43,18 +43,6 @@ ApplicationWindow {
     height: 768;
     title: "Pantheon";
 
-    Library {
-        id: library;
-    }
-
-    Shader {
-        id: shader;
-    }
-
-    Launch {
-        id: launcher;
-    }
-
     function appendConsoles(model, core_array, system) {
         for (var core in core_array)
             model.append({system: core_array[core]})
