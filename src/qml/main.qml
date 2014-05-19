@@ -38,18 +38,6 @@ ApplicationWindow {
     id: root;
 
     property var libraryModel: _libraryModel.model;
-    property string shader_cgp_path;
-    property var custom_emulators;
-    property var core_options;
-    property var shader_data;
-    property var cfg;
-    property var frontend_cfg;
-    property var style;
-    property var defaultStyle;
-    property var defaultSliderStyle;
-    property var defaultSearchBarStyle;
-    property string currentStyle: "OpenEmuRed";
-    property bool openEmuThemeChecked;
 
     width: 1024;
     height: 768;
@@ -67,43 +55,9 @@ ApplicationWindow {
         id: launcher;
     }
 
-    Config {
-        id: config;
-        Component.onCompleted: {
-            frontend_cfg = readDefaultFrontEndConfigFile();
-            advancedDialog._frontend_cfg = frontend_cfg;
-            if (frontend_cfg["config_file"] === '""' ||
-                frontend_cfg["config_file"] === undefined ||
-                frontend_cfg["config_file"] === "")
-                cfg = readDefaultRetroArchConfigFile();
-            else {
-                cfg = readConfigFile(frontend_cfg["config_file"]);
-            }
-            advancedDialog._cfg = cfg;
-        }
-    }
-
-    onFrontend_cfgChanged: {
-        if (frontend_cfg !== undefined)
-            leftColumnStackView.enabled = true;
-    }
-
     function appendConsoles(model, core_array, system) {
         for (var core in core_array)
             model.append({system: core_array[core]})
-    }
-
-    Component.onCompleted: {
-        defaultStyle = gameTable.style;
-        defaultSliderStyle = bottomToolbar.sliderStyle;
-        defaultSearchBarStyle = bottomToolbar.textFieldStyle;
-    }
-
-    Component.onDestruction: {
-        config.saveFrontendConfig(frontend_cfg);
-        var outfile = frontend_cfg["config_file"];
-        if (outfile !== '""')
-            config.saveConfig(outfile, cfg);
     }
 
     ListModel {
@@ -205,21 +159,6 @@ ApplicationWindow {
     Component {
         id: openEmuCheckBox;
         CheckBoxStyled {}
-    }
-
-    Gradient {
-        id: openEmuRedGradient;
-        GradientStop {position: 0.0; color: "#cc4d4d";}
-        GradientStop{position: 0.5; color: "#ad4141";}
-        GradientStop {position: 1.0; color: "#933b3b";}
-    }
-
-    Gradient {
-        id: openEmuRedBottomGradient;
-        GradientStop {position: 0.0; color: "#333333";}
-        GradientStop {position: 0.3; color: "#303030";}
-        GradientStop {position: 0.7; color: "#2b2b2b";}
-        GradientStop {position: 1.0; color: "#262626";}
     }
 
     //menuBar:
