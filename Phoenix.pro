@@ -33,5 +33,4 @@ include(qtquick2applicationviewer/qtquick2applicationviewer.pri)
 qtcAddDeployment()
 
 OTHER_FILES += \
-    src/qml/StatusBubble/GameCounter.qml \
-    src/qml/Settings/MednafenPSXSettings.qml
+    src/qml/StatusBubble/GameCounter.qml
