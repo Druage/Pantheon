@@ -3,6 +3,8 @@
 
 ###The Rebirth of a Desktop U.I.
 
+####The project has been moved to https://github.com/athairus/phoenix
+
 This is a "rebirth" of the RetroArch Phoenix project that was deprecated.
 This project currently serves as a RetroArch frontend, but will soon become its own Libretro implentation, with an all-in-one graphical interface that focuses on desktop use. This project draws heavy influence from the [OpenEmu](http://openemu.org/) frontend, please show them some love for their hard work if you are running OS X. 
 This project will provide a lot of the functionality that they have provided, which includes supporting shaders, configuring controllers, and playing games on your favorite emulator core.
